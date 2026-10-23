@@ -1,0 +1,15 @@
+result,check,detail
+PASS,Valid month-start dates,"3333 nonmissing dates, all on day 1"
+PASS,Unique consecutive monthly input,one row per consecutive month
+PASS,Valid SSN targets,ssn is present and nonnegative for every month
+PASS,Provisional flags present,every row has a provisional status
+PASS,Forecast chronology,every origin precedes its target
+PASS,Chronological forecast-origin order,prediction rows are ordered by forecast origin
+PASS,Target-date alignment,target month is exactly horizon months after origin
+PASS,Forecast-origin leakage,"all source months and values are valid, source months are available by origin, and baseline source rules match"
+PASS,Target values and provisional flags,actuals and provisional flags match the prepared data
+PASS,Locked evaluation window,all scored target rows start no earlier than 2016-01
+PASS,Fair paired baseline coverage,both baselines cover the same targets at every horizon
+PASS,12-month seasonal-naive equivalence,period-12 seasonal naive equals persistence at a 12-month horizon by definition
+PASS,Prepared input unchanged,prepared monthly CSV checksum is unchanged
+PASS,Core output creation,"all prediction, metric, and plot outputs exist and are non-empty"

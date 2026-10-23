@@ -1,0 +1,9 @@
+result,check,detail
+PASS,Valid first-of-month dates,3333 parsed dates; all are first-of-month
+PASS,Monthly date continuity,one unique row for every consecutive month
+PASS,Date columns consistent,year/month columns agree with month_start
+PASS,Cycle coverage and boundaries,all completed cycles match the summary; Cycle 25 remains open; pre-Cycle-1 rows excluded
+PASS,Consistency with prepared summary,"counts, raw monthly peak values/months, provisional flags, and ongoing-cycle treatment agree"
+PASS,EDA output creation,36 non-empty PNG/CSV analysis artifacts created
+PASS,Prepared inputs unchanged,both prepared input checksums are unchanged
+PASS,Final output verification,all 38 expected files exist and are non-empty

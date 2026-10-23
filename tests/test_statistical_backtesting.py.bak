@@ -1,0 +1,652 @@
+"""Synthetic and mocked tests for the pre-2016 statistical selection framework.
+
+These tests do not load SolarShield data or fit any planned ARIMA/SARIMA
+candidate.
+"""
+from __future__ import annotations
+
+import csv
+import hashlib
+import json
+import sys
+import tempfile
+import types
+import unittest
+import warnings
+from pathlib import Path
+from unittest.mock import patch
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+sys.path.insert(0, str(ROOT / "scripts"))
+import run_statistical_backtesting as S  # noqa: E402
+
+
+def synthetic_monthly(start: str = "1970-01-01", end: str = "2015-12-01") -> pd.DataFrame:
+    dates = pd.date_range(start, end, freq="MS")
+    index = np.arange(len(dates), dtype=float)
+    return pd.DataFrame({
+        "month_start": dates,
+        "ssn": 40 + 20 * np.sin(index / 17) + 0.005 * index,
+        "is_provisional": False,
+    })
+
+
+def candidate_metrics(candidate_name: str, ratios: dict[int, float]) -> pd.DataFrame:
+    rows = []
+    for model, ratio in ((candidate_name, 1.0), ("persistence", 1.0), ("seasonal_naive", 1.1)):
+        for horizon in S.HORIZONS:
+            actual_ratio = ratios.get(horizon, ratio) if model == candidate_name else ratio
+            rows.append({
+                "model": model,
+                "horizon_months": horizon,
+                "point_metrics_valid": True,
+                "mae": actual_ratio * 10,
+                "rmse": actual_ratio * 12,
+            })
+    return pd.DataFrame(rows)
+
+
+def valid_selection_manifest(
+    candidate_name: str = S.CANDIDATES[0].name,
+    input_hash: str = "a" * 64,
+) -> dict:
+    return {
+        "stage": "selection",
+        "protocol_id": S.PROTOCOL_ID,
+        "selected_candidate": candidate_name,
+        "evaluated_candidates": [candidate.name for candidate in S.CANDIDATES],
+        "selection_passed": True,
+        "selection_score": {
+            "candidate": candidate_name,
+            "complete_point_coverage": True,
+            "passes_thresholds": True,
+            **{f"mae_ratio_{horizon}": 0.94 for horizon in S.HORIZONS},
+            "aggregate_mae_ratio": 0.94,
+            "aggregate_rmse_ratio_tiebreak": 0.97,
+        },
+        "input_sha256": input_hash,
+        "selection_rule": {
+            "aggregate_mae_ratio_max": S.SELECTION_AGGREGATE_LIMIT,
+            "per_horizon_mae_ratio_max": S.HORIZON_GUARDRAIL,
+            "rmse_tiebreak": (
+                "mean per-horizon RMSE ratio against best existing baseline; "
+                "then fixed candidate order"
+            ),
+        },
+        "target_window": [
+            S.SELECTION_START.strftime("%Y-%m"),
+            S.SELECTION_END.strftime("%Y-%m"),
+        ],
+        "origin_cadence": "quarterly, Mar/Jun/Sep/Dec",
+        "horizons": list(S.HORIZONS),
+        "provisional_policy": S.PROVISIONAL_POLICY,
+        "candidates": [
+            {
+                **S.asdict(candidate),
+                "order": list(candidate.order),
+                "seasonal_order": list(candidate.seasonal_order),
+            }
+            for candidate in S.CANDIDATES
+        ],
+    }
+
+
+class StageIsolation(unittest.TestCase):
+    def test_csv_reader_stops_before_first_row_after_cutoff(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "series.csv"
+            with path.open("w", newline="", encoding="utf-8") as stream:
+                writer = csv.DictWriter(stream, fieldnames=["month_start", "ssn", "is_provisional"])
+                writer.writeheader()
+                writer.writerow({"month_start": "2015-11-01", "ssn": 1, "is_provisional": "False"})
+                writer.writerow({"month_start": "2015-12-01", "ssn": 2, "is_provisional": "False"})
+                writer.writerow({"month_start": "2016-01-01", "ssn": 999999, "is_provisional": "False"})
+                writer.writerow({"month_start": "2016-02-01", "ssn": 999999, "is_provisional": "False"})
+            loaded = S.load_monthly_until(path, pd.Timestamp("2015-12-01"))
+            self.assertEqual(loaded["month_start"].max(), pd.Timestamp("2015-12-01"))
+            self.assertEqual(list(loaded["ssn"]), [1.0, 2.0])
+            self.assertEqual(list(loaded["is_provisional"]), [False, False])
+
+    def test_rejects_out_of_order_row_after_cutoff(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / "series.csv"
+            path.write_text(
+                "month_start,ssn,is_provisional\n"
+                "1995-10-01,1,false\n"
+                "1995-11-01,2,false\n"
+                "1996-01-01,3,false\n"
+                "1995-12-01,4,false\n",
+                encoding="utf-8",
+            )
+            with self.assertRaisesRegex(ValueError, "strictly increasing and unique"):
+                S.load_monthly_until(path, pd.Timestamp("1995-12-01"))
+
+    def test_provisional_parser_accepts_documented_values_and_rejects_bad_flags(self):
+        accepted = (("true", True), (" YES ", True), ("1", True),
+                    ("false", False), ("No", False), ("0", False))
+        for raw, expected in accepted:
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as temporary:
+                path = Path(temporary) / "series.csv"
+                path.write_text(
+                    "month_start,ssn,is_provisional\n2015-12-01,5," + raw + "\n",
+                    encoding="utf-8",
+                )
+                loaded = S.load_monthly_until(path, pd.Timestamp("2015-12-01"))
+                self.assertIs(bool(loaded.loc[0, "is_provisional"]), expected)
+        for raw in ("", "sometimes", "null"):
+            with self.subTest(raw=raw), tempfile.TemporaryDirectory() as temporary:
+                path = Path(temporary) / "series.csv"
+                path.write_text(
+                    "month_start,ssn,is_provisional\n2015-12-01,5," + raw + "\n",
+                    encoding="utf-8",
+                )
+                with self.assertRaisesRegex(ValueError, "Invalid is_provisional value"):
+                    S.load_monthly_until(path, pd.Timestamp("2015-12-01"))
+
+    def test_stage_guard_rejects_confirmation_or_final_rows_in_selection(self):
+        data = synthetic_monthly(end="2016-01-01")
+        with self.assertRaisesRegex(ValueError, "after 1995-12"):
+            S.select_stage_predictions(data, "selection", candidates=())
+
+    def test_stage_guard_rejects_incomplete_target_window(self):
+        data = synthetic_monthly(end="1995-11-01")
+        with self.assertRaisesRegex(ValueError, "include observations through 1995-12"):
+            S.select_stage_predictions(data, "selection", candidates=())
+
+    def test_quarterly_schedule_alignment_and_common_origin_pairs(self):
+        data = synthetic_monthly()
+        targets = S.stage_targets(data, pd.Timestamp("1976-01-01"), pd.Timestamp("1977-12-01"))
+        self.assertTrue((S.month_offset(targets["forecast_origin"], targets["target_month"]) ==
+                         targets["horizon_months"]).all())
+        self.assertTrue(targets["forecast_origin"].dt.month.isin([3, 6, 9, 12]).all())
+        for horizon in S.HORIZONS:
+            subset = targets[targets["horizon_months"] == horizon]
+            self.assertTrue((subset["target_month"] >= pd.Timestamp("1976-01-01")).all())
+            self.assertTrue((subset["target_month"] <= pd.Timestamp("1977-12-01")).all())
+
+    def test_baseline_predictor_sources_never_follow_forecast_origin(self):
+        data = synthetic_monthly("1970-01-01", "1977-12-01")
+        targets = S.stage_targets(data, pd.Timestamp("1976-01-01"), pd.Timestamp("1976-12-01"))
+        predictions, _, _ = S.construct_stage_predictions(data, targets, candidates=())
+        baseline_rows = predictions[predictions["model"].isin(S.BASELINE_NAMES)]
+        self.assertTrue(
+            (baseline_rows["predictor_source_month"] <= baseline_rows["forecast_origin"]).all()
+        )
+        persistence = baseline_rows[baseline_rows["model"] == "persistence"]
+        self.assertTrue(
+            (persistence["predictor_source_month"] == persistence["forecast_origin"]).all()
+        )
+        seasonal = baseline_rows[baseline_rows["model"] == "seasonal_naive"]
+        self.assertTrue(
+            (seasonal["predictor_source_month"] ==
+             seasonal["target_month"] - pd.DateOffset(months=12)).all()
+        )
+
+    def test_candidate_training_data_ends_at_forecast_origin(self):
+        data = synthetic_monthly("1970-01-01", "1971-10-01")
+        target = pd.DataFrame([{
+            "forecast_origin": pd.Timestamp("1971-09-01"),
+            "target_month": pd.Timestamp("1971-10-01"),
+            "horizon_months": 1,
+            "origin_index": 20,
+            "target_index": 21,
+            "actual_ssn": float(data.loc[21, "ssn"]),
+            "is_provisional_target": False,
+        }])
+        observed_training = []
+
+        class FakePrediction:
+            predicted_mean = np.arange(1.0, 13.0)
+
+            def conf_int(self, alpha):
+                return np.column_stack((self.predicted_mean - 1, self.predicted_mean + 1))
+
+        class FakeFit:
+            params = np.array([0.2])
+            arroots = np.array([2.0])
+            maroots = np.array([], dtype=complex)
+            mle_retvals = {"converged": True}
+
+            def get_forecast(self, steps):
+                self.asserted_steps = steps
+                return FakePrediction()
+
+        class FakeModel:
+            def __init__(self, endog, **_kwargs):
+                observed_training.append(np.asarray(endog).copy())
+
+            def fit(self, **_kwargs):
+                return FakeFit()
+
+        fake_modules = {
+            "statsmodels": types.ModuleType("statsmodels"),
+            "statsmodels.tsa": types.ModuleType("statsmodels.tsa"),
+            "statsmodels.tsa.statespace": types.ModuleType("statsmodels.tsa.statespace"),
+            "statsmodels.tsa.statespace.sarimax": types.ModuleType(
+                "statsmodels.tsa.statespace.sarimax"
+            ),
+        }
+        fake_modules["statsmodels.tsa.statespace.sarimax"].SARIMAX = FakeModel
+        with patch.dict(sys.modules, fake_modules):
+            predictions, fit_log, _ = S.construct_stage_predictions(
+                data, target, candidates=(S.CANDIDATES[0],)
+            )
+        np.testing.assert_array_equal(observed_training[0], data.loc[:20, "ssn"].to_numpy())
+        self.assertEqual(fit_log.iloc[0]["training_last_month"], pd.Timestamp("1971-09-01"))
+        candidate_prediction = predictions[predictions["model"] == S.CANDIDATES[0].name]
+        self.assertEqual(candidate_prediction.iloc[0]["target_month"], pd.Timestamp("1971-10-01"))
+
+
+class SelectionRule(unittest.TestCase):
+    def test_selection_requires_aggregate_and_per_horizon_rules(self):
+        passing = candidate_metrics("arima_100_mean", {h: 0.94 for h in S.HORIZONS})
+        score = S.evaluate_selection_rule(passing)
+        self.assertTrue(bool(score.iloc[0]["passes_thresholds"]))
+        self.assertEqual(S.choose_candidate(score), "arima_100_mean")
+
+        horizon_fail = candidate_metrics("arima_100_mean", {1: 1.06, 3: 0.80, 6: 0.80, 12: 0.80})
+        score = S.evaluate_selection_rule(horizon_fail)
+        self.assertFalse(bool(score.iloc[0]["passes_thresholds"]))
+
+        aggregate_fail = candidate_metrics("arima_100_mean", {h: 0.96 for h in S.HORIZONS})
+        score = S.evaluate_selection_rule(aggregate_fail)
+        self.assertFalse(bool(score.iloc[0]["passes_thresholds"]))
+
+    def test_rmse_and_fixed_order_tie_breaks_are_deterministic(self):
+        rows = []
+        for model, base_mae, base_rmse in (
+            ("persistence", 10.0, 10.0), ("seasonal_naive", 11.0, 11.0),
+        ):
+            for horizon in S.HORIZONS:
+                rows.append({
+                    "model": model, "horizon_months": horizon,
+                    "point_metrics_valid": True, "mae": base_mae, "rmse": base_rmse,
+                })
+        for candidate, rmse_ratio in (("arima_100_mean", 1.02), ("arima_110", 1.01)):
+            for horizon in S.HORIZONS:
+                rows.append({
+                    "model": candidate, "horizon_months": horizon,
+                    "point_metrics_valid": True, "mae": 9.4,
+                    "rmse": rmse_ratio * 10,
+                })
+        scores = S.evaluate_selection_rule(pd.DataFrame(rows))
+        self.assertEqual(S.choose_candidate(scores), "arima_110")
+
+    def test_exact_ties_use_predeclared_candidate_order(self):
+        rows = []
+        for model, mae, rmse in (
+            ("persistence", 10.0, 12.0), ("seasonal_naive", 11.0, 13.0),
+        ):
+            for horizon in S.HORIZONS:
+                rows.append({
+                    "model": model, "horizon_months": horizon,
+                    "point_metrics_valid": True, "mae": mae, "rmse": rmse,
+                })
+        for candidate in S.CANDIDATES:
+            for horizon in S.HORIZONS:
+                rows.append({
+                    "model": candidate.name, "horizon_months": horizon,
+                    "point_metrics_valid": True, "mae": 9.4, "rmse": 10.0,
+                })
+        scores = S.evaluate_selection_rule(pd.DataFrame(rows))
+        self.assertEqual(S.choose_candidate(scores), S.CANDIDATES[0].name)
+
+    def test_zero_and_nonfinite_baseline_denominators_are_explicitly_ineligible(self):
+        metrics = candidate_metrics(S.CANDIDATES[0].name, {h: 0.9 for h in S.HORIZONS})
+        zero_mae = (
+            (metrics["model"] == "persistence") &
+            (metrics["horizon_months"] == 1)
+        )
+        metrics.loc[zero_mae, "mae"] = 0.0
+        metrics.loc[zero_mae, "rmse"] = 0.0
+        nonfinite_rmse = (
+            (metrics["model"] == "seasonal_naive") &
+            (metrics["horizon_months"] == 3)
+        )
+        metrics.loc[nonfinite_rmse, "rmse"] = np.inf
+        scores = S.evaluate_selection_rule(metrics)
+        row = scores[scores["candidate"] == S.CANDIDATES[0].name].iloc[0]
+        self.assertFalse(bool(row["complete_point_coverage"]))
+        self.assertFalse(bool(row["passes_thresholds"]))
+        self.assertTrue(pd.isna(row["mae_ratio_1"]))
+        self.assertIn("horizon_1:baseline_mae_denominator_zero", row["ineligibility_reason"])
+        self.assertIn("horizon_1:baseline_rmse_denominator_zero", row["ineligibility_reason"])
+        self.assertIn("horizon_3:baseline_rmse_nonfinite", row["ineligibility_reason"])
+
+    def test_incomplete_candidate_cannot_qualify(self):
+        metrics = candidate_metrics("arima_100_mean", {h: 0.90 for h in S.HORIZONS})
+        metrics.loc[
+            (metrics["model"] == "arima_100_mean") & (metrics["horizon_months"] == 6),
+            "point_metrics_valid",
+        ] = False
+        scores = S.evaluate_selection_rule(metrics)
+        self.assertFalse(bool(scores.iloc[0]["complete_point_coverage"]))
+        self.assertIsNone(S.choose_candidate(scores))
+
+
+class ConfirmationManifest(unittest.TestCase):
+    def test_valid_selection_manifest_passes_provenance_validation(self):
+        manifest = valid_selection_manifest()
+        self.assertEqual(
+            S.validate_selection_manifest(manifest),
+            S.CANDIDATES[0].name,
+        )
+
+    def test_inconsistent_selection_manifest_is_rejected(self):
+        mutations = (
+            ("stage", "confirmation"),
+            ("protocol_id", "other-protocol"),
+            ("target_window", ["1976-01", "1994-12"]),
+            ("selected_candidate", "unapproved"),
+            ("selection_passed", False),
+            ("evaluated_candidates", []),
+            ("input_sha256", "not-a-hash"),
+        )
+        for field, value in mutations:
+            with self.subTest(field=field):
+                manifest = valid_selection_manifest()
+                manifest[field] = value
+                with self.assertRaises(ValueError):
+                    S.validate_selection_manifest(manifest)
+        for field, value in (
+            ("passes_thresholds", False),
+            ("complete_point_coverage", False),
+            ("aggregate_mae_ratio", 0.96),
+            ("aggregate_mae_ratio", 0.90),
+            ("mae_ratio_3", 1.06),
+            ("aggregate_rmse_ratio_tiebreak", float("nan")),
+        ):
+            with self.subTest(score_field=field):
+                manifest = valid_selection_manifest()
+                manifest["selection_score"][field] = value
+                with self.assertRaises(ValueError):
+                    S.validate_selection_manifest(manifest)
+
+    def test_invalid_confirmation_manifest_is_rejected_before_model_pipeline(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output_root = Path(temporary) / "statistical_backtesting"
+            selection_dir = output_root / "selection"
+            selection_dir.mkdir(parents=True)
+            (selection_dir / "stage_manifest.json").write_text(
+                json.dumps({"stage": "confirmation"}), encoding="utf-8"
+            )
+            with patch.object(S, "OUTPUT_ROOT", output_root), \
+                    patch.object(S, "select_stage_predictions") as fit_stage:
+                with self.assertRaisesRegex(ValueError, "stage='selection'"):
+                    S.run_stage("confirmation", root=Path(temporary))
+            fit_stage.assert_not_called()
+
+    def test_failed_confirmation_keeps_frozen_candidate_and_never_falls_back(self):
+        selected = S.CANDIDATES[0].name
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            input_file = root / S.INPUT_PATH
+            input_file.parent.mkdir(parents=True)
+            synthetic_monthly(end="2015-12-01").to_csv(
+                input_file, index=False, date_format="%Y-%m-%d"
+            )
+            data = S.load_monthly_until(input_file, S.CONFIRMATION_END)
+            selection_hash = S.monthly_input_hash(
+                S.load_monthly_until(input_file, S.SELECTION_END)
+            )
+            output_root = root / "reports" / "statistical_backtesting"
+            selection_dir = output_root / "selection"
+            selection_dir.mkdir(parents=True)
+            (selection_dir / "stage_manifest.json").write_text(
+                json.dumps(valid_selection_manifest(selected, selection_hash)),
+                encoding="utf-8",
+            )
+            calls = []
+
+            def fake_predictions(_data, stage, candidates):
+                calls.append((stage, tuple(candidate.name for candidate in candidates)))
+                return (
+                    pd.DataFrame(),
+                    pd.DataFrame({"candidate": [selected]}),
+                    pd.DataFrame(),
+                )
+
+            failing_metrics = candidate_metrics(selected, {h: 2.0 for h in S.HORIZONS})
+            with patch.object(S, "OUTPUT_ROOT", output_root), \
+                    patch.object(S, "select_stage_predictions", side_effect=fake_predictions), \
+                    patch.object(S, "summarize_metrics", return_value=failing_metrics), \
+                    patch.object(S, "summarize_intervals", return_value=pd.DataFrame()), \
+                    patch.object(
+                        S, "build_stage_checks",
+                        return_value=pd.DataFrame([{"result": "PASS", "check": "mock", "detail": ""}]),
+                    ):
+                result = S.run_stage("confirmation", root=root)
+            self.assertIsNone(result)
+            self.assertEqual(calls, [("confirmation", (selected,))])
+            confirmation_manifest = json.loads(
+                (output_root / "confirmation" / "stage_manifest.json").read_text(
+                    encoding="utf-8"
+                )
+            )
+            self.assertEqual(confirmation_manifest["evaluated_candidates"], [selected])
+            self.assertIsNone(confirmation_manifest["selected_candidate"])
+
+    def test_confirmation_rejects_well_formed_but_incorrect_selection_input_hash(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            input_file = root / S.INPUT_PATH
+            input_file.parent.mkdir(parents=True)
+            synthetic_monthly(end="2015-12-01").to_csv(
+                input_file, index=False, date_format="%Y-%m-%d"
+            )
+            selection_hash = S.monthly_input_hash(
+                S.load_monthly_until(input_file, S.SELECTION_END)
+            )
+            manifest = valid_selection_manifest(input_hash=selection_hash)
+            manifest["input_sha256"] = "b" * 64
+
+            output_root = root / "reports" / "statistical_backtesting"
+            selection_dir = output_root / "selection"
+            selection_dir.mkdir(parents=True)
+            (selection_dir / "stage_manifest.json").write_text(
+                json.dumps(manifest), encoding="utf-8"
+            )
+            with patch.object(S, "OUTPUT_ROOT", output_root), \
+                    patch.object(S, "select_stage_predictions") as fit_stage:
+                with self.assertRaisesRegex(ValueError, "input hash does not match"):
+                    S.run_stage("confirmation", root=root)
+            fit_stage.assert_not_called()
+
+
+class FitAndIntervals(unittest.TestCase):
+    def test_fit_classification_controlled_cases(self):
+        common = dict(
+            exception=None, converged=True, parameters_finite=True,
+            ar_stationary=True, ma_invertible=True, point_forecasts_finite=True,
+        )
+        self.assertEqual(S.classify_fit(**common)[0], "point_fit_success")
+        self.assertEqual(S.classify_fit(**{**common, "converged": False})[0], "fatal_point_failure")
+        self.assertEqual(S.classify_fit(**{**common, "parameters_finite": False})[0], "fatal_point_failure")
+        self.assertEqual(S.classify_fit(**{**common, "ar_stationary": False})[0], "fatal_point_failure")
+        self.assertEqual(S.classify_fit(**{**common, "ma_invertible": False})[0], "fatal_point_failure")
+        self.assertEqual(S.classify_fit(**{**common, "point_forecasts_finite": False})[0], "fatal_point_failure")
+        self.assertEqual(S.classify_fit(**{**common, "exception": RuntimeError("controlled")})[0],
+                         "fatal_point_failure")
+
+    def test_interval_failure_does_not_invalidate_finite_point_forecast(self):
+        calls = []
+
+        class FakePrediction:
+            predicted_mean = np.arange(1.0, 13.0)
+
+            def conf_int(self, alpha):
+                if alpha == 0.05:
+                    warnings.warn("interval covariance warning", ConvergenceWarning)
+                    bounds = np.column_stack((self.predicted_mean - 2, self.predicted_mean + 2))
+                    bounds[2, 0] = np.nan
+                    return bounds
+                bounds = np.column_stack((self.predicted_mean - 1, self.predicted_mean + 1))
+                bounds[5] = (9.0, 8.0)
+                return bounds
+
+        class ConvergenceWarning(Warning):
+            pass
+
+        class FakeFit:
+            params = np.array([0.2])
+            arroots = np.array([2.0])
+            maroots = np.array([], dtype=complex)
+            mle_retvals = {"converged": True, "warnflag": 0}
+
+            def get_forecast(self, steps):
+                calls.append(steps)
+                return FakePrediction()
+
+        class FakeModel:
+            def fit(self, **_kwargs):
+                warnings.warn("controlled covariance diagnostic", UserWarning)
+                return FakeFit()
+
+        def fake_sarimax(*_args, **_kwargs):
+            return FakeModel()
+
+        fake_modules = {
+            "statsmodels": types.ModuleType("statsmodels"),
+            "statsmodels.tsa": types.ModuleType("statsmodels.tsa"),
+            "statsmodels.tsa.statespace": types.ModuleType("statsmodels.tsa.statespace"),
+            "statsmodels.tsa.statespace.sarimax": types.ModuleType(
+                "statsmodels.tsa.statespace.sarimax"
+            ),
+        }
+        fake_modules["statsmodels.tsa.statespace.sarimax"].SARIMAX = fake_sarimax
+
+        with patch.dict(sys.modules, fake_modules):
+            diagnostic, forecasts = S.fit_and_forecast(
+                pd.Series([2.0, 3.0, 4.0]), S.CANDIDATES[0], max_horizon=3
+            )
+
+        self.assertEqual(calls, [12])
+        self.assertEqual(diagnostic["fit_classification"], "point_fit_success")
+        self.assertIn("nonfatal_diagnostic_warning", diagnostic["warning_classification"])
+        self.assertIn("controlled covariance diagnostic", diagnostic["warning_text"])
+        by_horizon = {row["horizon_months"]: row for row in forecasts}
+        self.assertTrue(np.isfinite(by_horizon[1]["point_forecast"]))
+        self.assertTrue(by_horizon[1]["pi_80_valid"])
+        self.assertTrue(by_horizon[1]["pi_95_valid"])
+        self.assertFalse(by_horizon[6]["pi_80_valid"])
+        self.assertEqual(by_horizon[6]["pi_80_failure"], "unordered_interval_bounds")
+        self.assertFalse(by_horizon[3]["pi_95_valid"])
+        self.assertEqual(by_horizon[3]["pi_95_failure"], "nonfinite_interval_bounds")
+        self.assertEqual(diagnostic["fit_classification"], "point_fit_success")
+        warning_log = json.loads(diagnostic["warning_classification"])
+        interval_convergence = [
+            item for item in warning_log
+            if item["phase"] == "interval_95" and item["category"] == "ConvergenceWarning"
+        ]
+        self.assertEqual(len(interval_convergence), 1)
+        self.assertEqual(
+            interval_convergence[0]["classification"],
+            "interval_warning_not_point_fatal",
+        )
+        self.assertIn("interval covariance warning", interval_convergence[0]["message"])
+
+    def test_optimizer_convergence_warning_is_fatal_and_logged(self):
+        class ConvergenceWarning(Warning):
+            pass
+
+        class FakePrediction:
+            predicted_mean = np.arange(1.0, 13.0)
+
+            def conf_int(self, alpha):
+                return np.column_stack((self.predicted_mean - 1, self.predicted_mean + 1))
+
+        class FakeFit:
+            params = np.array([0.2])
+            arroots = np.array([2.0])
+            maroots = np.array([], dtype=complex)
+            mle_retvals = {"converged": True, "warnflag": 0}
+
+            def get_forecast(self, steps):
+                return FakePrediction()
+
+        class FakeModel:
+            def fit(self, **_kwargs):
+                warnings.warn("optimizer did not converge", ConvergenceWarning)
+                return FakeFit()
+
+        fake_modules = {
+            "statsmodels": types.ModuleType("statsmodels"),
+            "statsmodels.tsa": types.ModuleType("statsmodels.tsa"),
+            "statsmodels.tsa.statespace": types.ModuleType("statsmodels.tsa.statespace"),
+            "statsmodels.tsa.statespace.sarimax": types.ModuleType(
+                "statsmodels.tsa.statespace.sarimax"
+            ),
+        }
+        fake_modules["statsmodels.tsa.statespace.sarimax"].SARIMAX = lambda *_args, **_kwargs: FakeModel()
+        with patch.dict(sys.modules, fake_modules):
+            diagnostic, forecasts = S.fit_and_forecast(
+                pd.Series([2.0, 3.0, 4.0]), S.CANDIDATES[0]
+            )
+        self.assertEqual(diagnostic["fit_classification"], "fatal_point_failure")
+        self.assertIn("optimizer did not converge", diagnostic["warning_text"])
+        self.assertIn("fatal_optimizer_warning", diagnostic["warning_classification"])
+        self.assertTrue(all(not item["pi_80_valid"] for item in forecasts))
+
+    def test_interval_metrics_disclose_valid_and_missing_counts(self):
+        data = synthetic_monthly("1975-01-01", "1976-12-01")
+        targets = S.stage_targets(data, pd.Timestamp("1976-01-01"), pd.Timestamp("1976-12-01"))
+        rows = []
+        for target in targets.itertuples(index=False):
+            rows.append({
+                "model": "arima_100_mean",
+                "target_month": target.target_month,
+                "horizon_months": target.horizon_months,
+                "actual_ssn": target.actual_ssn,
+                "pi_80_valid": target.horizon_months != 3,
+                "pi_80_lower": target.actual_ssn - 1 if target.horizon_months != 3 else np.nan,
+                "pi_80_upper": target.actual_ssn + 1 if target.horizon_months != 3 else np.nan,
+                "pi_95_valid": True,
+                "pi_95_lower": target.actual_ssn - 2,
+                "pi_95_upper": target.actual_ssn + 2,
+            })
+        metrics = S.summarize_intervals(pd.DataFrame(rows), targets)
+        h3 = metrics[(metrics["horizon_months"] == 3) & (metrics["confidence_level"] == 80)].iloc[0]
+        self.assertEqual(h3["valid_intervals"], 0)
+        self.assertEqual(
+            h3["unavailable_intervals"],
+            int((targets["horizon_months"] == 3).sum()),
+        )
+        self.assertTrue(pd.isna(h3["empirical_coverage"]))
+
+
+class OutputFormatting(unittest.TestCase):
+    def test_outputs_are_written_outside_locked_baseline_directory(self):
+        self.assertNotEqual(S.OUTPUT_ROOT.resolve(), (ROOT / "reports" / "backtesting").resolve())
+        self.assertEqual(S.OUTPUT_ROOT.name, "statistical_backtesting")
+
+    def test_artifacts_are_created_and_reproducible(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "selection"
+            frames = [pd.DataFrame({"value": [1]}) for _ in range(7)]
+            args = (
+                "selection", output, *frames, "arima_100_mean", "stage-input-hash"
+            )
+            S.write_stage_outputs(*args)
+            expected = {
+                "predictions.csv", "fit_diagnostics.csv", "interval_status.csv",
+                "point_metrics.csv", "interval_metrics.csv", "validation_checks.csv",
+                "selection_scores.csv", "stage_manifest.json", "STAGE_REPORT.md",
+            }
+            self.assertEqual({path.name for path in output.iterdir()}, expected)
+            first_hashes = {
+                path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+                for path in output.iterdir()
+            }
+            S.write_stage_outputs(*args)
+            second_hashes = {
+                path.name: hashlib.sha256(path.read_bytes()).hexdigest()
+                for path in output.iterdir()
+            }
+            self.assertEqual(first_hashes, second_hashes)
+
+
+if __name__ == "__main__":
+    unittest.main()

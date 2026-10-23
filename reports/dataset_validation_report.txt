@@ -1,0 +1,268 @@
+==============================================================================
+SolarShield-AI - DATASET VALIDATION REPORT
+==============================================================================
+Generated : 2026-10-22 20:41:46
+Python    : 3.12.3  |  pandas 3.0.2  |  numpy 2.4.4  |  Linux
+Project   : /home/claude/proj/root
+
+------------------------------------------------------------------------------
+0. File discovery
+------------------------------------------------------------------------------
+[PASS] SILSO monthly sunspot CSV: found at expected path data/raw/SILSO_Monthly_Sunspot_Data.csv
+[PASS] NOAA observed solar cycle JSON: found at expected path data/raw/NOAA_Observed_Solar_Cycle.json
+[PASS] NOAA predicted solar cycle JSON: found at expected path data/raw/NOAA_Predicted_Solar_Cycle.json
+[PASS] NOAA Solar Cycle 25 prediction JSON: found at expected path data/raw/NOAA_Solar_Cycle_25_Prediction.json
+[PASS] Standardized solar cycle reference CSV: found at expected path data/metadata/solar_cycle_reference.csv
+[PASS] SILSO native cycle min/max table (source file): found at expected path data/metadata/SILSO_solar_cycle_min_max_native.csv
+
+------------------------------------------------------------------------------
+1. SILSO monthly sunspot CSV
+------------------------------------------------------------------------------
+[INFO] File: SILSO_Monthly_Sunspot_Data.csv (126,654 bytes)
+[INFO] Layout: 7 ';'-separated columns, no header row; assumed columns: year, month, decimal_year, ssn, ssn_std, n_obs, definitive
+[INFO] Rows parsed: 3333. Column types:
+       year          integer  non-null=3333  min=1749  max=2026
+       month         integer  non-null=3333  min=1  max=12
+       decimal_year  float    non-null=3333  min=1749.042  max=2026.705
+       ssn           float    non-null=3333  min=0.0  max=398.2
+       ssn_std       float    non-null=3333  min=-1.0  max=29.4
+       n_obs         integer  non-null=3333  min=-1  max=1587
+       definitive    integer  non-null=3333  min=0  max=1
+[PASS] All year/month values are valid calendar months
+[PASS] Year-month records: no duplicate year-month records
+[PASS] Year-month records: records are in chronological order
+[PASS] Year-month records: continuous monthly sequence 1749-01 -> 2026-09 (3333 months)
+[PASS] decimal_year is consistent with year/month
+[PASS] Monthly sunspot number: 0 missing value(s)
+[PASS] Monthly sunspot number contains no -1 sentinel values
+[INFO] Zero-valued months: 67 (physically plausible near solar minimum)
+[PASS] No suspiciously high values; max=398.2
+       highest months: 1778-05=398.2, 1957-10=359.4, 1836-12=343.8
+[PASS] No flat runs of identical non-zero values
+[WARN] ssn_std (std. deviation): 828 '-1' sentinel value(s) (leading block 828, trailing 0, interior 0)
+       Likely 'not available' for early years; left as-is.
+[WARN] n_obs (number of observations): 828 '-1' sentinel value(s) (leading block 828, trailing 0, interior 0)
+       Likely 'not available' for early years; left as-is.
+[PASS] ssn_std and n_obs sentinels line up row-for-row
+[INFO] Definitive flag: 3330 definitive, 3 provisional
+       provisional months: 2026-07, 2026-08, 2026-09
+[WARN] 3 provisional (not yet definitive) month(s) at the end of the series
+       Provisional values can be revised by SILSO; do not treat them as final ground truth.
+
+------------------------------------------------------------------------------
+2. NOAA observed solar cycle JSON
+------------------------------------------------------------------------------
+[INFO] File: NOAA_Observed_Solar_Cycle.json (512,444 bytes)
+[PASS] JSON parsed successfully
+[INFO] Record count: 3333
+[PASS] All 6 expected fields present (+ timestamp 'time-tag')
+[PASS] All timestamps use YYYY-MM format
+[PASS] Timestamps: no duplicate year-month records
+[PASS] Timestamps: records are in chronological order
+[PASS] Timestamps: continuous monthly sequence 1749-01 -> 2026-09 (3333 months)
+[INFO] Per-field profile (null / non-numeric / -1 sentinel layout / range):
+       ssn                  null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=0 max=398.2
+       smoothed_ssn         null=0    non-numeric=0   -1: n=12    lead=6     trail=6   interior=0     min=0 max=285
+       observed_swpc_ssn    null=0    non-numeric=0   -1: n=2976  lead=2976  trail=0   interior=0     min=0 max=236.7
+       smoothed_swpc_ssn    null=0    non-numeric=0   -1: n=2988  lead=2982  trail=6   interior=0     min=1.9 max=189
+       f10.7                null=0    non-numeric=0   -1: n=3069  lead=3069  trail=0   interior=0     min=65.67 max=245.6
+       smoothed_f10.7       null=0    non-numeric=0   -1: n=3081  lead=3075  trail=6   interior=0     min=68.2 max=194.5
+[PASS] Null/missing values: 0
+[PASS] Non-numeric values in numeric fields: 0
+[WARN] '-1' sentinel values present in 5 field(s): smoothed_ssn (12), observed_swpc_ssn (2976), smoothed_swpc_ssn (2988), f10.7 (3069), smoothed_f10.7 (3081) (left as-is, NOT cleaned)
+[INFO] All sentinels sit in contiguous leading/trailing blocks (no scattered gaps)
+
+------------------------------------------------------------------------------
+3. NOAA predicted solar cycle JSON
+------------------------------------------------------------------------------
+[INFO] File: NOAA_Predicted_Solar_Cycle.json (17,838 bytes)
+[PASS] JSON parsed successfully
+[INFO] Record count: 57
+[PASS] All 14 expected fields present (+ timestamp 'time-tag')
+[PASS] All timestamps use YYYY-MM format
+[PASS] Timestamps: no duplicate year-month records
+[PASS] Timestamps: records are in chronological order
+[PASS] Timestamps: continuous monthly sequence 2026-04 -> 2030-12 (57 months)
+[INFO] Per-field profile (null / non-numeric / -1 sentinel layout / range):
+       low75_ssn            null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=0 max=77.7
+       low_ssn              null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=0 max=83
+       low25_ssn            null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=0 max=87.6
+       predicted_ssn        null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=8.1 max=92.3
+       high25_ssn           null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=12.1 max=98.3
+       high_ssn             null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=13.5 max=102.1
+       high75_ssn           null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=20.2 max=106
+       low75_f10.7          null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=67.8 max=122.5
+       low_f10.7            null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=67.8 max=126.4
+       low25_f10.7          null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=67.8 max=129.9
+       predicted_f10.7      null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=70.3 max=133.4
+       high25_f10.7         null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=72.1 max=137.9
+       high_f10.7           null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=72.7 max=140.8
+       high75_f10.7         null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=75.9 max=143.5
+[PASS] Null/missing values: 0
+[PASS] Non-numeric values in numeric fields: 0
+[PASS] No -1 sentinel values
+[PASS] Predicted SSN bands are correctly ordered in every month
+[PASS] Predicted F10.7 bands are correctly ordered in every month
+
+------------------------------------------------------------------------------
+4. NOAA Solar Cycle 25 prediction JSON
+------------------------------------------------------------------------------
+[INFO] File: NOAA_Solar_Cycle_25_Prediction.json (16,984 bytes)
+[PASS] JSON parsed successfully
+[INFO] Record count: 248
+[PASS] All 2 expected fields present (+ timestamp 'time_tag')
+[PASS] All timestamps use YYYY-MM format
+[PASS] Timestamps: no duplicate year-month records
+[PASS] Timestamps: records are in chronological order
+[PASS] Timestamps: continuous monthly sequence 2020-05 -> 2040-12 (248 months)
+[INFO] Per-field profile (null / non-numeric / -1 sentinel layout / range):
+       smoothed_ssn         null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=0.0002561 max=115.3
+       f10.7                null=0    non-numeric=0   -1: n=0     lead=0     trail=0   interior=0     min=67.73 max=135.8
+[PASS] Null/missing values: 0
+[PASS] Non-numeric values in numeric fields: 0
+[PASS] No -1 sentinel values
+
+------------------------------------------------------------------------------
+5. Standardized solar cycle reference CSV
+------------------------------------------------------------------------------
+[INFO] File: solar_cycle_reference.csv (2,098 bytes)
+[PASS] All required columns present: cycle_number, start_date, end_date, minimum_date, maximum_date, status, source
+[INFO] Cycles read: 25
+[PASS] No duplicate cycle numbers
+[PASS] Cycle numbers are contiguous: 1 -> 25
+[PASS] No missing required values (only the ongoing cycle has a blank maximum)
+[PASS] Cycle 25 treated as ongoing; its maximum and end are NOT filled in
+[PASS] Chronology consistent: minima strictly increase, each maximum lies between its own and the next minimum, rise times and cycle lengths are in the usual range
+[PASS] Cycle boundaries vs minimum convention: consistent, no gaps or overlaps
+[PASS] Min/max sunspot-number sanity: all plausible
+[PASS] Cross-check vs NOAA 13-month smoothed SSN: 49/49 reference min/max months coincide with the local extreme (+/-12 mo window, ties allowed); all SN values agree within 0.15
+[INFO] This cross-check uses a series derived from the same SILSO data, so it detects typos/transcription errors only; it does NOT independently prove the reference dates are official.
+[INFO] Cycle 25 so far (smoothed series, through 2026-03): highest value 160.9 at 2024-10 - NOT a declared maximum
+[INFO] Cycle 1 starts at 1755-02; months before it in the monthly series are not assigned to any cycle (not labelled 'Cycle 0')
+[INFO] Cycle table as read
+       cycle  start(min)  end(next min)  max      status     [start/end/status are from file]
+       1      1755-02     1766-06        1761-06  completed
+       2      1766-06     1775-06        1769-09  completed
+       3      1775-06     1784-09        1778-05  completed
+       4      1784-09     1798-04        1788-02  completed
+       5      1798-04     1810-07        1805-02  completed
+       6      1810-07     1823-05        1816-05  completed
+       7      1823-05     1833-11        1829-11  completed
+       8      1833-11     1843-07        1837-03  completed
+       9      1843-07     1855-12        1848-02  completed
+       10     1855-12     1867-03        1860-02  completed
+       11     1867-03     1878-12        1870-08  completed
+       12     1878-12     1890-03        1883-12  completed
+       13     1890-03     1902-01        1894-01  completed
+       14     1902-01     1913-07        1906-02  completed
+       15     1913-07     1923-08        1917-08  completed
+       16     1923-08     1933-09        1928-04  completed
+       17     1933-09     1944-02        1937-04  completed
+       18     1944-02     1954-04        1947-05  completed
+       19     1954-04     1964-10        1958-03  completed
+       20     1964-10     1976-03        1968-11  completed
+       21     1976-03     1986-09        1979-12  completed
+       22     1986-09     1996-08        1989-11  completed
+       23     1996-08     2008-12        2001-11  completed
+       24     2008-12     2019-12        2014-04  completed
+       25     2019-12     (none)         (n/a)    ongoing
+[PASS] Header is exactly: cycle_number,start_date,end_date,minimum_date,maximum_date,status,source
+[PASS] start_date: every non-blank value is YYYY-MM (month precision, no day invented)
+[PASS] end_date: every non-blank value is YYYY-MM (month precision, no day invented)
+[PASS] minimum_date: every non-blank value is YYYY-MM (month precision, no day invented)
+[PASS] maximum_date: every non-blank value is YYYY-MM (month precision, no day invented)
+[PASS] Same 25 cycle numbers (1 -> 25), same order, as the native SILSO source
+[PASS] minimum_date / maximum_date equal the native SILSO source for all 25 cycles (blank stays blank)
+[PASS] DERIVED fields consistent: start_date = own minimum; end_date = next cycle's minimum; last cycle's end_date blank
+[PASS] Cycle 25: end_date blank, status ongoing (not invented)
+[PASS] 'source' column names the preserved native file (SILSO_solar_cycle_min_max_native.csv) for every row
+[PASS] Provenance file present with source, field_classification, verification and open_items
+[PASS] Provenance SHA-256 of the native source matches the file on disk
+[PASS] Provenance separates PUBLISHED fields (cycle_number, minimum_date, maximum_date) from DERIVED fields (start_date, end_date, status)
+[INFO] Source URL (page that publishes the table): https://www.sidc.be/SILSO/cyclesmm
+       SILSO page that publishes this table. The exact URL/export used to create the local file was NOT recorded at download time.
+[INFO] Reference dates are SILSO-published values; they are NOT claimed to be independently verified
+       On 2026-10-23 all 25 rows of the native file (cycle, minimum year/month/SN, maximum year/month/SN) were compared with the text of https://sidc.be/SILSO/cyclesmm as returned by a web search: 0 mismatches. This is a comparison with a page snapshot, not a byte-level comparison with the originally downloaded file.
+       Derived minimum-to-minimum durations equal SILSO's published durations for all 24 completed cycles (0 mismatches).
+       check_data.py cross-checks months against the NOAA smoothed series, which is derived from the same SILSO data, so it only catches transcription errors.
+[WARN] Open provenance item [cycle25_maximum]: Cycle 25 maximum_date is blank because the native source file has none. A different SILSO page (https://www.sidc.be/SILSO/cyclesminmax), as returned by a web se
+[WARN] Open provenance item [retrieval_date]: Retrieval date of the native source file is unrecorded.
+[WARN] Open provenance item [download_url]: Exact download URL/export of the native source file is unrecorded.
+
+------------------------------------------------------------------------------
+6. Cross-dataset overlap and independence
+------------------------------------------------------------------------------
+[INFO] SILSO monthly              1749-01 -> 2026-09
+[INFO] NOAA observed              1749-01 -> 2026-09
+[INFO] NOAA predicted             2026-04 -> 2030-12
+[INFO] NOAA Cycle 25 prediction   2020-05 -> 2040-12
+[INFO] Overlap SILSO monthly / NOAA observed: 3333 months (1749-01 -> 2026-09)
+[INFO] Overlap SILSO monthly / NOAA predicted: 6 months (2026-04 -> 2026-09)
+[INFO] Overlap SILSO monthly / NOAA Cycle 25 prediction: 77 months (2020-05 -> 2026-09)
+[INFO] Overlap NOAA observed / NOAA predicted: 6 months (2026-04 -> 2026-09)
+[INFO] Overlap NOAA observed / NOAA Cycle 25 prediction: 77 months (2020-05 -> 2026-09)
+[INFO] Overlap NOAA predicted / NOAA Cycle 25 prediction: 57 months (2026-04 -> 2030-12)
+[WARN] NOAA observed 'ssn' is IDENTICAL to the SILSO monthly series in all 3333 shared months
+       These are the same observations delivered twice. Agreement between them is NOT independent validation.
+       Treat SILSO as the canonical sunspot series; keep the NOAA copy only for its extra columns.
+[INFO] NOAA observed 'observed_swpc_ssn' and 'f10.7' are separate SWPC measurements, but they are mostly -1 before the 1990s.
+[INFO] Last valid smoothed_ssn in observed data: 2026-03 (later months are -1 because the 13-month window is incomplete)
+[WARN] Observed and predicted files overlap for 6 month(s) (2026-04 -> 2026-09)
+       The predicted file starts before the observations end. Predictions are model output, not ground truth.
+       Never use predicted values in this window as labels, and never score a model against them as if they were observations.
+[WARN] Observed data and the Cycle 25 prediction overlap for 77 month(s) (2020-05 -> 2026-09)
+       Part of this file is a hindcast/forecast of months that were later observed.
+       Comparing it with observations measures forecast skill; it is not independent validation of the observations.
+[INFO] Informational only: mean |observed smoothed - Cycle 25 prediction| over 71 months = 28.4 SSN
+[WARN] The two NOAA prediction files overlap for 57 month(s) (2026-04 -> 2030-12)
+       Both are forecasts from the same agency (different issue dates); they are not independent of each other.
+[INFO] Modelling note: use chronological splits only; forecast files extend beyond the last observation and must not leak into training or evaluation targets.
+
+------------------------------------------------------------------------------
+7. Directory structure, duplicates and checksum manifest
+------------------------------------------------------------------------------
+[PASS] Directory data/raw exists
+[PASS] Directory data/metadata exists
+[PASS] Directory reports exists
+[PASS] data/raw holds the 4 original datasets
+[PASS] data/metadata/SILSO_solar_cycle_min_max_native.csv present
+[PASS] data/metadata/solar_cycle_reference.csv present
+[PASS] data/metadata/solar_cycle_reference_provenance.json present
+[PASS] data/metadata/checksums.sha256 present
+[PASS] No duplicate copies: every .csv/.json file under the project has unique content
+[PASS] Checksum manifest: all 5 original files (4 raw + SILSO native table) match their recorded SHA-256
+[INFO] data/processed exists (derived outputs; skipped here, checked by scripts/prepare_data.py)
+[INFO] Sentinel-aware loader present: src/solarshield_loaders.py (-1 -> NaN in memory only; files never written)
+
+------------------------------------------------------------------------------
+8. Integrity of original files
+------------------------------------------------------------------------------
+[PASS] SHA-256 of all 6 input/source files is identical before and after the run (nothing was modified)
+       4749cc16c68e0673  SILSO_Monthly_Sunspot_Data.csv
+       0bfebcb61d7a6a09  NOAA_Observed_Solar_Cycle.json
+       a2bbb69d58e2b653  NOAA_Predicted_Solar_Cycle.json
+       aab719a82022c1dd  NOAA_Solar_Cycle_25_Prediction.json
+       27f5e4d398e3c595  solar_cycle_reference.csv
+       7dfb1e9debb42719  SILSO_solar_cycle_min_max_native.csv
+
+------------------------------------------------------------------------------
+SUMMARY
+------------------------------------------------------------------------------
+Section                                       PASS  INFO  WARN  FAIL  worst
+0. File discovery                                6     0     0     0  PASS
+1. SILSO monthly sunspot CSV                    10     5     3     0  WARN
+2. NOAA observed solar cycle JSON                8     4     1     0  WARN
+3. NOAA predicted solar cycle JSON              11     3     0     0  INFO
+4. NOAA Solar Cycle 25 prediction JSON           9     3     0     0  INFO
+5. Standardized solar cycle reference CSV       22     8     3     0  WARN
+6. Cross-dataset overlap and independence        0    14     4     0  WARN
+7. Directory structure, duplicates and check    10     2     0     0  INFO
+8. Integrity of original files                   1     0     0     0  PASS
+TOTAL                                           77    39    11     0
+
+ACTION ITEMS (data that must be obtained or confirmed - nothing has been invented):
+  1. Record the real retrieval date (and exact download URL) of the SILSO native table in data/metadata/solar_cycle_reference_provenance.json.
+  2. Decide on the Cycle 25 maximum: re-download SILSO's table, then re-run scripts/build_solar_cycle_reference.py (see provenance open_items).
+
+VERDICT: VALIDATION COMPLETE WITH 11 WARNING(S) - review them (and the action items) before any modelling.
+Machine learning / forecasting has NOT been started. Original datasets were not modified.

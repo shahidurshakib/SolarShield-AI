@@ -1,0 +1,125 @@
+{
+  "stage": "selection",
+  "protocol_id": "solarshield-arima-selection-v1",
+  "selected_candidate": null,
+  "evaluated_candidates": [
+    "arima_100_mean",
+    "arima_110",
+    "arima_011",
+    "sarima_110_100_120",
+    "sarima_110_100_132",
+    "sarima_110_100_144"
+  ],
+  "selection_passed": false,
+  "selection_score": null,
+  "input_sha256": "ea6c672f2ca514a9baee614783cae7cd90aab57f4d79408141aaa3e695717a89",
+  "selection_rule": {
+    "aggregate_mae_ratio_max": 0.95,
+    "per_horizon_mae_ratio_max": 1.05,
+    "rmse_tiebreak": "mean per-horizon RMSE ratio against best existing baseline; then fixed candidate order"
+  },
+  "target_window": [
+    "1976-01",
+    "1995-12"
+  ],
+  "origin_cadence": "quarterly, Mar/Jun/Sep/Dec",
+  "horizons": [
+    1,
+    3,
+    6,
+    12
+  ],
+  "provisional_policy": "include",
+  "candidates": [
+    {
+      "name": "arima_100_mean",
+      "order": [
+        1,
+        0,
+        0
+      ],
+      "seasonal_order": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "trend": "c"
+    },
+    {
+      "name": "arima_110",
+      "order": [
+        1,
+        1,
+        0
+      ],
+      "seasonal_order": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "trend": "n"
+    },
+    {
+      "name": "arima_011",
+      "order": [
+        0,
+        1,
+        1
+      ],
+      "seasonal_order": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "trend": "n"
+    },
+    {
+      "name": "sarima_110_100_120",
+      "order": [
+        1,
+        1,
+        0
+      ],
+      "seasonal_order": [
+        1,
+        0,
+        0,
+        120
+      ],
+      "trend": "n"
+    },
+    {
+      "name": "sarima_110_100_132",
+      "order": [
+        1,
+        1,
+        0
+      ],
+      "seasonal_order": [
+        1,
+        0,
+        0,
+        132
+      ],
+      "trend": "n"
+    },
+    {
+      "name": "sarima_110_100_144",
+      "order": [
+        1,
+        1,
+        0
+      ],
+      "seasonal_order": [
+        1,
+        0,
+        0,
+        144
+      ],
+      "trend": "n"
+    }
+  ]
+}

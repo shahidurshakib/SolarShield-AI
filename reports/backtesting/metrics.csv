@@ -1,0 +1,9 @@
+model,horizon_months,evaluation_start,evaluation_end,scored_observations,provisional_targets_retained,provisional_targets_excluded,mae,rmse
+persistence,1,2016-01,2026-09,129,3,0,12.963566,18.197323
+seasonal_naive,1,2016-01,2026-09,129,3,0,28.727132,37.291826
+persistence,3,2016-01,2026-09,129,3,0,16.578295,23.284686
+seasonal_naive,3,2016-01,2026-09,129,3,0,28.727132,37.291826
+persistence,6,2016-01,2026-09,129,3,0,19.827132,27.336747
+seasonal_naive,6,2016-01,2026-09,129,3,0,28.727132,37.291826
+persistence,12,2016-01,2026-09,129,3,0,28.727132,37.291826
+seasonal_naive,12,2016-01,2026-09,129,3,0,28.727132,37.291826

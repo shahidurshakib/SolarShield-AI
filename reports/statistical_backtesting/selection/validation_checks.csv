@@ -1,0 +1,8 @@
+result,check,detail
+PASS,Stage input cutoff,loaded input ends 1995-12; stage cutoff is 1995-12
+PASS,No post-stage target,all targets are within the pre-final stage
+PASS,Origin/horizon alignment,all target dates equal origin plus declared horizon
+PASS,Training chronology,each expanding training window ends at its forecast origin
+PASS,Common targets across reported models,all included models have the same target/origin/horizon rows
+PASS,Fit failures retained,no fatal point-fit failures
+PASS,Interval status recorded separately,0 interval(s) unavailable; point-fit status is stored separately
