@@ -1,4 +1,4 @@
-﻿# Forecasting Strategy: Development Protocol v1
+# Forecasting Strategy: Development Protocol v1
 
 ## Purpose
 
@@ -114,3 +114,57 @@ metrics, manifest, or reports.
 Record the dataset hash, source/version, cutoff date, forecast origin,
 training interval, target horizon, model parameters, random seed where
 applicable, metrics, and software environment for each experiment.
+
+## Protocol v1.1: Fixed Evaluation Design
+
+### Task 1: Monthly sunspot forecasting
+
+- Target: canonical monthly SILSO `ssn`.
+- Primary evaluation data cutoff: 2026-06. Exclude provisional observations from primary scoring.
+- Forecast origins: monthly origins from 1976-01 through 2025-06, inclusive.
+- At each origin, training data must end at that origin. Forecast horizons are 1, 3, 6, and 12 months ahead.
+- Score a forecast only when its target observation is available and eligible under the documented data-quality rules.
+- Baselines: persistence and seasonal-naive (12-month lag), each generated using information available at the forecast origin.
+- Metrics: MAE, RMSE, MASE, and skill relative to each baseline, reported separately by horizon.
+- Compute the MASE scaling denominator from the training data at each origin; never calculate it from the full dataset.
+- Record origin, training cutoff, target month, horizon, training size, model configuration, and dataset hash for every forecast.
+- Forecast errors from overlapping origins are dependent; do not treat them as independent observations.
+- Historical SILSO values may have been revised after their original publication. Without archived data vintages, describe these as retrospective hindcasts, not strict real-time simulations.
+
+### Task 2: Solar-cycle characteristics
+
+- Use completed Cycles 1-24 only. Cycle 25 remains ongoing and is not a completed-cycle target.
+- Initial training set: Cycles 1-12.
+- The first held-out fold is Cycle 13, trained on Cycles 1-12; each subsequent fold may use only completed cycles preceding its held-out cycle.
+- Sequential held-out evaluation: Cycles 13-24, one cycle at a time. For each fold, fit or derive the forecast using only eligible cycles preceding the held-out cycle.
+- Peak strength: published `official_smoothed_max_sn`.
+- Peak timing: elapsed calendar months from `published_minimum_month` to `official_smoothed_max_month`.
+- Duration: `months_expected_min_to_min`.
+- Metrics: peak-strength MAE/RMSE, peak-timing MAE in months, and duration MAE in months.
+- Preserve the published reference labels and document their source. Do not silently replace published peak labels with raw monthly maxima.
+- Treat results as small-sample cycle-wise hindcasts, not proof of broad generalization.
+
+### Task 3: Long-term activity-curve forecasting
+
+- Use completed Cycles 1-24 only; do not use ongoing Cycle 25 as a completed curve.
+- Evaluate held-out cycles 13-24 sequentially, using only preceding completed cycles at each fold.
+- Map each observed and predicted cycle curve to 121 equally spaced normalized phase points, with interpolation rules documented and applied consistently.
+- Report curve-level MAE/RMSE, peak-strength error, peak-timing error, and duration error separately.
+- Define uncertainty intervals using training cycles only; report interval coverage and width where implemented.
+- Do not claim validated Cycle 26 or Cycle 27 accuracy until the hindcast protocol has been evaluated and limitations reported.
+
+### Shared evaluation controls
+
+- Keep all development outputs separate from the frozen statistical-selection artifacts.
+- Do not overwrite existing predictions, metrics, manifests, or reports.
+- Do not use future observations, future-derived labels, or full-dataset preprocessing at a forecast origin.
+- Keep model selection separate from final evaluation wherever a final holdout is designated.
+- Report failed models, negative baseline-relative skill, missing scores, and uncertainty honestly.
+- Before model comparison, verify the date column, target column, data quality, cycle-label convention, and fold boundaries.
+- Record software environment, dataset hash, forecast origin, training interval, target horizon, parameters, and metrics for reproducibility.
+
+### Protocol limitations
+
+- Historical monthly observations may reflect later revisions; archived real-time data vintages are not currently established.
+- Only 24 completed cycle labels are available, so cycle-level metrics have substantial small-sample limitations.
+- This protocol defines evaluation rules; it does not imply that any model has passed evaluation.
