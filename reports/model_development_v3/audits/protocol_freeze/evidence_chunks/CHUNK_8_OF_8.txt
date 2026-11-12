@@ -1,0 +1,716 @@
+﻿      },
+      {
+        "q_multiplier": 0.75,
+        "r_multiplier": 1.5,
+        "delta_objective": 16.551163424603487
+      },
+      {
+        "q_multiplier": 0.75,
+        "r_multiplier": 2.0,
+        "delta_objective": 44.438862401994925
+      },
+      {
+        "q_multiplier": 1.0,
+        "r_multiplier": 0.5,
+        "delta_objective": 61.883504626614126
+      },
+      {
+        "q_multiplier": 1.0,
+        "r_multiplier": 0.75,
+        "delta_objective": 9.735206747625853
+      },
+      {
+        "q_multiplier": 1.0,
+        "r_multiplier": 1.0,
+        "delta_objective": 0.0
+      },
+      {
+        "q_multiplier": 1.0,
+        "r_multiplier": 1.5,
+        "delta_objective": 16.551109317139094
+      },
+      {
+        "q_multiplier": 1.0,
+        "r_multiplier": 2.0,
+        "delta_objective": 45.40480214176057
+      },
+      {
+        "q_multiplier": 1.5,
+        "r_multiplier": 0.5,
+        "delta_objective": 52.60652578697318
+      },
+      {
+        "q_multiplier": 1.5,
+        "r_multiplier": 0.75,
+        "delta_objective": 10.269402442055366
+      },
+      {
+        "q_multiplier": 1.5,
+        "r_multiplier": 1.0,
+        "delta_objective": 4.371190181296583
+      },
+      {
+        "q_multiplier": 1.5,
+        "r_multiplier": 1.5,
+        "delta_objective": 23.733853668333495
+      },
+      {
+        "q_multiplier": 1.5,
+        "r_multiplier": 2.0,
+        "delta_objective": 53.46663632709499
+      },
+      {
+        "q_multiplier": 2.0,
+        "r_multiplier": 0.5,
+        "delta_objective": 50.93106835902279
+      },
+      {
+        "q_multiplier": 2.0,
+        "r_multiplier": 0.75,
+        "delta_objective": 15.676052502869084
+      },
+      {
+        "q_multiplier": 2.0,
+        "r_multiplier": 1.0,
+        "delta_objective": 12.413866021987246
+      },
+      {
+        "q_multiplier": 2.0,
+        "r_multiplier": 1.5,
+        "delta_objective": 33.47793142573585
+      },
+      {
+        "q_multiplier": 2.0,
+        "r_multiplier": 2.0,
+        "delta_objective": 63.552945423062624
+      }
+    ]
+  },
+  "records": [
+    {
+      "length": 24,
+      "seed": 20261112,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.017279749442074124,
+      "r_estimated": 0.1563533052491857,
+      "q_relative_error": 0.1360125278962938,
+      "r_relative_error": 0.04235536832790476,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 6.481150338188968e-06,
+        "r": 2.767367983436131e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          10.055862329806578,
+          56.271340955448075
+        ],
+        "condition_number": 5.595874238319097
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 24,
+      "seed": 20261113,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.025129778314116342,
+      "r_estimated": 0.15305747203359885,
+      "q_relative_error": 0.256488915705817,
+      "r_relative_error": 0.02038314689065901,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 2.930531045386431e-06,
+        "r": 1.2514268918906168e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          10.071330237341583,
+          52.91009783547534
+        ],
+        "condition_number": 5.253536185249889
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 24,
+      "seed": 20261114,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.031170594604304203,
+      "r_estimated": 0.15005176478672175,
+      "q_relative_error": 0.5585297302152101,
+      "r_relative_error": 0.00034509857814502,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": true,
+      "parameter_log_spread": {
+        "q": 2.4353666525046136,
+        "r": 11.918502725698566
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          12.23576209894012,
+          51.50569943226807
+        ],
+        "condition_number": 4.2094394297458235
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 48,
+      "seed": 20261112,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.017513222680747433,
+      "r_estimated": 0.15869923624577215,
+      "q_relative_error": 0.12433886596262844,
+      "r_relative_error": 0.05799490830514764,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 5.863435543318474e-06,
+        "r": 1.620574963112631e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          22.567825595365534,
+          115.41673151830288
+        ],
+        "condition_number": 5.114215857021005
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 48,
+      "seed": 20261113,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.023826964753430154,
+      "r_estimated": 0.15100206538703198,
+      "q_relative_error": 0.19134823767150766,
+      "r_relative_error": 0.006680435913546612,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 2.882851094287986e-06,
+        "r": 1.9970273901215307e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          22.64507644573066,
+          108.8580405721975
+        ],
+        "condition_number": 4.807139460671631
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 48,
+      "seed": 20261114,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.021899569482126298,
+      "r_estimated": 0.14507202843782094,
+      "q_relative_error": 0.09497847410631488,
+      "r_relative_error": 0.032853143747860414,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 2.9237866701059545e-06,
+        "r": 8.420536405928658e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          24.172322578262683,
+          110.33050691807861
+        ],
+        "condition_number": 4.564332060391041
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 96,
+      "seed": 20261112,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.01937688004858545,
+      "r_estimated": 0.15575916430913378,
+      "q_relative_error": 0.03115599757072751,
+      "r_relative_error": 0.038394428727558605,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 7.298664391974796e-06,
+        "r": 2.5089646094045293e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          45.46927396110386,
+          227.7336576055257
+        ],
+        "condition_number": 5.008517571675713
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 96,
+      "seed": 20261113,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.016246731871885862,
+      "r_estimated": 0.1529800827440377,
+      "q_relative_error": 0.1876634064057069,
+      "r_relative_error": 0.019867218293584843,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 7.115615733965797e-06,
+        "r": 1.443380931442917e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          44.61375262927145,
+          232.88029999584427
+        ],
+        "condition_number": 5.219921801490639
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    },
+    {
+      "length": 96,
+      "seed": 20261114,
+      "sequence_count": 7,
+      "q_true": 0.02,
+      "r_true": 0.15,
+      "q_estimated": 0.01749802467984924,
+      "r_estimated": 0.1408804981290819,
+      "q_relative_error": 0.125098766007538,
+      "r_relative_error": 0.06079667913945397,
+      "successful_starts": 9,
+      "initialization_count": 9,
+      "initialization_sensitive": false,
+      "parameter_log_spread": {
+        "q": 6.015795943170588e-06,
+        "r": 2.851359464983716e-06
+      },
+      "best_boundary_hit": false,
+      "all_start_boundary_hits": 0,
+      "curvature": {
+        "status": "POSITIVE_DEFINITE_LOCAL_CURVATURE",
+        "eigenvalues": [
+          49.7648054200375,
+          230.0490726035229
+        ],
+        "condition_number": 4.622726255268246
+      },
+      "identifiability_status": "NOT_ESTABLISHED"
+    }
+  ],
+  "scientific_acceptance": "REQUIRES_OWNER_REVIEW",
+  "identifiability_claim": "NOT_ESTABLISHED_BY_SYNTHETIC_OPTIMIZATION_ALONE"
+}
+
+
+==========================================================================================
+FILE: reports\model_development_v3\R26_FORECAST_PRODUCER_SEARCH.txt
+==========================================================================================
+BYTES: 12789
+SHA256: 09E787C4169F388459627AFFC2A536C6DEFC74392513D1E56575EFEB59BC2CF9
+
+
+  src\v3\solarshield_v3_acceptance.py:15:    "origin",
+  src\v3\solarshield_v3_acceptance.py:16:    "target",
+> src\v3\solarshield_v3_acceptance.py:17:    "prediction",
+  src\v3\solarshield_v3_acceptance.py:18:    "observation",
+  src\v3\solarshield_v3_acceptance.py:19:)
+  src\v3\solarshield_v3_acceptance.py:20:
+  src\v3\solarshield_v3_acceptance.py:21:_METRIC_NAMES = (
+  src\v3\solarshield_v3_acceptance.py:104:                continue
+  src\v3\solarshield_v3_acceptance.py:105:
+> src\v3\solarshield_v3_acceptance.py:106:            prediction = _number(
+> src\v3\solarshield_v3_acceptance.py:107:                row["prediction"], f"{prefix}.prediction"
+  src\v3\solarshield_v3_acceptance.py:108:            )
+  src\v3\solarshield_v3_acceptance.py:109:            observation = _number(
+  src\v3\solarshield_v3_acceptance.py:110:                row["observation"], f"{prefix}.observation"
+  src\v3\solarshield_v3_acceptance.py:111:            )
+  src\v3\solarshield_v3_acceptance.py:115:                "origin": origin,
+  src\v3\solarshield_v3_acceptance.py:116:                "target": target,
+> src\v3\solarshield_v3_acceptance.py:117:                "prediction": prediction,
+  src\v3\solarshield_v3_acceptance.py:118:                "observation": observation,
+  src\v3\solarshield_v3_acceptance.py:119:            }
+  src\v3\solarshield_v3_acceptance.py:120:
+  src\v3\solarshield_v3_acceptance.py:121:        except ValueError as exc:
+  src\v3\solarshield_v3_acceptance.py:157:
+  src\v3\solarshield_v3_acceptance.py:158:
+> src\v3\solarshield_v3_acceptance.py:159:def _peak_errors(observations, predictions):
+  src\v3\solarshield_v3_acceptance.py:160:    """Calculate global-maximum amplitude and timing errors for 
+one curve."""
+  src\v3\solarshield_v3_acceptance.py:161:    y = np.asarray(observations, dtype=float)
+> src\v3\solarshield_v3_acceptance.py:162:    p = np.asarray(predictions, dtype=float)
+  src\v3\solarshield_v3_acceptance.py:163:
+  src\v3\solarshield_v3_acceptance.py:164:    if y.ndim != 1 or p.ndim != 1 or y.size != p.size:
+  src\v3\solarshield_v3_acceptance.py:165:        raise ValueError("Reference and candidate curves must 
+have equal lengths.")
+  src\v3\solarshield_v3_acceptance.py:166:
+  src\v3\solarshield_v3_acceptance.py:230:
+  src\v3\solarshield_v3_acceptance.py:231:    Each record must contain:
+> src\v3\solarshield_v3_acceptance.py:232:        cycle_id, origin, target, prediction, observation
+  src\v3\solarshield_v3_acceptance.py:233:
+  src\v3\solarshield_v3_acceptance.py:234:    MAE/RMSE use all matched points.
+  src\v3\solarshield_v3_acceptance.py:235:    Peak metrics use the macro-average across cycle-origin 
+curves.
+  src\v3\solarshield_v3_acceptance.py:236:    """
+  src\v3\solarshield_v3_acceptance.py:310:    for key in ordered_keys:
+  src\v3\solarshield_v3_acceptance.py:311:        reference_errors_point.append(
+> src\v3\solarshield_v3_acceptance.py:312:            reference[key]["prediction"]
+  src\v3\solarshield_v3_acceptance.py:313:            - reference[key]["observation"]
+  src\v3\solarshield_v3_acceptance.py:314:        )
+  src\v3\solarshield_v3_acceptance.py:315:        candidate_errors_point.append(
+> src\v3\solarshield_v3_acceptance.py:316:            candidate[key]["prediction"]
+  src\v3\solarshield_v3_acceptance.py:317:            - candidate[key]["observation"]
+  src\v3\solarshield_v3_acceptance.py:318:        )
+  src\v3\solarshield_v3_acceptance.py:319:
+  src\v3\solarshield_v3_acceptance.py:320:    ref_error = np.asarray(reference_errors_point, dtype=float)
+  src\v3\solarshield_v3_acceptance.py:365:                row["observation"] for row in ref_rows
+  src\v3\solarshield_v3_acceptance.py:366:            ]
+> src\v3\solarshield_v3_acceptance.py:367:            ref_predictions = [
+> src\v3\solarshield_v3_acceptance.py:368:                row["prediction"] for row in ref_rows
+  src\v3\solarshield_v3_acceptance.py:369:            ]
+> src\v3\solarshield_v3_acceptance.py:370:            cand_predictions = [
+> src\v3\solarshield_v3_acceptance.py:371:                row["prediction"] for row in cand_rows
+  src\v3\solarshield_v3_acceptance.py:372:            ]
+  src\v3\solarshield_v3_acceptance.py:373:
+  src\v3\solarshield_v3_acceptance.py:374:            ref_amp, ref_timing = _peak_errors(
+> src\v3\solarshield_v3_acceptance.py:375:                observations, ref_predictions
+  src\v3\solarshield_v3_acceptance.py:376:            )
+  src\v3\solarshield_v3_acceptance.py:377:            cand_amp, cand_timing = _peak_errors(
+> src\v3\solarshield_v3_acceptance.py:378:                observations, cand_predictions
+  src\v3\solarshield_v3_acceptance.py:379:            )
+  src\v3\solarshield_v3_acceptance.py:380:
+  src\v3\solarshield_v3_acceptance.py:381:            reference_peak_amplitude.append(ref_amp)
+  src\v3\solarshield_v3_acceptance.py:382:            candidate_peak_amplitude.append(cand_amp)
+  src\v3\solarshield_v3_enkf.py:75:
+  src\v3\solarshield_v3_enkf.py:76:            if not np.all(np.isfinite(predicted_ensemble)):
+> src\v3\solarshield_v3_enkf.py:77:                raise ValueError("Prediction produced a non-finite 
+ensemble.")
+  src\v3\solarshield_v3_enkf.py:78:
+  src\v3\solarshield_v3_enkf.py:79:            self.ensemble = predicted_ensemble
+  src\v3\solarshield_v3_enkf.py:80:            return self.ensemble.copy()
+  src\v3\solarshield_v3_enkf.py:81:
+  src\v3\solarshield_v3_kalman.py:77:            or not np.all(np.isfinite(predicted_covariance))
+  src\v3\solarshield_v3_kalman.py:78:        ):
+> src\v3\solarshield_v3_kalman.py:79:            raise ValueError("Prediction produced non-finite state 
+or covariance.")
+  src\v3\solarshield_v3_kalman.py:80:
+  src\v3\solarshield_v3_kalman.py:81:        self.x = predicted_state
+  src\v3\solarshield_v3_kalman.py:82:        self.P = predicted_covariance
+  src\v3\solarshield_v3_kalman.py:83:        return self.snapshot()
+  src\v3\solarshield_v3_losses.py:18:    shape_dtw: float
+  src\v3\solarshield_v3_losses.py:19:    peak_timing_phase_error: float
+> src\v3\solarshield_v3_losses.py:20:    peak_amplitude_absolute_error: float
+  src\v3\solarshield_v3_losses.py:21:    reference_peak_count: int = 1
+  src\v3\solarshield_v3_losses.py:22:    candidate_peak_count: int = 1
+  src\v3\solarshield_v3_losses.py:23:    multiple_peak_regions: bool = False
+  src\v3\solarshield_v3_losses.py:24:    shape_dtw_normalized: float = 0.0
+  src\v3\solarshield_v3_losses.py:284:        shape_dtw=float(raw_dtw),
+  src\v3\solarshield_v3_losses.py:285:        peak_timing_phase_error=float(legacy_timing_error),
+> src\v3\solarshield_v3_losses.py:286:        peak_amplitude_absolute_error=float(amplitude_error),
+  src\v3\solarshield_v3_losses.py:287:        reference_peak_count=len(reference_global),
+  src\v3\solarshield_v3_losses.py:288:        candidate_peak_count=len(candidate_global),
+  src\v3\solarshield_v3_losses.py:289:        multiple_peak_regions=multiple_global_peaks,
+  src\v3\solarshield_v3_losses.py:290:        shape_dtw_normalized=float(normalized_dtw),
+  src\v3\solarshield_v3_orchestration.py:45:
+  src\v3\solarshield_v3_orchestration.py:46:
+> src\v3\solarshield_v3_orchestration.py:47:def run_kf_cycle(
+  src\v3\solarshield_v3_orchestration.py:48:    cycle_id: int,
+  src\v3\solarshield_v3_orchestration.py:49:    observations: Sequence,
+  src\v3\solarshield_v3_orchestration.py:50:    baseline_predictor: Callable,
+  src\v3\solarshield_v3_orchestration.py:51:    initial_state_factory: Callable,
+  src\v3\solarshield_v3_orchestration.py:134:
+  src\v3\solarshield_v3_orchestration.py:135:
+> src\v3\solarshield_v3_orchestration.py:136:def run_enkf_cycle(
+  src\v3\solarshield_v3_orchestration.py:137:    cycle_id: int,
+  src\v3\solarshield_v3_orchestration.py:138:    observations: Sequence,
+  src\v3\solarshield_v3_orchestration.py:139:    baseline_predictor: Callable,
+  src\v3\solarshield_v3_orchestration.py:140:    initial_state_factory: Callable,
+  src\v3\solarshield_v3_orchestration.py:247:        "quantile_method": "Hyndman-Fan Type 8",
+  src\v3\solarshield_v3_orchestration.py:248:        "nominal_levels": tuple(probabilities),
+> src\v3\solarshield_v3_orchestration.py:249:        "absolute_error_quantiles": tuple(float(x) for x in 
+quantiles),
+  src\v3\solarshield_v3_orchestration.py:250:        "sample_count": int(values.size),
+  src\v3\solarshield_v3_orchestration.py:251:        "status": "EVIDENCE_LIMITED_NOT_VALIDATED",
+  src\v3\solarshield_v3_orchestration.py:252:        "coverage_guarantee": False,
+  src\v3\solarshield_v3_orchestration.py:253:    }
+  src\v3\solarshield_v3_orchestration.py:273:    return tuple({
+  src\v3\solarshield_v3_orchestration.py:274:        "key": key,
+> src\v3\solarshield_v3_orchestration.py:275:        "candidate_prediction": candidate[key]["prediction"],
+> src\v3\solarshield_v3_orchestration.py:276:        "reference_prediction": reference[key]["prediction"],
+  src\v3\solarshield_v3_orchestration.py:277:        "difference": (
+> src\v3\solarshield_v3_orchestration.py:278:            float(candidate[key]["prediction"])
+> src\v3\solarshield_v3_orchestration.py:279:            - float(reference[key]["prediction"])
+  src\v3\solarshield_v3_orchestration.py:280:        ),
+  src\v3\solarshield_v3_orchestration.py:281:    } for key in sorted(candidate))
+  src\v3\test_v3_acceptance.py:9:
+  src\v3\test_v3_acceptance.py:10:
+> src\v3\test_v3_acceptance.py:11:def make_records(predictions, cycle_id=6, origin="2020-01-01"):
+  src\v3\test_v3_acceptance.py:12:    observations = [0.0, 1.0, 3.0, 1.0, 0.0]
+  src\v3\test_v3_acceptance.py:13:
+  src\v3\test_v3_acceptance.py:14:    return [
+  src\v3\test_v3_acceptance.py:15:        {
+  src\v3\test_v3_acceptance.py:17:            "origin": origin,
+  src\v3\test_v3_acceptance.py:18:            "target": f"2020-{index + 1:02d}-01",
+> src\v3\test_v3_acceptance.py:19:            "prediction": prediction,
+  src\v3\test_v3_acceptance.py:20:            "observation": observation,
+  src\v3\test_v3_acceptance.py:21:        }
+> src\v3\test_v3_acceptance.py:22:        for index, (prediction, observation) in enumerate(
+> src\v3\test_v3_acceptance.py:23:            zip(predictions, observations)
+  src\v3\test_v3_acceptance.py:24:        )
+  src\v3\test_v3_acceptance.py:25:    ]
+  src\v3\test_v3_acceptance.py:26:
+  src\v3\test_v3_acceptance.py:27:
+  src\v3\test_v3_acceptance.py:109:
+  src\v3\test_v3_acceptance.py:110:
+> src\v3\test_v3_acceptance.py:111:def test_nonfinite_prediction_is_unresolved():
+  src\v3\test_v3_acceptance.py:112:    a0 = make_records([0, 0, 2, 0, 0])
+  src\v3\test_v3_acceptance.py:113:    a1 = make_records([0, 1, 2.5, 1, 0])
+> src\v3\test_v3_acceptance.py:114:    a1[2]["prediction"] = float("nan")
+  src\v3\test_v3_acceptance.py:115:
+  src\v3\test_v3_acceptance.py:116:    result = evaluate_r32_candidate(
+  src\v3\test_v3_acceptance.py:117:        a0, a1, candidate_id="A1"
+  src\v3\test_v3_acceptance.py:118:    )
+  src\v3\test_v3_acceptance.py:143:            "origin": "origin_01",
+  src\v3\test_v3_acceptance.py:144:            "target": index,
+> src\v3\test_v3_acceptance.py:145:            "prediction": prediction,
+  src\v3\test_v3_acceptance.py:146:            "observation": observation,
+  src\v3\test_v3_acceptance.py:147:        }
+> src\v3\test_v3_acceptance.py:148:        for index, (prediction, observation) in enumerate(
+  src\v3\test_v3_acceptance.py:149:            zip([0.0, 1.0], observations)
+  src\v3\test_v3_acceptance.py:150:        )
+  src\v3\test_v3_acceptance.py:151:    ]
+  src\v3\test_v3_acceptance.py:152:
+  src\v3\test_v3_acceptance.py:156:            "origin": "origin_01",
+  src\v3\test_v3_acceptance.py:157:            "target": index,
+> src\v3\test_v3_acceptance.py:158:            "prediction": prediction,
+  src\v3\test_v3_acceptance.py:159:            "observation": observation,
+  src\v3\test_v3_acceptance.py:160:        }
+> src\v3\test_v3_acceptance.py:161:        for index, (prediction, observation) in enumerate(
+  src\v3\test_v3_acceptance.py:162:            zip([0.0, 2.0], observations)
+  src\v3\test_v3_acceptance.py:163:        )
+  src\v3\test_v3_acceptance.py:164:    ]
+  src\v3\test_v3_acceptance.py:165:
+  src\v3\test_v3_acceptance.py:207:    a0 = make_records([0, 0, 2, 0, 0])
+  src\v3\test_v3_acceptance.py:208:    a1 = make_records([0, 1, 2.5, 1, 0])
+> src\v3\test_v3_acceptance.py:209:    a1[1]["prediction"] = None
+  src\v3\test_v3_acceptance.py:210:
+  src\v3\test_v3_acceptance.py:211:    result = evaluate_r32_candidate(
+  src\v3\test_v3_acceptance.py:212:        a0, a1, candidate_id="A1"
+  src\v3\test_v3_acceptance.py:213:    )
+
+
+
+
+==========================================================================================
+FILE: reports\model_development_v3\r30_review\R30_READ_ONLY_AUDIT_PHASE1_20261108_205732.json
+==========================================================================================
+BYTES: 6286
+SHA256: C71F23F764E11B44FAF3748F90E5AAAECC3A168222BD1D385D51B00CF63C003D
+
+{
+    "audit_id":  "R30_READ_ONLY_PHASE1",
+    "audit_timestamp_utc":  "2026-11-08T20:57:32.3536291Z",
+    "audit_mode":  "READ_ONLY_EXISTING_ARTIFACTS",
+    "protocol_freeze_performed":  false,
+    "historical_execution_performed":  false,
+    "checks":  [
+                   {
+                       "check":  "Draft 1.3 immutability",
+                       "status":  "PASS",
+                       "detail":  "1D4398E9E51DD96CC2FF7614A0DB312769D1332D0E81787DD4BBE58D0386EE14"
+                   },
+                   {
+                       "check":  "Draft 1.4 integrity",
+                       "status":  "PASS",
+                       "detail":  "CCD4C0DD08B5669FA304C2FC9A3D4ED9A0C9AA6FEDB94EE9EDE3E830C73CFD25"
+                   },
+                   {
+                       "check":  "R21 Option A correction integrity",
+                       "status":  "PASS",
+                       "detail":  "5CBC56516B49A6A2E731D352006B69404C989FEDC6097C856613FCC3F9F68B4F"
+                   },
+                   {
+                       "check":  "R21 scientific validation integrity",
+                       "status":  "PASS",
+                       "detail":  "17403BF56C53C4AF0BA575E6D8C19FF4541055AEFF75F11190F880399D30288C"
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: R21 Option A",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: NOT_ESTABLISHED",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: R29",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: R30",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: Babcock–Leighton",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: cycles 1–12",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: cycles 13–15",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: cycles 16–24",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "V3 implementation snapshot manifest",
+                       "status":  "PASS",
+                       "detail":  "1BD256B5F5B1256AA716E2072BD40B8BC754E1304FD85F27AADC89193D14ADE7"
+                   },
+                   {
+                       "check":  "V3 implementation snapshot entries",
+                       "status":  "PASS",
+                       "detail":  "All 18 manifest entries verified."
+                   },
+                   {
+                       "check":  "R21 Option A snapshot entries",
+                       "status":  "PASS",
+                       "detail":  "All 4 manifest entries verified."
+                   },
+                   {
+                       "check":  "V2-007 freeze manifest identity",
+                       "status":  "PASS",
+                       "detail":  "6FC6EC3EC99797C8D0809860123ADCC82059F173F63479797671D0A8EAE7E6CA"
+                   },
+                   {
+                       "check":  "V3 REV1 output manifest entries",
+                       "status":  "UNVERIFIED",
+                       "detail":  "No recognizable path/SHA256 entries found in manifest."
+                   },
+                   {
+                       "check":  "R29 authorization document review",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Owner authorization scope must be checked against the controlling protocol and execution records."
+                   },
+                   {
+                       "check":  "R30 final synthetic regression",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Final regression suite not executed in this read-only phase."
+                   },
+                   {
+                       "check":  "SILSO input hash and lineage",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Input hashes and raw-to-processed lineage require a dedicated data audit."
+                   },
+                   {
+                       "check":  "Cycle partitions and provisional boundaries",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Partition manifests and Cycle 25 provisional boundary require direct verification."
+                   },
+                   {
+                       "check":  "V2-007 and V3 REV1 preservation baseline",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Current manifest verification is not a substitute for comparison against every original preservation baseline."
+                   },
+                   {
+                       "check":  "Babcock-Leighton exclusion",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Must be checked against the actual execution configuration before freeze."
+                   }
+               ],
+    "summary":  {
+                    "pass":  12,
+                    "fail":  0,
+                    "missing":  0,
+                    "unverified":  11
+                }
+}
+
+
+==========================================================================================
+FILE: reports\model_development_v3\audits\stage7\V3_STAGE7_PRESERVATION_AUDIT_20261111_164007_UTC.txt
+==========================================================================================
+BYTES: 764
+SHA256: 033845E75B59696F9D44EE2D1F1D9309E97C4B1E0EC728E96ADD0DC3EE16C356
+
+SOLARSHIELD-AI V3 - STAGE 7 PRESERVATION AUDIT
+Created UTC: 2026-11-11T16:40:07.5000468Z
+
+V2-007 frozen artifacts: 10/10 PASS
+V3 REV1 historical artifacts: 11/11 PASS
+Implementation snapshot manifest: PASS
+Implementation snapshot declared files: 18/18 PASS
+Total hash checks: 40 PASS, 0 FAIL
+
+Unmanifested companion file: IMPLEMENTATION_AUDIT.txt
+SHA256: 259AD249884D462C0C36D6E8B409176D45D9C54517AD6B5366C63DEB2FEA5B9B
+Disposition: Separately copied companion record; excluded from frozen payload.
+Historical manifest and snapshot: NOT MODIFIED
+
+Stage 7 preservation assessment: PASS
+Basis: All declared historical artifacts verified; additional copied file identified and classified.
+No historical execution or forecast generation performed.
+

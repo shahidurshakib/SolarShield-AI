@@ -1,0 +1,39 @@
+{
+    "record_type":  "R21_OPTION_A_PROVISIONAL_OWNER_DECISION",
+    "decision_timestamp_utc":  "2026-11-08T21:06:11.8052820Z",
+    "decision_status":  "PROVISIONAL_FOR_FUTURE_V3_VALIDATION",
+    "owner_decision":  "ACCEPT_PROVISIONAL_WITH_EXPLICIT_LIMITATION",
+    "estimator":  "R21 Option A - Shared Physical Q/R",
+    "scientific_acceptance":  "NOT_GRANTED",
+    "identifiability_claim":  "NOT_ESTABLISHED",
+    "validation_limitation":  [
+                                  "The estimator must not be described as fully scientifically validated.",
+                                  "Identifiability has not been established by synthetic optimization alone.",
+                                  "Initialization sensitivity was observed in at least one synthetic experiment.",
+                                  "Positive-definite local curvature does not establish global identifiability."
+                              ],
+    "permitted_use":  "Provisional implementation for subsequent authorized V3 validation only.",
+    "prohibited_claims":  [
+                              "Fully validated estimator",
+                              "Identifiable estimator",
+                              "Scientifically accepted estimator"
+                          ],
+    "protocol_requirement":  "Draft 1.4 must explicitly retain the NOT_ESTABLISHED limitation; scientific acceptance remains a separate decision.",
+    "execution_authorization":  "This decision does not authorize model execution or bypass R30 gates.",
+    "babcock_leighton_integration":  "NOT_AUTHORIZED",
+    "source_artifacts":  {
+                             "draft_1_4":  {
+                                               "path":  "reports/model_development_v3/protocols/drafts/V3_Technical_Validation_Protocol_Draft_1.4.md",
+                                               "sha256":  "CCD4C0DD08B5669FA304C2FC9A3D4ED9A0C9AA6FEDB94EE9EDE3E830C73CFD25"
+                                           },
+                             "r21_correction":  {
+                                                    "path":  "reports/model_development_v3/protocols/corrections/R21_Option_A_Shared_Physical_QR.md",
+                                                    "sha256":  "5CBC56516B49A6A2E731D352006B69404C989FEDC6097C856613FCC3F9F68B4F"
+                                                },
+                             "r21_validation":  {
+                                                    "path":  "reports/model_development_v3/r21_review/R21_SCIENTIFIC_VALIDATION_20261108_205059.json",
+                                                    "sha256":  "17403BF56C53C4AF0BA575E6D8C19FF4541055AEFF75F11190F880399D30288C"
+                                                }
+                         },
+    "immutability":  "New decision record only; source artifacts are read-only."
+}

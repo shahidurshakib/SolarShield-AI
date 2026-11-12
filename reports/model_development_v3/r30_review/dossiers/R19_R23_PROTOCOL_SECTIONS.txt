@@ -1,0 +1,351 @@
+﻿R19-R23 DETAILED PROTOCOL REVIEW
+Source: R:\SolarShield AI\reports\model_development_v3\r30_review\dossiers\R19_R33_REVIEW_DOSSIER_20261111_210614_UTC.txt
+
+
+========================================
+## R19. Residual warm-up and initialization
+
+
+
+1. Each target cycle starts with an independent residual-filter state.
+
+2. The first six observed months are warm-up months.
+
+3. The first eligible T2 residual is generated at month 7, provided all six preceding observations are valid.
+
+4. Residuals are calculated prequentially:
+
+
+
+   `z(c,j) = y(c,j) - b(c,j|j-1)`
+
+
+
+5. The baseline prediction must be stored before the corresponding observation is accessed.
+
+6. The first valid residual initializes the state using the training-only estimated initial covariance.
+
+7. Missing observations retain their calendar positions. No artificial residual is generated.
+
+8. The filter state is reset at each new solar cycle.
+
+9. The official forecast snapshots remain months 24, 36, 48 and 60.
+
+
+
+The same residual construction must be used for KF and EnKF.
+
+
+
+
+========================================
+## R20. A0 hyperparameter selection
+
+
+
+The A0 T2 baseline will use the following predeclared candidate grid:
+
+
+
+- `w`: 0.50, 0.75, 1.00
+
+- `tau`: 3, 6, 12, 24 months
+
+
+
+Selection is performed exclusively using cycles 6Ã¢â‚¬â€œ12.
+
+
+
+The selection procedure must:
+
+- Use only preceding completed cycles for each fold.
+
+- Evaluate all valid candidate combinations.
+
+- Record fold-level MAE and RMSE.
+
+- Record peak amplitude and timing diagnostics.
+
+- Use deterministic tie-breaking.
+
+- Preserve every candidate result.
+
+
+
+The V3 REV1 configuration selected using cycles 6Ã¢â‚¬â€œ15 cannot be treated as independently selected under this protocol.
+
+
+
+
+========================================
+## R21. Q/R/P0 estimation
+
+
+
+
+========================================
+### R21.1 Residual scale normalization
+
+
+
+For each eligible training residual collection, calculate:
+
+
+
+`s = 1.4826 Ãƒâ€” MAD(z)`
+
+
+
+If MAD is zero or invalid, evaluate:
+
+
+
+`s = IQR(z) / 1.349`
+
+
+
+If both are zero or invalid, estimation fails with `UNRESOLVED_RESIDUAL_SCALE`.
+
+
+
+Normalize residuals by the training-only scale before optimization.
+
+
+
+
+========================================
+### R21.2 Parameterization
+
+
+
+Estimate dimensionless positive parameters:
+
+
+
+`q > 0`, `r > 0`
+
+
+
+Use:
+
+
+
+`Q = q Ãƒâ€” [[1/3, 1/2], [1/2, 1]]`
+
+
+
+`R = [[r]]`
+
+
+
+Use:
+
+
+
+`P0 = diag(1, 1/36)`
+
+
+
+The physical residual scale is restored consistently when applying the filter.
+
+
+
+
+========================================
+### R21.3 Optimizer
+
+
+
+Proposed deterministic optimizer: SciPy L-BFGS-B.
+
+
+
+Candidate parameter bounds in log space:
+
+
+
+- `log(q)`: [-13.8155, 4.6052]
+
+- `log(r)`: [-13.8155, 4.6052]
+
+
+
+Deterministic multi-start initial values:
+
+
+
+`q, r Ã¢Ë†Ë† {0.0001, 0.01, 1.0}`
+
+
+
+All nine combinations are evaluated.
+
+
+
+Proposed optimizer settings:
+
+
+
+- Maximum iterations: 10,000
+
+- Function tolerance: 1e-9
+
+- Gradient tolerance: 1e-6
+
+
+
+The exact SciPy version and optimizer configuration must be recorded.
+
+
+
+
+========================================
+### R21.4 Acceptance safeguards
+
+
+
+A fit fails if:
+
+- The objective is non-finite.
+
+- Innovation variance is singular or invalid.
+
+- Covariance is not positive semidefinite within numerical tolerance.
+
+- All optimization starts fail.
+
+- Numerical instability remains unresolved.
+
+- The solution is only acceptable through an undocumented fallback.
+
+
+
+Boundary hits and sensitivity to initialization must be reported.
+
+
+
+Minimum training-history requirement remains three completed training cycles with at least twelve eligible residual observations per cycle. This is a provisional minimum eligibility condition, not proof of statistical identifiability.
+
+
+
+
+========================================
+### R21.5 Parameter freeze
+
+
+
+Final Q/R/P0 estimation may use cycles 1Ã¢â‚¬â€œ12 only.
+
+
+
+No observations from cycles 13Ã¢â‚¬â€œ24 may be used to estimate these parameters.
+
+
+
+
+========================================
+## R22. EnKF configuration
+
+
+
+Candidate ensemble sizes:
+
+
+
+- 100
+
+- 250
+
+- 500
+
+
+
+Predeclared random seeds:
+
+
+
+`0, 1, 2, 3, 4`
+
+
+
+All candidate combinations must use identical residual inputs and observation boundaries.
+
+
+
+Selection criteria:
+
+1. Mean MAE across selection folds.
+
+2. Mean RMSE.
+
+3. Seed-to-seed variability.
+
+4. Numerical failure frequency.
+
+5. Peak timing and amplitude diagnostics.
+
+
+
+The EnKF must not be presumed superior to the standard linear KF.
+
+
+
+
+========================================
+## R23. Online cycle detector
+
+
+
+Candidate trailing smoother lengths:
+
+
+
+`6, 12, 18 months`
+
+
+
+Candidate positive-trend confirmation lengths:
+
+
+
+`3, 6 months`
+
+
+
+Positive trend is defined as:
+
+
+
+`m(t) > m(t-L)`
+
+
+
+for the selected lag L.
+
+
+
+Confirmation requires consecutive valid monthly confirmations.
+
+
+
+Missing months:
+
+- Retain calendar positions.
+
+- Do not count as valid confirmations.
+
+- Reset the current confirmation run.
+
+- Require the complete selected smoother history before detection resumes.
+
+
+
+The default detector is one-shot. It does not automatically re-arm after detection.
+
+
+
+Detector candidates are selected using cycles 6Ã¢â‚¬â€œ12. Detection delay, false detections, missed detections and reset behaviour must be reported.
+
+
+

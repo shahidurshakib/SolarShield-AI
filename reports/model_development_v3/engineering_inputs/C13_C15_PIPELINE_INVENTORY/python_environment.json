@@ -1,0 +1,10 @@
+﻿{
+  "python": "3.14.10 (tags/v3.14.10:b703b2c, Oct 25 2026, 17:36:52) [MSC v.1944 64 bit (AMD64)]",
+  "executable": "R:\\SolarShield AI\\.venv-astropy\\Scripts\\python.exe",
+  "modules": {
+    "numpy": true,
+    "pandas": true,
+    "scipy": true,
+    "pytest": true
+  }
+}

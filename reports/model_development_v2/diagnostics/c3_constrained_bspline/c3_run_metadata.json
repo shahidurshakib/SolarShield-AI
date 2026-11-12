@@ -1,0 +1,120 @@
+{
+  "experiment_id": "V2-005",
+  "candidate": "c3_constrained_cubic_bspline",
+  "status": "completed_with_fold_failures",
+  "heldout_cycles": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "phase_points": 121,
+  "c3_configuration": {
+    "phase_points": 121,
+    "constraint_points": 481,
+    "dense_points": 1921,
+    "grid_mapping": {
+      "output_to_constraint": 4,
+      "output_to_dense": 16,
+      "constraint_to_dense": 4
+    },
+    "spline": {
+      "degree": 3,
+      "basis_functions": 7,
+      "knot_vector": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.25,
+        0.5,
+        0.75,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "lambda_penalty": 0.01,
+    "optimizer": "SLSQP",
+    "ftol": 1e-09,
+    "maxiter": 2000,
+    "violation_factor": 1e-07,
+    "flat_factor": 1e-07,
+    "interval_quantiles": [
+      0.1,
+      0.9
+    ],
+    "quantile_method": "linear"
+  },
+  "training_rule": "Eligible prior cycles only; heldout excluded.",
+  "cycle_boundary_convention": "Published minimum inclusive; next published minimum exclusive. Cycle 25 minimum is used only as Cycle 24 end boundary.",
+  "phase_convention": "First observed month maps to phase 0; last observed month before the next minimum maps to phase 1; linear interpolation.",
+  "monthly_dataset_sha256": "8920e24e6d0ed0c41e8ab91eb681c9ea13cdf07f93bf1d82e3c099f3d079d194",
+  "cycle_summary_sha256": "3f2a85859dc1df2a4501b60fa7f54ca05dbc4b69008210cbcb5acb92c9ee33ac",
+  "runner_sha256": "a2de14a219957774ab7d2eeba6961b6f5651cd9e8365c073e7582c2c8f561cb1",
+  "shared_module_sha256": "ef55313f9b49cd9b32fc741ab9783691735936021597e44ebf2a99498460c5ee",
+  "c3_module_sha256": "ac44000eadec7e283521aa56573b3025cfd1d5c573e57fb66a385af829adeeff",
+  "source_cycle_failures": {},
+  "fold_integrity": {
+    "expected_fold_count": 19,
+    "observed_record_count": 19,
+    "unique_fold_count": 19,
+    "missing_folds": [],
+    "unexpected_folds": [],
+    "duplicate_folds": [],
+    "passed": true
+  },
+  "aggregate_metrics": {
+    "experiment_id": "V2-005",
+    "candidate": "c3_constrained_cubic_bspline",
+    "required_fold_count": 19,
+    "successful_fold_count": 0,
+    "failed_fold_count": 19,
+    "all_required_folds_succeeded": false,
+    "fold_integrity": {
+      "expected_fold_count": 19,
+      "observed_record_count": 19,
+      "unique_fold_count": 19,
+      "missing_folds": [],
+      "unexpected_folds": [],
+      "duplicate_folds": [],
+      "passed": true
+    },
+    "equal_cycle_weighted_curve_MAE": null,
+    "equal_cycle_weighted_curve_RMSE": null,
+    "aggregation_note": "Arithmetic mean of per-cycle metrics; each heldout cycle has equal weight. Incomplete results are descriptive only.",
+    "acceptance_decision": "not_evaluated_requires_c2_comparison"
+  },
+  "software": {
+    "python": "3.15.1 (tags/v3.15.1:c37e74c, Oct 21 2026, 06:24:08) [MSC v.1951 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "numpy": "2.5.4",
+    "pandas": "3.1.0",
+    "scipy": "1.18.1"
+  },
+  "created_utc": "2026-11-02T11:41:17.572555+00:00",
+  "limitations": [
+    "Retrospective normalized-phase curve evaluation is not calendar-time forecasting.",
+    "Pointwise empirical intervals are descriptive, not calibrated or simultaneous.",
+    "Incomplete fold aggregates are descriptive only.",
+    "C3 acceptance requires comparison with C2 on identical folds.",
+    "All required C3 folds must succeed for acceptance.",
+    "Prior median duration is descriptive and is not part of the C3 spline fitting objective."
+  ]
+}

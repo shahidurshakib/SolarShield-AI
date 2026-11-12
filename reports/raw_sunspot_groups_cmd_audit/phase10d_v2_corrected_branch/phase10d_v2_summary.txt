@@ -1,0 +1,68 @@
+PHASE 10D V2 - QUADRANT-CORRECTED PY MEEUS
+========================================================================
+Input records: 65
+Processed records: 65
+Source verification: PASS
+Field verification: PASS
+Duplicate source keys: 0
+
+Corrected formula:
+eta = atan2(sin(delta) * cos(i), cos(delta))
+
+ROLE-LEVEL RESULTS
+------------------------------------------------------------------------
+
+[NEIGHBOUR] n=52
+Original_minus_SunPy_L0: mean=-110.737805161, median=-179.959727828, max_abs=179.982193867
+Corrected_minus_SunPy_L0: mean=-179.968574392, median=-179.969876658, max_abs=179.982193867
+Corrected_minus_original_L0: mean=-55.384615385, median=0.000000000, max_abs=180.000000000
+SunPy_Carrington_abs_residual: mean=1.094824603, median=0.817116122, max_abs=7.503576893
+Original_PyMeeus_Carrington_abs_residual: mean=110.767531482, median=178.578782224, max_abs=179.791109692
+Corrected_PyMeeus_Carrington_abs_residual: mean=178.886196973, median=179.164550203, max_abs=179.791109692
+SunPy_PA_abs_error: mean=0.103952783, median=0.056983351, max_abs=0.762165513
+Original_PyMeeus_PA_abs_error: mean=0.104132970, median=0.057678841, max_abs=0.762069135
+Corrected_PyMeeus_PA_abs_error: mean=0.104132970, median=0.057678841, max_abs=0.762069135
+SunPy_distance_abs_error: mean=0.000691134, median=0.000422362, max_abs=0.003779666
+Original_PyMeeus_distance_abs_error: mean=0.000692447, median=0.000420973, max_abs=0.003815056
+Corrected_PyMeeus_distance_abs_error: mean=0.000692447, median=0.000420973, max_abs=0.003815056
+
+[TARGET_ANOMALY] n=13
+Original_minus_SunPy_L0: mean=-110.737806054, median=-179.959730700, max_abs=179.982193867
+Corrected_minus_SunPy_L0: mean=-179.968575285, median=-179.969876658, max_abs=179.982193867
+Corrected_minus_original_L0: mean=-41.538461538, median=0.000000000, max_abs=180.000000000
+SunPy_Carrington_abs_residual: mean=4.831148938, median=3.585747911, max_abs=11.157428592
+Original_PyMeeus_Carrington_abs_residual: mean=109.938409732, median=174.325707966, max_abs=177.729107220
+Corrected_PyMeeus_Carrington_abs_residual: mean=175.169809273, median=176.441517494, max_abs=177.789932421
+SunPy_PA_abs_error: mean=0.020688180, median=0.019409068, max_abs=0.045964562
+Original_PyMeeus_PA_abs_error: mean=0.020708763, median=0.019407401, max_abs=0.045964951
+Corrected_PyMeeus_PA_abs_error: mean=0.020708763, median=0.019407401, max_abs=0.045964951
+SunPy_distance_abs_error: mean=0.000240213, median=0.000237149, max_abs=0.000542407
+Original_PyMeeus_distance_abs_error: mean=0.000240554, median=0.000236786, max_abs=0.000543194
+Corrected_PyMeeus_distance_abs_error: mean=0.000240554, median=0.000236786, max_abs=0.000543194
+
+OVERALL RESULTS
+------------------------------------------------------------------------
+Original_minus_SunPy_L0: mean=-110.737805340, median=-179.959730700, max_abs=179.982193867
+Corrected_minus_SunPy_L0: mean=-179.968574570, median=-179.969876658, max_abs=179.982193867
+Corrected_minus_original_L0: mean=-52.615384615, median=0.000000000, max_abs=180.000000000
+SunPy_Carrington_abs_residual: mean=1.842089470, median=1.213755004, max_abs=11.157428592
+Original_PyMeeus_Carrington_abs_residual: mean=110.601707132, median=176.766186565, max_abs=179.791109692
+Corrected_PyMeeus_Carrington_abs_residual: mean=178.142919433, median=178.745315447, max_abs=179.791109692
+SunPy_PA_abs_error: mean=0.087299863, median=0.043115377, max_abs=0.762165513
+Original_PyMeeus_PA_abs_error: mean=0.087448129, median=0.043386150, max_abs=0.762069135
+Corrected_PyMeeus_PA_abs_error: mean=0.087448129, median=0.043386150, max_abs=0.762069135
+SunPy_distance_abs_error: mean=0.000600950, median=0.000352007, max_abs=0.003779666
+Original_PyMeeus_distance_abs_error: mean=0.000602069, median=0.000352059, max_abs=0.003815056
+Corrected_PyMeeus_distance_abs_error: mean=0.000602069, median=0.000352059, max_abs=0.003815056
+
+LARGEST CORRECTED CARRINGTON RESIDUALS
+------------------------------------------------------------------------
+SunPy: 11.157428592 deg | 2014-09-25T00:00:00.000 | group=12174 | TARGET_ANOMALY
+Original PyMeeus: 179.791109692 deg | 2013-03-25T00:00:00.000 | group=11704 | NEIGHBOUR
+Corrected PyMeeus: 179.791109692 deg | 2013-03-25T00:00:00.000 | group=11704 | NEIGHBOUR
+
+INTERPRETATION LIMITS
+------------------------------------------------------------------------
+Corrected PyMeeus is a diagnostic reproduction of the published method with quadrant-preserving eta.
+This does not establish the archive Carrington field or any ephemeris implementation as ground truth.
+No timestamp correction, raw archive modification, or model execution was performed.

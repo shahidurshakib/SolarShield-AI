@@ -1,0 +1,240 @@
+{
+  "calibration_cycles": [
+    13,
+    14,
+    15
+  ],
+  "coverage_guarantee": false,
+  "fit_records_are_not_independent_replications": true,
+  "forecast_origin_months": [
+    24,
+    36,
+    48,
+    60
+  ],
+  "interval_rule": "symmetric_about_A0_forecast_using_Type8_absolute_error_quantile",
+  "protocol_reference": "R26",
+  "results": [
+    {
+      "coverage_guarantee": false,
+      "dependence_note": "Overlapping origins within each calibration cycle are dependent.",
+      "distinct_cycle_count": 3,
+      "distinct_forecast_origin_count": 12,
+      "forecast_error_count": 144,
+      "horizon_distribution": {
+        "1": 12,
+        "10": 12,
+        "11": 12,
+        "12": 12,
+        "2": 12,
+        "3": 12,
+        "4": 12,
+        "5": 12,
+        "6": 12,
+        "7": 12,
+        "8": 12,
+        "9": 12
+      },
+      "horizon_group": "1-12",
+      "horizon_lower": 1,
+      "horizon_upper": 12,
+      "method": "A0",
+      "nominal_levels": [
+        0.5,
+        0.8,
+        0.95
+      ],
+      "quantile_method": "Hyndman-Fan Type 8",
+      "quantiles": {
+        "0.5": {
+          "absolute_error_radius": 24.09347296658055,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.5,
+          "interval_width": 48.1869459331611
+        },
+        "0.8": {
+          "absolute_error_radius": 48.00237533424452,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.7986111111111112,
+          "interval_width": 96.00475066848904
+        },
+        "0.95": {
+          "absolute_error_radius": 77.2311289892483,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.9513888888888888,
+          "interval_width": 154.4622579784966
+        }
+      },
+      "status": "EVIDENCE_LIMITED_NOT_VALIDATED"
+    },
+    {
+      "coverage_guarantee": false,
+      "dependence_note": "Overlapping origins within each calibration cycle are dependent.",
+      "distinct_cycle_count": 3,
+      "distinct_forecast_origin_count": 12,
+      "forecast_error_count": 144,
+      "horizon_distribution": {
+        "13": 12,
+        "14": 12,
+        "15": 12,
+        "16": 12,
+        "17": 12,
+        "18": 12,
+        "19": 12,
+        "20": 12,
+        "21": 12,
+        "22": 12,
+        "23": 12,
+        "24": 12
+      },
+      "horizon_group": "13-24",
+      "horizon_lower": 13,
+      "horizon_upper": 24,
+      "method": "A0",
+      "nominal_levels": [
+        0.5,
+        0.8,
+        0.95
+      ],
+      "quantile_method": "Hyndman-Fan Type 8",
+      "quantiles": {
+        "0.5": {
+          "absolute_error_radius": 30.644392351508678,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.5,
+          "interval_width": 61.288784703017356
+        },
+        "0.8": {
+          "absolute_error_radius": 60.70924524854854,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.7986111111111112,
+          "interval_width": 121.41849049709708
+        },
+        "0.95": {
+          "absolute_error_radius": 80.79748148036452,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.9513888888888888,
+          "interval_width": 161.59496296072905
+        }
+      },
+      "status": "EVIDENCE_LIMITED_NOT_VALIDATED"
+    },
+    {
+      "coverage_guarantee": false,
+      "dependence_note": "Overlapping origins within each calibration cycle are dependent.",
+      "distinct_cycle_count": 3,
+      "distinct_forecast_origin_count": 12,
+      "forecast_error_count": 144,
+      "horizon_distribution": {
+        "25": 12,
+        "26": 12,
+        "27": 12,
+        "28": 12,
+        "29": 12,
+        "30": 12,
+        "31": 12,
+        "32": 12,
+        "33": 12,
+        "34": 12,
+        "35": 12,
+        "36": 12
+      },
+      "horizon_group": "25-36",
+      "horizon_lower": 25,
+      "horizon_upper": 36,
+      "method": "A0",
+      "nominal_levels": [
+        0.5,
+        0.8,
+        0.95
+      ],
+      "quantile_method": "Hyndman-Fan Type 8",
+      "quantiles": {
+        "0.5": {
+          "absolute_error_radius": 29.928068384226464,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.5,
+          "interval_width": 59.85613676845293
+        },
+        "0.8": {
+          "absolute_error_radius": 58.46526961050617,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.7986111111111112,
+          "interval_width": 116.93053922101234
+        },
+        "0.95": {
+          "absolute_error_radius": 85.34315265397218,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.9513888888888888,
+          "interval_width": 170.68630530794437
+        }
+      },
+      "status": "EVIDENCE_LIMITED_NOT_VALIDATED"
+    },
+    {
+      "coverage_guarantee": false,
+      "dependence_note": "Overlapping origins within each calibration cycle are dependent.",
+      "distinct_cycle_count": 3,
+      "distinct_forecast_origin_count": 12,
+      "forecast_error_count": 288,
+      "horizon_distribution": {
+        "37": 12,
+        "38": 12,
+        "39": 12,
+        "40": 12,
+        "41": 12,
+        "42": 12,
+        "43": 12,
+        "44": 12,
+        "45": 12,
+        "46": 12,
+        "47": 12,
+        "48": 12,
+        "49": 12,
+        "50": 12,
+        "51": 12,
+        "52": 12,
+        "53": 12,
+        "54": 12,
+        "55": 12,
+        "56": 12,
+        "57": 12,
+        "58": 12,
+        "59": 12,
+        "60": 12
+      },
+      "horizon_group": "37-60",
+      "horizon_lower": 37,
+      "horizon_upper": 60,
+      "method": "A0",
+      "nominal_levels": [
+        0.5,
+        0.8,
+        0.95
+      ],
+      "quantile_method": "Hyndman-Fan Type 8",
+      "quantiles": {
+        "0.5": {
+          "absolute_error_radius": 21.11098799220757,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.5,
+          "interval_width": 42.22197598441514
+        },
+        "0.8": {
+          "absolute_error_radius": 43.87338923889642,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.8020833333333334,
+          "interval_width": 87.74677847779284
+        },
+        "0.95": {
+          "absolute_error_radius": 71.66685649695457,
+          "coverage_interpretation": "IN_SAMPLE_FIT_DIAGNOSTIC_NOT_VALIDATION",
+          "in_sample_empirical_coverage": 0.9513888888888888,
+          "interval_width": 143.33371299390913
+        }
+      },
+      "status": "EVIDENCE_LIMITED_NOT_VALIDATED"
+    }
+  ],
+  "status": "EVIDENCE_LIMITED_NOT_VALIDATED"
+}

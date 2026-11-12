@@ -1,0 +1,32 @@
+﻿{
+    "record_type":  "R21_OPTION_A_OWNER_PROTOCOL_APPROVAL",
+    "decision_timestamp_utc":  "2026-11-11T21:00:41.2702495Z",
+    "owner_decision":  "APPROVED",
+    "approved_protocol_option":  "OPTION_A",
+    "protocol_freeze_consideration":  true,
+    "q_r_identifiability":  "NOT_ESTABLISHED",
+    "scientific_parameter_recovery":  "NOT_ESTABLISHED",
+    "scientific_acceptance":  "NOT_GRANTED",
+    "synthetic_optimization_identifiability_claim":  "NOT_ESTABLISHED",
+    "initialization_sensitivity_observed":  true,
+    "interpretation":  "Owner accepts Option A as the controlling protocol approach while retaining the documented scientific limitations. No unsupported identifiability or parameter-recovery claim is permitted.",
+    "execution_authorization":  false,
+    "protocol_freeze_authorization":  "CONDITIONAL_ON_ALL_R30_GATES_PASSING",
+    "babcock_leighton_integration_authorized":  false,
+    "historical_artifacts_may_be_modified":  false,
+    "supersedes_prior_provisional_decision":  false,
+    "evidence":  [
+                     {
+                         "sha256":  "17403BF56C53C4AF0BA575E6D8C19FF4541055AEFF75F11190F880399D30288C",
+                         "path":  "reports/model_development_v3/r21_review/R21_SCIENTIFIC_VALIDATION_20261108_205059.json"
+                     },
+                     {
+                         "sha256":  "1F46CA135BEF6E9AAED7BEA55F10247CBF5321A4482E47893A3F038C7506FCAD",
+                         "path":  "reports/model_development_v3/r21_review/R21_OPTION_A_PROVISIONAL_OWNER_DECISION_20261108_210611_UTC.json"
+                     },
+                     {
+                         "sha256":  "CBE6A2A2945D0D5A18D268570F363B54D9CE4A60600891DF8ACD4D3FAE8D909B",
+                         "path":  "reports/model_development_v3/r21_review/R21_REVIEW_20261108_203649.txt"
+                     }
+                 ]
+}

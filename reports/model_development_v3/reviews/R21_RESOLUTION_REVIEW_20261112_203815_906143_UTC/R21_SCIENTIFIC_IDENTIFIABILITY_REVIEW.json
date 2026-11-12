@@ -1,0 +1,418 @@
+{
+  "review_id": "R21_RESOLUTION_REVIEW_20261112_203815_906143_UTC",
+  "review_status": "COMPLETED_IDENTIFIABILITY_NOT_ESTABLISHED",
+  "production_parameter_status": "NOT_ACCEPTED_NOT_APPLIED",
+  "scientific_acceptance": "NOT_GRANTED",
+  "reviewed_utc": "2026-11-12T20:38:15Z",
+  "data_and_protocol": {
+    "monthly_input_sha256": "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194",
+    "draft_1_7_sha256": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+    "draft_1_7_freeze_manifest_sha256": "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3",
+    "current_release_id": "V3_PRODUCTION_COMPLETION_RELEASE_20261112_202354_820914_UTC",
+    "current_release_file_count": 132,
+    "current_release_manifest_sha256": "6AFBF42442B438C16977BCAD4FE2BFA7F31339CBF1BB6C98C34B5D5F4A46E5F",
+    "current_release_manifest_verification": "PASS",
+    "prior_release_file_count": 52,
+    "prior_release_manifest_sha256": "119DB23702B3AE2EBE02387EC3DC68DA1323BD85FF1C0165B8FC6CE08F58EB4D",
+    "prior_release_manifest_verification": "PASS",
+    "r21_fit_artifact": {
+      "path": "reports/model_development_v3/production_releases/V3_PRODUCTION_COMPLETION_RELEASE_20261112_202354_820914_UTC/execution/V3_PRODUCTION_EXECUTION_20261112_202059_644437_UTC/R21_training_covariance_fit.json",
+      "sha256": "EA3EBF1021593168A51AC0C54DD3BED6FA22C2E92038950F5D073D54BA6D3A26"
+    },
+    "owner_approval_artifact": {
+      "path": "reports/model_development_v3/protocols/freezes/V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC/R21_OPTION_A_OWNER_APPROVAL.json",
+      "sha256": "19A386202A73EFBB7B6EAA7D791AAD8904C7BCD6EC42165A9DA32EA06620A537",
+      "approval_scope": "OPTION_A_PROTOCOL_APPROACH_WITH_IDENTIFIABILITY_AND_PARAMETER_RECOVERY_NOT_ESTABLISHED",
+      "approval_does_not_independently_authorize_execution": true
+    },
+    "synthetic_validation_artifact": {
+      "path": "reports/model_development_v3/r21_review/R21_SCIENTIFIC_VALIDATION_20261108_205059.json",
+      "sha256": "17403BF56C53C4AF0BA575E6D8C19FF4541055AEFF75F11190F880399D30288C"
+    },
+    "synthetic_sensitivity_artifact": {
+      "path": "reports/model_development_v3/r21_review/R21_OPTION_A_SENSITIVITY_20261108_204708.json",
+      "sha256": "24CE1BF5EEF3CC8D78523D688D9C164043FAE4DF5AC64DADCD5F39C6AB12F9F1"
+    },
+    "source_hashes": {
+      "src/v3/solarshield_v3_noise_estimation.py": "8F1BBECEB5CD32B970EB3F15CBC27F26629426D6BC337FD085CFAC6BF4E1F3CF",
+      "src/v3/solarshield_v3_production.py": "80C333F5E195762487C4D118144509DD4B3C404B99167C3BEBD28A9C1C89CF07",
+      "scripts/run_v3_production_completion.py": "4A285A702F8058095641340C52AD5194DF57000F328F581CC3763474C663D018"
+    },
+    "runtime": {
+      "python": "3.14.10",
+      "numpy": "2.5.4",
+      "scipy": "1.18.1"
+    }
+  },
+  "method": {
+    "objective": "Sum of per-sequence physical Gaussian innovation negative log-likelihoods. Residuals are normalized by a training-only robust scale, with the physical likelihood Jacobian term n_valid*log(scale).",
+    "optimizer": "SciPy L-BFGS-B in log(q), log(r), 9 deterministic starts.",
+    "log_bounds": [
+      -13.8155,
+      4.6052
+    ],
+    "physical_upper_bound": 100.00298144563507,
+    "training_cycles": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "eligible_sequence_count": 9,
+    "valid_post_warmup_residual_count": 1101,
+    "valid_counts_by_cycle": [
+      102,
+      105,
+      130,
+      120,
+      110,
+      141,
+      129,
+      135,
+      129
+    ],
+    "robust_scales_by_cycle": [
+      42.72407226496919,
+      20.204098734140302,
+      18.759233993812185,
+      26.214258440246727,
+      34.98462628031902,
+      32.396912281801804,
+      26.621041612779667,
+      20.748958353005577,
+      24.806627753761276
+    ]
+  },
+  "nine_optimizer_starts": [
+    {
+      "initial_q": 0.0001,
+      "initial_r": 0.0001,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 0.0001,
+      "initial_r": 0.01,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 0.0001,
+      "initial_r": 1.0,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 0.01,
+      "initial_r": 0.0001,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 0.01,
+      "initial_r": 0.01,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 0.01,
+      "initial_r": 1.0,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 1.0,
+      "initial_r": 0.0001,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 1.0,
+      "initial_r": 0.01,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    },
+    {
+      "initial_q": 1.0,
+      "initial_r": 1.0,
+      "result_q": 100.00298144563507,
+      "result_r": 100.00298144563507,
+      "iterations": 1,
+      "objective": 6551.19892165482,
+      "gradient_norm": 1214.6852988383678,
+      "boundary_hit": true,
+      "scipy_success": true
+    }
+  ],
+  "boundary_and_curvature_diagnostics": {
+    "objective_at_upper_corner": 6551.19892165482,
+    "inside_step_log": 0.0001,
+    "q_step_inward_objective": 6551.249635885102,
+    "r_step_inward_objective": 6551.309300478785,
+    "finite_difference_derivative_in_increasing_log_q_direction": -507.1423028221034,
+    "finite_difference_derivative_in_increasing_log_r_direction": -1103.7882396522036,
+    "interpretation": "Within the frozen box the objective decreases toward the upper q and r limits. This establishes a bound-seeking result, not an interior estimate.",
+    "reported_unconstrained_central_hessian_eigenvalues": [
+      -364.7068340636763,
+      1144.1696231326061
+    ],
+    "hessian_caveat": "The stored central finite-difference Hessian perturbs around an active boundary, including points outside the approved feasible box. It is not a constrained-optimality test and its negative eigenvalue is diagnostic only.",
+    "parameter_correlation": "No defensible covariance or correlation estimate is available at the joint boundary solution; identifiability is not established."
+  },
+  "profile_likelihood_grid": {
+    "q_values": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      50.0,
+      100.00298144563507
+    ],
+    "r_values": [
+      0.01,
+      0.1,
+      1.0,
+      10.0,
+      50.0,
+      100.00298144563507
+    ],
+    "objective_rows_by_q": [
+      [
+        21509346.051039364,
+        3836833.100803784,
+        504870.9526204465,
+        57746.008401931445,
+        14636.9315127302,
+        9360.308348770393
+      ],
+      [
+        6103260.383493433,
+        2151684.074342836,
+        385168.4560752808,
+        52901.526483546666,
+        14192.80471435957,
+        9210.235568383861
+      ],
+      [
+        791328.0684248072,
+        611809.2672471218,
+        217029.6485533491,
+        41114.55256136391,
+        12976.632442678494,
+        8818.10137019157
+      ],
+      [
+        84149.17147696986,
+        81639.07342474736,
+        63771.46353625689,
+        24672.934397736368,
+        10410.993868044523,
+        7821.967037024644
+      ],
+      [
+        19847.08662715512,
+        19744.78498392682,
+        18800.661959066427,
+        13565.968088776139,
+        8328.47815747338,
+        6917.91749648616
+      ],
+      [
+        12048.262245724827,
+        12023.129345443262,
+        11782.025928379171,
+        10079.149287015955,
+        7474.411385023452,
+        6551.19892165482
+      ]
+    ],
+    "meaning": "Objective values across the approved q/r bounds only; no confidence threshold or confidence interval is inferred."
+  },
+  "leave_one_training_cycle_out": [
+    {
+      "omitted_cycle": 4,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 5,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 6,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 7,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 8,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 9,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 10,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 11,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    },
+    {
+      "omitted_cycle": 12,
+      "q": 100.00298144563507,
+      "r": 100.00298144563507,
+      "boundary_hits": 9
+    }
+  ],
+  "chronological_subset_check": {
+    "cycles_6_through_12": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ],
+    "q": 100.00298144563507,
+    "r": 100.00298144563507,
+    "boundary_hits": 9,
+    "objective": 5248.848362347583,
+    "curvature_eigenvalues": [
+      -280.76120450644527,
+      897.6656399529312
+    ]
+  },
+  "data_quality": {
+    "raw_nonfinite_observations_cycles_4_12": 0,
+    "warmup_slots": 54,
+    "baseline_unavailable_slots": 111,
+    "baseline_unavailable_by_cycle_4_through_12": [
+      55,
+      36,
+      18,
+      0,
+      0,
+      2,
+      0,
+      0,
+      0
+    ],
+    "handling": "Warm-up and unsupported baseline months remain calendar positions and are not scored as residual observations; the reported 1101 valid residuals are the likelihood observations.",
+    "missing_observation_synthetic_test": "Existing R21 regression test confirms a missing position is retained in the timeline."
+  },
+  "synthetic_validation_summary": {
+    "experiments": 9,
+    "historical_data_used": false,
+    "q_relative_error_median": 0.1360125278962938,
+    "q_relative_error_max": 0.5585297302152101,
+    "r_relative_error_median": 0.032853143747860414,
+    "r_relative_error_max": 0.06079667913945397,
+    "initialization_sensitivity_observed": true,
+    "scale_equivariance_q_ratio": 8.999993530602055,
+    "scale_equivariance_r_ratio": 9.00000472918667,
+    "identifiability": "NOT_ESTABLISHED"
+  },
+  "scientific_conclusion": {
+    "identifiable_q_r_estimates": "NOT_SUPPORTED",
+    "partially_identifiable_parameter_combination": "NOT_ESTABLISHED",
+    "evidence_limited_configuration": "NOT_AVAILABLE_FOR_PRODUCTION",
+    "reason": "The likelihood is bound-seeking for q and r over the approved range, including leave-one-cycle-out and cycles 6-12-only fits. No interior estimate or approved uncertainty interval is produced. Synthetic recovery does not establish historical identifiability."
+  },
+  "production_covariance_implication_not_approved": {
+    "candidate_q_physical": 100.00298144563507,
+    "candidate_r_physical": 100.00298144563507,
+    "candidate_Q_physical": [
+      [
+        100.00298144563507,
+        50.001490722817536
+      ],
+      [
+        50.001490722817536,
+        100.00298144563507
+      ]
+    ],
+    "candidate_R_physical": [
+      [
+        100.00298144563507
+      ]
+    ],
+    "approved_P0_normalized": [
+      [
+        1.0,
+        0.0
+      ],
+      [
+        0.0,
+        0.027777777777777776
+      ]
+    ],
+    "heldout_cycle_scale_mapping": "MISSING",
+    "applied_to_heldout_cycles": false
+  }
+}

@@ -1,0 +1,369 @@
+{
+  "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+  "protocol": "Draft 1.7 + R20 Addendum 1.0",
+  "selected_configuration": {
+    "method": "T2_anchored_template",
+    "w": 0.5,
+    "tau": 12,
+    "selection_mean_fold_mae": 36.35724549274487,
+    "selection_mean_fold_rmse": 44.52158937017872,
+    "tie_break": [
+      "mean_fold_mae",
+      "mean_fold_rmse",
+      "w",
+      "tau"
+    ]
+  },
+  "candidate_count": 12,
+  "eligible_fold_count": 20,
+  "not_evaluable_fold_count": 8,
+  "candidate_fold_record_count": 240,
+  "candidates": [
+    {
+      "candidate_id": "T2_W0.50_TAU3",
+      "w": 0.5,
+      "tau": 3,
+      "fold_count": 20,
+      "mean_fold_mae": 36.62106009027874,
+      "mean_fold_rmse": 44.80279387312314,
+      "mean_peak_amplitude_error": 33.449722021209645,
+      "mean_peak_timing_error_months": 14.05
+    },
+    {
+      "candidate_id": "T2_W0.50_TAU6",
+      "w": 0.5,
+      "tau": 6,
+      "fold_count": 20,
+      "mean_fold_mae": 36.38834862267504,
+      "mean_fold_rmse": 44.55639496373318,
+      "mean_peak_amplitude_error": 34.141029917734386,
+      "mean_peak_timing_error_months": 13.3
+    },
+    {
+      "candidate_id": "T2_W0.50_TAU12",
+      "w": 0.5,
+      "tau": 12,
+      "fold_count": 20,
+      "mean_fold_mae": 36.35724549274487,
+      "mean_fold_rmse": 44.52158937017872,
+      "mean_peak_amplitude_error": 34.27625129306641,
+      "mean_peak_timing_error_months": 12.05
+    },
+    {
+      "candidate_id": "T2_W0.50_TAU24",
+      "w": 0.5,
+      "tau": 24,
+      "fold_count": 20,
+      "mean_fold_mae": 37.08099044433508,
+      "mean_fold_rmse": 45.30191466501805,
+      "mean_peak_amplitude_error": 33.641251995897065,
+      "mean_peak_timing_error_months": 12.05
+    },
+    {
+      "candidate_id": "T2_W0.75_TAU3",
+      "w": 0.75,
+      "tau": 3,
+      "fold_count": 20,
+      "mean_fold_mae": 43.19473070793164,
+      "mean_fold_rmse": 51.99218116703846,
+      "mean_peak_amplitude_error": 27.505390633685153,
+      "mean_peak_timing_error_months": 15.2
+    },
+    {
+      "candidate_id": "T2_W0.75_TAU6",
+      "w": 0.75,
+      "tau": 6,
+      "fold_count": 20,
+      "mean_fold_mae": 43.01523952371191,
+      "mean_fold_rmse": 51.80237859845935,
+      "mean_peak_amplitude_error": 28.302117195358193,
+      "mean_peak_timing_error_months": 15.2
+    },
+    {
+      "candidate_id": "T2_W0.75_TAU12",
+      "w": 0.75,
+      "tau": 12,
+      "fold_count": 20,
+      "mean_fold_mae": 42.79778939798558,
+      "mean_fold_rmse": 51.57541901167516,
+      "mean_peak_amplitude_error": 29.10204594458371,
+      "mean_peak_timing_error_months": 14.45
+    },
+    {
+      "candidate_id": "T2_W0.75_TAU24",
+      "w": 0.75,
+      "tau": 24,
+      "fold_count": 20,
+      "mean_fold_mae": 42.65766843024787,
+      "mean_fold_rmse": 51.531064709950044,
+      "mean_peak_amplitude_error": 29.596166527627627,
+      "mean_peak_timing_error_months": 15.6
+    },
+    {
+      "candidate_id": "T2_W1.00_TAU3",
+      "w": 1.0,
+      "tau": 3,
+      "fold_count": 20,
+      "mean_fold_mae": 51.57182837298465,
+      "mean_fold_rmse": 61.101487138459014,
+      "mean_peak_amplitude_error": 37.05715715402962,
+      "mean_peak_timing_error_months": 15.95
+    },
+    {
+      "candidate_id": "T2_W1.00_TAU6",
+      "w": 1.0,
+      "tau": 6,
+      "fold_count": 20,
+      "mean_fold_mae": 51.19253176682649,
+      "mean_fold_rmse": 60.72319361243344,
+      "mean_peak_amplitude_error": 37.23033652885568,
+      "mean_peak_timing_error_months": 15.95
+    },
+    {
+      "candidate_id": "T2_W1.00_TAU12",
+      "w": 1.0,
+      "tau": 12,
+      "fold_count": 20,
+      "mean_fold_mae": 50.43254318877139,
+      "mean_fold_rmse": 59.930293456392164,
+      "mean_peak_amplitude_error": 37.291148753761576,
+      "mean_peak_timing_error_months": 16.35
+    },
+    {
+      "candidate_id": "T2_W1.00_TAU24",
+      "w": 1.0,
+      "tau": 24,
+      "fold_count": 20,
+      "mean_fold_mae": 49.06273713760292,
+      "mean_fold_rmse": 58.61056085094911,
+      "mean_peak_amplitude_error": 37.97025777513537,
+      "mean_peak_timing_error_months": 16.35
+    }
+  ],
+  "coverage_records": [
+    {
+      "held_out_cycle": 6,
+      "observed_months": 24,
+      "remaining_months": 130,
+      "minimum_template_support": 1,
+      "unsupported_month_count": 18,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 6,
+      "observed_months": 36,
+      "remaining_months": 118,
+      "minimum_template_support": 1,
+      "unsupported_month_count": 18,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 6,
+      "observed_months": 48,
+      "remaining_months": 106,
+      "minimum_template_support": 1,
+      "unsupported_month_count": 18,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 6,
+      "observed_months": 60,
+      "remaining_months": 94,
+      "minimum_template_support": 1,
+      "unsupported_month_count": 18,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 7,
+      "observed_months": 24,
+      "remaining_months": 102,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 7,
+      "observed_months": 36,
+      "remaining_months": 90,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 7,
+      "observed_months": 48,
+      "remaining_months": 78,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 7,
+      "observed_months": 60,
+      "remaining_months": 66,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 8,
+      "observed_months": 24,
+      "remaining_months": 92,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 8,
+      "observed_months": 36,
+      "remaining_months": 80,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 8,
+      "observed_months": 48,
+      "remaining_months": 68,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 8,
+      "observed_months": 60,
+      "remaining_months": 56,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 9,
+      "observed_months": 24,
+      "remaining_months": 125,
+      "minimum_template_support": 2,
+      "unsupported_month_count": 2,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 9,
+      "observed_months": 36,
+      "remaining_months": 113,
+      "minimum_template_support": 2,
+      "unsupported_month_count": 2,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 9,
+      "observed_months": 48,
+      "remaining_months": 101,
+      "minimum_template_support": 2,
+      "unsupported_month_count": 2,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 9,
+      "observed_months": 60,
+      "remaining_months": 89,
+      "minimum_template_support": 2,
+      "unsupported_month_count": 2,
+      "status": "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+    },
+    {
+      "held_out_cycle": 10,
+      "observed_months": 24,
+      "remaining_months": 111,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 10,
+      "observed_months": 36,
+      "remaining_months": 99,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 10,
+      "observed_months": 48,
+      "remaining_months": 87,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 10,
+      "observed_months": 60,
+      "remaining_months": 75,
+      "minimum_template_support": 5,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 11,
+      "observed_months": 24,
+      "remaining_months": 117,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 11,
+      "observed_months": 36,
+      "remaining_months": 105,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 11,
+      "observed_months": 48,
+      "remaining_months": 93,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 11,
+      "observed_months": 60,
+      "remaining_months": 81,
+      "minimum_template_support": 4,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 12,
+      "observed_months": 24,
+      "remaining_months": 111,
+      "minimum_template_support": 7,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 12,
+      "observed_months": 36,
+      "remaining_months": 99,
+      "minimum_template_support": 7,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 12,
+      "observed_months": 48,
+      "remaining_months": 87,
+      "minimum_template_support": 7,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    },
+    {
+      "held_out_cycle": 12,
+      "observed_months": 60,
+      "remaining_months": 75,
+      "minimum_template_support": 7,
+      "unsupported_month_count": 0,
+      "status": "ELIGIBLE"
+    }
+  ]
+}

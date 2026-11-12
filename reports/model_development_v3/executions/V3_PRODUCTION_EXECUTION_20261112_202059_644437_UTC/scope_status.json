@@ -1,0 +1,34 @@
+{
+  "r32": {
+    "scientific_acceptance": "NOT_GRANTED",
+    "status": "NOT_EVALUATED"
+  },
+  "scope_a_c6_c12": {
+    "R21_fit_status": "ESTIMATION_COMPLETED_REQUIRES_REVIEW",
+    "r20_rerun": false,
+    "status": "R20_PRESERVED_COMPLETED_R21_TRAINING_FIT_COMPLETED"
+  },
+  "scope_b_c13_c15": {
+    "a1_a2_status": "BLOCKED_HELDOUT_SCALE_MAPPING",
+    "excluded_target_count": 0,
+    "forecast_record_count": 720,
+    "status": "PARTIAL_A0_ONLY"
+  },
+  "scope_c_c16_c24": {
+    "a1_a2_status": "BLOCKED_HELDOUT_SCALE_MAPPING",
+    "excluded_target_count": 0,
+    "forecast_record_count": 3112,
+    "status": "PARTIAL_A0_ONLY"
+  },
+  "scope_d_cycle25": {
+    "forecast_generated": false,
+    "status": "BLOCKED_ORIGIN_AND_HORIZON_UNSPECIFIED"
+  },
+  "scope_e_kf_enkf": {
+    "reasons": [
+      "No selected R22 ensemble configuration.",
+      "No frozen held-out covariance-scale mapping for P0."
+    ],
+    "status": "BLOCKED"
+  }
+}

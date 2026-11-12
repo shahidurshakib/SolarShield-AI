@@ -1,0 +1,47 @@
+PHASE 9 — PER-RECORD TIME VALIDATION
+============================================================
+Input records: 65
+Processed records: 65
+Source verification errors: 0
+Exact source-line matches: 65/65
+Field verification matches: 65/65
+74-character records: 65/65
+
+RESULTS BY RECORD ROLE
+---------------------------------------------
+
+ROLE: NEIGHBOUR
+Carrington absolute residual: n=52, median=0.817116, mean=1.094825, max=7.503577
+PA absolute error: n=52, median=0.056983, mean=0.103953, max=0.762166
+Distance absolute error: n=52, median=0.000422, mean=0.000691, max=0.003780
+L0 timestamp shift: n=52, median=0.000000, mean=0.000000, max=0.000000
+B0 timestamp shift: n=52, median=0.000000, mean=0.000000, max=0.000000
+
+ROLE: TARGET_ANOMALY
+Carrington absolute residual: n=13, median=3.585748, mean=4.831149, max=11.157429
+PA absolute error: n=13, median=0.019409, mean=0.020688, max=0.045965
+Distance absolute error: n=13, median=0.000237, mean=0.000240, max=0.000542
+L0 timestamp shift: n=13, median=0.000000, mean=0.000000, max=0.000000
+B0 timestamp shift: n=13, median=0.000000, mean=0.000000, max=0.000000
+
+OVERALL GEOMETRY
+---------------------------------------------
+PA absolute error: n=65, median=0.043115, mean=0.087300, max=0.762166
+Distance absolute error: n=65, median=0.000352, mean=0.000601, max=0.003780
+Carrington absolute residual: n=65, median=1.213755, mean=1.842089, max=11.157429
+
+TARGET ANOMALIES
+---------------------------------------------
+2002-04-11 group=9887 CMD=93.0 Carr_res=-10.2100 PA_err=0.0211 Dist_err=0.000352
+2003-07-25 group=10417 CMD=91.0 Carr_res=-2.8171 PA_err=0.0431 Dist_err=-0.000253
+2011-05-02 group=11195 CMD=93.0 Carr_res=3.5857 PA_err=0.0194 Dist_err=-0.000462
+2012-01-09 group=11388 CMD=92.0 Carr_res=-3.3562 PA_err=0.0287 Dist_err=-0.000002
+2012-10-25 group=11591 CMD=92.0 Carr_res=-2.1801 PA_err=0.0460 Dist_err=-0.000323
+2013-03-26 group=11703 CMD=93.0 Carr_res=4.4269 PA_err=0.0412 Dist_err=-0.000015
+2013-09-06 group=11834 CMD=94.0 Carr_res=-2.2410 PA_err=0.0092 Dist_err=0.000237
+2014-03-01 group=11984 CMD=91.0 Carr_res=-2.4964 PA_err=0.0019 Dist_err=-0.000162
+2014-09-25 group=12174 CMD=95.0 Carr_res=11.1574 PA_err=0.0149 Dist_err=-0.000360
+2022-08-30 group=13088 CMD=95.0 Carr_res=5.7138 PA_err=0.0088 Dist_err=0.000037
+2023-05-24 group=13308 CMD=95.0 Carr_res=-3.1935 PA_err=0.0015 Dist_err=-0.000179
+2023-09-21 group=13425 CMD=99.0 Carr_res=6.7862 PA_err=0.0279 Dist_err=-0.000198
+2024-05-11 group=13663 CMD=92.0 Carr_res=4.6405 PA_err=0.0053 Dist_err=-0.000542

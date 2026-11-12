@@ -1,0 +1,41 @@
+{
+  "task": "Task 2 solar-cycle characteristic hindcasts",
+  "method": "Expanding-cycle median analog baseline",
+  "training_rule": "For held-out cycle c, train only on completed cycles 1..c-1",
+  "heldout_cycles": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "targets": [
+    "peak_strength",
+    "peak_timing_months",
+    "duration_months"
+  ],
+  "peak_reference": "Published official_smoothed_max_sn and official_smoothed_max_month",
+  "timing_definition": "Elapsed calendar months from published minimum to published smoothed maximum",
+  "duration_definition": "Published months_expected_min_to_min",
+  "interval_definition": "Training-only empirical 10th and 90th percentiles; descriptive, not assumed calibrated",
+  "cycle_summary_sha256": "3f2a85859dc1df2a4501b60fa7f54ca05dbc4b69008210cbcb5acb92c9ee33ac",
+  "software": {
+    "python": "3.15.1 (tags/v3.15.1:c37e74c, Oct 21 2026, 06:24:08) [MSC v.1951 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "pandas": "3.1.0",
+    "numpy": "2.5.4"
+  },
+  "created_utc": "2026-10-24T20:12:31.709281+00:00",
+  "limitations": [
+    "Only 12 held-out cycles; metrics and interval coverage have substantial small-sample uncertainty.",
+    "Empirical intervals are not guaranteed to have nominal coverage.",
+    "Published cycle labels are used as supplied and are not recomputed from raw SSN."
+  ]
+}

@@ -1,0 +1,51 @@
+PHASE 10J — BRANCH RECONCILIATION TEST
+========================================================================
+Phase10I records: 65
+Phase10F records: 65
+Matched records: 65
+Unique dates: 24
+Merge key: date + group_id
+Merge validation: one_to_one
+Unmatched records: 0
+Duplicate keys: 0
+
+CROSS-PHASE COMPONENT CHECK
+------------------------------------------------------------------------
+PM_delta_vs_10F: max_abs_error=0.000000000000
+PM_eta_vs_10F: max_abs_error=0.000000000000
+PM_theta_vs_10F: max_abs_error=0.000000000000
+
+BRANCH COUNTS
+------------------------------------------------------------------------
+cos(delta) positive: 40
+cos(delta) negative: 25
+
+RECORD-LEVEL L0 COMPARISON
+------------------------------------------------------------------------
+original_minus_SunPy: mean_signed=-110.737805340, median_abs=179.959730700, mean_abs=110.763030281, max_abs=179.982193867
+candidate_minus_SunPy: mean_signed=0.031425430, median_abs=0.030123342, mean_abs=0.031425430, max_abs=0.041416647
+
+RECORD-LEVEL CARRINGTON RESIDUALS
+------------------------------------------------------------------------
+original_Carrington_residual: mean_signed=55.095263460, median_abs=176.766186566, mean_abs=110.601707132, max_abs=179.791109692
+candidate_Carrington_residual: mean_signed=-0.289351925, median_abs=1.254684554, mean_abs=1.857080567, max_abs=11.126150812
+SunPy_Carrington_residual: mean_signed=-0.257926495, median_abs=1.213755004, mean_abs=1.842089470, max_abs=11.157428592
+
+UNIQUE DATE-LEVEL L0 COMPARISON
+------------------------------------------------------------------------
+original_minus_SunPy: mean_signed=-112.468039200, median_abs=179.959727829, mean_abs=112.492724962, max_abs=179.982193867
+candidate_minus_SunPy: mean_signed=0.031960800, median_abs=0.030133429, mean_abs=0.031960800, max_abs=0.041416647
+
+DATE-LEVEL CARRINGTON RESIDUAL AGGREGATION
+------------------------------------------------------------------------
+Dates: 24
+Mean date mean-absolute residual: 1.660298878
+Maximum date max-absolute residual: 11.126150812
+
+LIMITATIONS
+------------------------------------------------------------------------
+Alternate eta branch is diagnostic only.
+Branch agreement with SunPy does not establish archive convention.
+Carrington residuals remain independently evaluated.
+No archive correction or timestamp correction applied.
+No model execution performed.

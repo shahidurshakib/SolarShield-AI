@@ -1,0 +1,716 @@
+﻿
+3. Obtain explicit owner approval of acceptance criteria.
+
+4. Run final synthetic tests.
+
+5. Verify source hashes.
+
+6. Verify SILSO input hash.
+
+7. Verify cycle partitions and provisional-data boundaries.
+
+8. Freeze protocol and compute SHA256.
+
+9. Assign unique experiment IDs and new output directories.
+
+10. Verify that V2 and V3 REV1 artifacts remain unchanged.
+
+
+
+Only after all gates pass may the authorized historical execution begin.
+
+
+
+## R31. Preservation and non-claims
+
+
+
+The following remain immutable:
+
+- V2 historical results.
+
+- V3 REV1 exploratory run.
+
+- Earlier V3 implementation snapshots.
+
+- Drafts 1.0, 1.1 and 1.2.
+
+
+
+This protocol does not establish:
+
+- Operational space-weather warning capability.
+
+- Guaranteed prediction interval coverage.
+
+- Physical validation of BabcockÃ¢â‚¬â€œLeighton mechanisms.
+
+- Automatic superiority of KF or EnKF.
+
+- Scientific acceptance before final evaluation.
+
+
+
+### R32 Ã¢â‚¬â€ Final Owner Acceptance Policy Approval
+
+
+
+**Approval status:** APPROVED  
+
+**Approval scope:** V3-A1 (Kalman Filter) and V3-A2 (Ensemble Kalman Filter), each compared independently against A0.
+
+
+
+The owner has approved a directional acceptance policy:
+
+
+
+1. Candidate MAE must be strictly lower than A0 MAE.
+
+2. Candidate RMSE must be equal to or lower than A0 RMSE.
+
+3. Candidate peak-amplitude error must be equal to or lower than A0 peak-amplitude error.
+
+4. Candidate peak-timing error must be equal to or lower than A0 peak-timing error.
+
+5. All four conditions must be satisfied for a candidate to pass the directional acceptance rule. Failure of any condition means the candidate is not accepted under this rule.
+
+
+
+**Numerical non-inferiority margin:** `UNRESOLVED Ã¢â‚¬â€ NOT USED IN ACCEPTANCE`.
+
+
+
+No numerical non-inferiority margin, equivalence margin, or statistical-significance threshold is authorized by this approval. DTW, cycle-duration, uncertainty, calibration, robustness, and failure diagnostics must be reported separately and must not replace or silently modify the approved acceptance rule.
+
+
+
+The evaluation must use the predeclared A0/A1/A2 comparison design, common forecast origins, common information boundaries, and the frozen evaluation partition. A1 and A2 must be assessed independently; one candidate's result cannot be used to qualify the other.
+
+
+
+This directional rule does not establish statistical significance, equivalence, guaranteed generalization, or guaranteed forecast-interval coverage. Calibration evidence limitations, including the limited number of calibration cycles, must remain explicit in all reports.
+
+
+
+**Owner decision:** Directional acceptance approved; numerical margin unresolved and excluded from acceptance.
+
+
+
+**Draft 1.3 status: DRAFT Ã¢â‚¬â€ NOT FROZEN.**
+
+
+
+**End of Draft 1.3 Addendum**
+
+
+
+---
+
+## R33. Final precedence and readiness resolution
+
+### 33.1 Revision precedence
+
+This complete Draft 1.3, including R19-R33, is the controlling normative protocol. Where any earlier section or addendum in Drafts 1.0, 1.1, or 1.2 conflicts with Draft 1.3, Draft 1.3 takes precedence. Earlier text remains preserved as historical revision material and must not be interpreted as an active conflicting requirement.
+
+### 33.2 Acceptance policy precedence
+
+R32 is the final owner-approved acceptance policy and supersedes conflicting provisional acceptance requirements in Section 15, R8, and R28.
+
+A1 (KF) and A2 (EnKF) are assessed independently against A0. Acceptance requires all four conditions:
+
+1. MAE strictly lower than A0.
+2. RMSE equal to or lower than A0.
+3. Peak-amplitude error equal to or lower than A0.
+4. Peak-timing error equal to or lower than A0.
+
+Numerical non-inferiority margins are unresolved and are not used. DTW, cycle duration, calibration, uncertainty, robustness, and failure diagnostics remain mandatory reporting items but are not additional numerical acceptance gates under this approval.
+
+### 33.3 Resolution of legacy OPEN statuses
+
+Legacy OPEN labels and provisional technical-review statuses in earlier sections are superseded only to the extent that the corresponding specification is explicitly defined in R19-R31.
+
+Candidate grids and predeclared alternatives remain subject to configuration selection using cycles 6-12. This selection does not permit use of cycles 13-24 for tuning. Cycles 13-15 remain reserved for calibration after configuration freeze; cycles 16-24 remain untouched final evaluation data.
+
+Unresolved calibration evidence limitations must be reported explicitly. They must not be represented as proven coverage or guaranteed uncertainty performance.
+
+### 33.4 Execution authorization precedence
+
+R29 is the controlling execution authorization record and supersedes earlier statements that historical execution is not authorized, but only for the activities explicitly listed as Granted in R29.
+
+Babcock-Leighton integration remains NOT AUTHORIZED. No V2 historical artifact, V3 REV1 output, or earlier implementation snapshot may be modified.
+
+All R30 execution gates remain mandatory. Authorization does not itself constitute permission to bypass those gates.
+
+### 33.5 Freeze and execution conditions
+
+Protocol freeze requires:
+
+- This complete Draft 1.3 and its R32 owner approval record.
+- Successful final synthetic test execution.
+- Verified protocol, source-code, implementation-snapshot, and input-data hashes.
+- Verified cycle partitions and provisional-data boundaries.
+- A new immutable frozen protocol snapshot and SHA256 manifest.
+- Confirmation that V2 and V3 REV1 artifacts remain unchanged.
+
+After all freeze gates pass, the explicitly authorized V3 activities in R29 may proceed in new experiment directories. No execution may modify frozen protocol or historical artifacts.
+
+### 33.6 Scientific limitations
+
+This protocol does not establish operational forecasting capability, physical validation of the Babcock-Leighton mechanism, statistical significance, guaranteed generalization, or guaranteed prediction-interval coverage.
+
+**Status:** Normative final readiness resolution; protocol remains DRAFT until the freeze manifest and all execution gates are verified.
+
+---
+
+
+
+---
+
+# CONTROLLED REVISION 1.4 â€” R21 OPTION A AND SCIENTIFIC VALIDATION
+
+Revision date: 2026-11-09
+
+## 1. Revision authority and precedence
+
+This document retains the complete text of Technical Validation Protocol Draft 1.3 and incorporates the controlled R21 amendment below.
+
+The owner-approved R21 Option A correction is authoritative for R21 noise-parameter estimation wherever the earlier Draft 1.3 text conflicts with this amendment.
+
+The original Draft 1.3 file remains immutable and is retained as a historical draft.
+
+The following precedence remains in force:
+
+1. R32 is the controlling owner-approved acceptance policy.
+2. R29 is the controlling execution authorization.
+3. R30 freeze gates remain mandatory.
+4. R21 Option A in this revision controls the R21 parameterization and normalization.
+5. Other Draft 1.3 provisions remain effective unless explicitly superseded here.
+
+This revision does not expand execution authorization.
+
+## 2. R21 â€” Owner-approved Option A parameterization
+
+The estimator uses shared physical variance parameters q and r across eligible training residual sequences.
+
+For each eligible sequence i, let s_i be its training-only robust residual scale.
+
+The robust scale is calculated as:
+
+- s_i = 1.4826 Ã— MAD(z_i)
+- If MAD is zero or invalid, evaluate IQR(z_i) / 1.349.
+- If both are zero or invalid, fail with UNRESOLVED_RESIDUAL_SCALE.
+
+Residuals are normalized using their own training-only scale.
+
+The authoritative process-noise covariance shape is:
+
+Q_shape = [[1, 1/2], [1/2, 1]]
+
+The physical process-noise covariance is:
+
+Q_physical = q Ã— Q_shape
+
+For each normalized sequence:
+
+Q_i_normalized = (q / s_iÂ²) Ã— Q_shape
+
+The observation-noise covariance is:
+
+R_physical = [[r]]
+
+R_i_normalized = [[r / s_iÂ²]]
+
+The initial covariance is:
+
+P0 = diag(1, 1/36)
+
+Each residual sequence is initialized independently using the specified initial state and covariance.
+
+The sequence likelihood includes the physical-scale Jacobian contribution:
+
+valid_observation_count_i Ã— log(s_i)
+
+The objective is the sum of the sequence negative log-likelihood contributions.
+
+The earlier conflicting Q shape in Draft 1.3, q Ã— [[1/3, 1/2], [1/2, 1]], is superseded for R21 by the owner-approved matrix in this section.
+
+## 3. R21 optimization settings
+
+The deterministic optimizer is SciPy L-BFGS-B.
+
+- Parameters: log(q), log(r)
+- Bounds: [-13.8155, 4.6052]
+- Initializations: all nine combinations of q and r in {0.0001, 0.01, 1.0}
+- Maximum iterations: 10000
+- ftol: 1e-9
+- gtol: 1e-6
+
+The implementation must report optimizer success, boundary hits, initialization sensitivity, numerical failures, and local curvature diagnostics.
+
+Minimum-history eligibility remains three completed training-cycle residual sequences, each containing at least twelve valid post-warm-up observations.
+
+This eligibility rule does not itself establish parameter identifiability.
+
+Final parameter estimation may use training cycles 1â€“12 only. Cycles 13â€“15 are reserved for calibration, and cycles 16â€“24 remain untouched final evaluation data.
+
+## 4. R21 synthetic scientific validation record
+
+The validation report is:
+
+reports/model_development_v3/r21_review/R21_SCIENTIFIC_VALIDATION_20261108_205059.json
+
+Recorded results:
+
+- Synthetic recovery experiments: 9
+- Median q relative error: 0.1360125278962938
+- Maximum q relative error: 0.5585297302152101
+- Median r relative error: 0.032853143747860414
+- Maximum r relative error: 0.06079667913945397
+- All runs and all nine optimizer starts successful: True
+- Any initialization sensitivity detected: True
+- Any optimizer boundary hit: False
+- Positive-definite local curvature: 9 of 9 experiments
+- Identifiability status: NOT_ESTABLISHED
+
+Scale-equivariance experiment:
+
+- Residual scale multiplier: 3
+- Expected variance multiplier: 9
+- Observed q ratio: 8.999993530602055
+- Observed r ratio: 9.00000472918667
+- q relative deviation: 7.18821993928032E-07
+- r relative deviation: 5.25465185807761E-07
+
+## 5. Scientific interpretation and limitation
+
+The synthetic experiments support numerical convergence and scale-equivariant behavior under the tested conditions.
+
+The observation-noise parameter r showed lower recovery error than q in these experiments.
+
+The process-noise parameter q showed material recovery variability. Initialization sensitivity was detected in at least one experiment and in the scaled experiment.
+
+Positive-definite local curvature is local numerical evidence only. It is not proof of global identifiability, uniqueness, or reliable parameter recovery across all data-generating conditions.
+
+Accordingly:
+
+- Identifiability remains NOT_ESTABLISHED.
+- No additional numerical acceptance threshold is introduced by this amendment.
+- The synthetic results must not be represented as empirical validation on historical solar data.
+- The limitation and initialization sensitivity must be disclosed in scientific reporting.
+- This amendment does not independently establish model acceptance.
+
+## 6. Execution authorization and freeze status
+
+This amendment does not authorize Babcockâ€“Leighton integration.
+
+R29 remains the controlling execution authorization. R30 gates remain mandatory.
+
+Historical backtesting, calibration fitting, Cycle 25 forecast generation, and KF-versus-EnKF execution must not begin before the required protocol freeze and execution gates are verified.
+
+This document is a controlled draft revision. Its creation does not constitute protocol freeze, model acceptance, or authorization to bypass any outstanding gate.
+
+
+---
+
+# CONTROLLED REVISION 1.5 ? INTEGRATION CONTRACT
+
+Revision date: 2026-11-09
+
+## 1. Authority and preservation
+
+This revision preserves the complete Draft 1.4 text.
+Draft 1.4 remains immutable.
+
+R29 remains the execution authorization authority.
+R30 gates remain mandatory.
+R32 remains the acceptance authority.
+R21 Option A in Draft 1.4 remains authoritative.
+
+This revision does not expand execution authorization.
+
+## 2. R19 ? Cycle-wise residual-filter orchestration
+
+The integration layer shall:
+
+1. Create a new independent filter state for every target cycle.
+2. Preserve the original monthly calendar index.
+3. Treat the first six observed months as warm-up.
+4. Generate no residual during warm-up.
+5. At month seven, generate a residual only when all six
+   preceding observations are valid.
+6. Store the baseline prediction before accessing the
+   corresponding target observation.
+7. Calculate the residual as:
+   z(c,j) = y(c,j) - b(c,j|j-1)
+8. Use identical residual values and observation boundaries
+   for KF and EnKF.
+9. Never generate artificial residuals for missing observations.
+10. Reset all filter state at the beginning of each target cycle.
+11. Preserve forecast snapshots at months 24, 36, 48 and 60.
+
+The first eligible residual initializes the state. The proposed
+initial state is [z_first, 0], with P0 = diag(1, 1/36).
+This initialization convention requires explicit owner review
+before protocol freeze and historical execution. The first
+residual must not be assimilated a second time after initialization.
+
+## 3. R20 ? Configuration selection boundary
+
+All candidate selection must use cycles 6?12 only.
+
+A0 candidates:
+- w = 0.50, 0.75, 1.00
+- tau = 3, 6, 12, 24
+
+All valid combinations, fold-level metrics, peak diagnostics,
+and deterministic tie-breaking must be preserved.
+
+No information from cycles 13?24 may influence configuration
+selection.
+
+## 4. R21 ? Noise parameter application
+
+The Draft 1.4 owner-approved Option A is controlling.
+
+Q_shape = [[1, 0.5], [0.5, 1]]
+Q_i_normalized = (q / s_i^2) * Q_shape
+R_i_normalized = [[r / s_i^2]]
+P0 = diag(1, 1/36)
+
+Each sequence uses its own training-only robust scale.
+Shared physical q and r are estimated using eligible sequences
+from cycles 1?12 only.
+
+Minimum eligibility:
+- Three completed training-cycle sequences.
+- At least twelve valid post-warm-up residuals per sequence.
+
+All nine optimizer starts, boundary hits, initialization
+sensitivity, numerical failures and local curvature diagnostics
+must be retained.
+
+Identifiability remains NOT_ESTABLISHED unless independently
+established by additional evidence.
+
+## 5. R22 ? EnKF reproducibility
+
+Evaluate ensemble sizes 100, 250 and 500.
+Evaluate seeds 0, 1, 2, 3 and 4.
+
+The initial ensemble must represent the approved initial-state
+distribution and P0. The implementation must document its
+sampling method and seed handling.
+
+All configurations must use identical residual inputs and
+observation boundaries.
+
+Report seed variability, failures, MAE, RMSE and peak diagnostics.
+
+## 6. R23?R25 ? Selection and diagnostic separation
+
+Cycle detector, DTW and peak-matching candidate selection
+must use cycles 6?12 only.
+
+Missing calendar months must not be silently interpolated.
+DTW and peak metrics remain separate evaluation dimensions.
+No unapproved composite weight may determine acceptance.
+
+## 7. R26 ? Calibration
+
+Calibration uses cycles 13?15 only.
+
+Official forecast origins: 24, 36, 48 and 60 observed months.
+Use absolute multi-step errors and Type 8 empirical quantiles.
+
+Report error count, distinct origins, distinct cycles,
+horizon distribution, interval width and empirical coverage.
+
+Insufficient independent cycle evidence must be labelled:
+UNRESOLVED_CALIBRATION_EVIDENCE.
+
+No guaranteed coverage or validated-interval claim is permitted
+without adequate evidence.
+
+## 8. R27 ? Common-origin comparison
+
+A0, A1 and A2 must share:
+- Forecast origins.
+- Target observations.
+- Training boundaries.
+- Missing-data rules.
+- Evaluation metrics.
+
+A1 is evaluated independently against A0.
+A2 is evaluated independently against A0.
+
+Report all metrics independently, including MAE, RMSE,
+peak timing, peak amplitude, DTW, cycle duration,
+uncertainty diagnostics and failure counts.
+
+Cycles 16?24 remain final evaluation data.
+Cycle 25 remains a separate exploratory forecast.
+
+## 9. Required integration tests
+
+The integration test suite must cover:
+- Six-month warm-up.
+- First eligible month-seven residual.
+- Missing observations and calendar preservation.
+- Independent state reset between cycles.
+- No double assimilation of the initialization residual.
+- KF/EnKF identical residual inputs.
+- R21 covariance application.
+- EnKF seed reproducibility.
+- R26 insufficient-evidence handling.
+- R27 identical-origin and target alignment.
+
+## 10. Outstanding freeze conditions
+
+Before freeze:
+- Owner review of the initial-state convention.
+- Complete R19?R33 technical review.
+- Targeted and full synthetic regression PASS.
+- Input, source and protocol hashes verified.
+- Cycle partitions and provisional suffix verified.
+- Historical artifacts preservation audit PASS.
+- Immutable freeze snapshot and manifest generated.
+
+Until every R30 condition passes, this document remains
+a controlled draft and is NOT FROZEN.
+
+No historical model execution is authorized by this revision.
+---
+
+# CONTROLLED REVISION 1.6 - INITIALIZATION AND ACCEPTANCE ENFORCEMENT CLARIFICATION
+
+Revision date: 2026-11-09
+Status: CONTROLLED DRAFT - NOT FROZEN
+
+## 1. Authority and precedence
+
+This revision preserves the complete Draft 1.5 text.
+Drafts 1.3, 1.4 and 1.5 remain unchanged.
+
+This addendum clarifies implementation requirements. It does not
+replace the R19-R33 normative protocol, change execution authorization,
+or waive any R30 freeze condition.
+
+Where this addendum explicitly clarifies an implementation detail,
+it controls over ambiguous wording in earlier controlled revisions.
+All other requirements remain unchanged.
+
+## 2. R19 - Owner-approved first-residual initialization
+
+The owner has approved the following initialization convention for
+KF, EnKF and the R21 likelihood calculation:
+
+The first eligible residual initializes the filter state:
+
+    x_first = [z_first, 0]^T
+
+The first eligible residual is an initialization observation.
+It MUST NOT be assimilated a second time through a measurement update.
+
+The convention applies identically to KF and EnKF. Both filters must
+receive identical residual values, calendar positions and eligibility
+boundaries.
+
+For physical residual units, where the sequence scale is s_i:
+
+    x0_physical = [z_first, 0]^T
+    P0_physical = s_i^2 * diag(1, 1/36)
+
+For normalized residual units:
+
+    z_normalized_first = z_first / s_i
+    x0_normalized = [z_first / s_i, 0]^T
+    P0_normalized = diag(1, 1/36)
+
+The physical and normalized forms represent the same initialization
+under the sequence-specific scale transformation.
+
+The implementation MUST verify that the scale used for initialization
+is obtained only from eligible training residuals. No calibration or
+final-evaluation residual may influence this scale.
+
+After initialization, subsequent calendar positions follow the
+specified prediction and observation-update sequence. Missing
+observations preserve calendar progression and MUST NOT generate
+artificial residuals or measurement updates.
+
+The first eligible residual must be traceable in diagnostics as
+INITIALIZATION_ONLY, not as an assimilated measurement.
+
+## 3. R21 - Likelihood initialization precedence
+
+R21 Option A remains authoritative for Q/R parameterization.
+
+For each eligible sequence i, sequence_nll MUST:
+
+1. Determine the first eligible finite post-warm-up residual.
+2. Apply the sequence's training-only robust scale s_i.
+3. Initialize normalized state to [z_first / s_i, 0]^T.
+4. Initialize normalized covariance to diag(1, 1/36).
+5. Exclude that first residual from the subsequent measurement-update
+   likelihood loop.
+6. Preserve all later calendar positions, including missing positions.
+7. Apply prediction and measurement updates only at their appropriate
+   subsequent positions.
+
+The first residual must not contribute a second measurement update
+after it has initialized the state.
+
+The likelihood implementation must document whether its reported
+likelihood includes or excludes the initialization residual. Any
+constant or normalization terms must be handled consistently across
+all candidate parameter evaluations.
+
+R21 identifiability remains NOT_ESTABLISHED. Initialization sensitivity
+must remain explicitly reported. This clarification does not grant
+scientific acceptance of R21 or authorize its use beyond the existing
+protocol gates.
+
+## 4. R20 and R22 - Partition and comparison safeguards
+
+The following partition boundaries remain mandatory:
+
+- Configuration selection: cycles 6-12.
+- Calibration fitting: cycles 13-15.
+- Final historical evaluation: cycles 16-24.
+- Cycle 25: separate exploratory forecast.
+
+R22 ensemble-size and seed comparisons must use the same eligible
+training information, residual sequence, calendar positions and
+observation boundaries within each comparison.
+
+No calibration or final-evaluation cycle may influence configuration
+selection, R21 parameter fitting or EnKF seed selection.
+
+## 5. R26 - Calibration evidence interpretation
+
+Calibration fitting remains restricted to cycles 13-15 and the
+specified forecast origins.
+
+The report MUST distinguish:
+- Number of forecast errors.
+- Number of distinct forecast origins.
+- Number of distinct target cycles.
+- Number of observations contributing to each horizon.
+- Empirical coverage and interval width.
+- Evidence limitations caused by dependence between origins or
+  observations from the same cycle.
+
+A large number of forecast errors from a small number of cycles must
+not be represented as an equivalent number of independent cycle
+replications.
+
+If independent cycle evidence is insufficient, the result remains
+UNRESOLVED_CALIBRATION_EVIDENCE. Empirical coverage alone does not
+establish guaranteed or generally validated coverage.
+
+## 6. R32 - Executable acceptance enforcement
+
+R32's existing owner-approved four-condition policy remains unchanged.
+
+A dedicated V3 evaluator MUST compare A1 (KF) and A2 (EnKF)
+independently against A0 using identical eligible origins and targets.
+
+For each candidate, all four conditions are mandatory:
+
+1. Candidate MAE is strictly lower than A0 MAE.
+2. Candidate RMSE is equal to or lower than A0 RMSE.
+3. Candidate peak-amplitude error is equal to or lower than A0.
+4. Candidate peak-timing error is equal to or lower than A0.
+
+The evaluator MUST:
+
+- Calculate each comparison from the same matched evaluation records.
+- Reject or mark unresolved any comparison with missing, non-finite,
+  or uncomputable required metrics.
+- Treat equality in MAE as failure.
+- Treat equality in RMSE, peak-amplitude error and peak-timing error
+  as passing that individual condition.
+- Report each condition separately.
+- Report an overall PASS only when all four conditions pass.
+- Evaluate A1 and A2 independently; one candidate's result must not
+  determine the other's acceptance.
+- Preserve metric values, matched-record counts, excluded-record
+  counts and exclusion reasons.
+
+The evaluator must have targeted synthetic tests for:
+- Strictly lower MAE.
+- Equal MAE failure.
+- Equal RMSE acceptance.
+- Equal peak-amplitude error acceptance.
+- Equal peak-timing error acceptance.
+- Failure of each individual condition.
+- Missing and non-finite metric handling.
+- Independent A1 and A2 decisions.
+- Identical-origin and target alignment.
+
+Until this evaluator is implemented and its tests pass, R32
+acceptance enforcement is NOT ESTABLISHED. Metric reporting alone
+does not constitute acceptance.
+
+No numerical non-inferiority margin is introduced by this revision.
+
+## 7. Required implementation and review evidence
+
+Before protocol freeze, the review package must contain:
+
+- Evidence that KF, EnKF and R21 use the approved initialization
+  convention without double assimilation.
+- Tests for first-residual initialization and subsequent updates.
+- Tests for missing calendar positions and cycle resets.
+- Tests for R21 normalized initialization and likelihood handling.
+- A dedicated R32 evaluator and its targeted tests.
+- R26 evidence-sufficiency diagnostics.
+- Full synthetic regression results.
+- Source, input and protocol hash verification.
+- Historical artifact preservation audit.
+
+## 8. Status
+
+This revision is a controlled draft clarification only.
+
+It does not establish that the implementation requirements have passed.
+It does not constitute protocol freeze, scientific acceptance, or
+execution authorization.
+
+R29 authorization and every R30 gate remain mandatory.
+Babcock-Leighton integration remains outside the authorized scope.
+
+END OF CONTROLLED REVISION 1.6
+
+==========================================================================================
+FILE: reports\model_development_v3\protocols\corrections\R21_Option_A_Shared_Physical_QR.md
+==========================================================================================
+BYTES: 1630
+SHA256: 5CBC56516B49A6A2E731D352006B69404C989FEDC6097C856613FCC3F9F68B4F
+
+# R21 Protocol Correction Record — Option A
+
+Status: Owner-approved interpretation; implementation requires validation.
+Scope: R21 synthetic/software validation only.
+
+## Owner decision
+
+The owner approved Option A: estimate one shared physical q and r across
+eligible training residual sequences, while applying sequence-specific
+scale-aware normalization.
+
+This correction does not authorize historical execution, forecasting,
+protocol freeze, or any Babcock-Leighton integration.
+
+## Mathematical specification
+
+For sequence i with training-only robust scale s_i:
+
+z_i = y_i / s_i
+
+Q_i(normalized) = (q_physical / s_i^2) *
+                  [[1, 1/2], [1/2, 1]]
+
+R_i(normalized) = r_physical / s_i^2
+

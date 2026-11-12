@@ -1,0 +1,130 @@
+{
+  "execution_scope_status": "BLOCKED_PENDING_PRODUCTION_ENGINE_AUDIT",
+  "historical_model_execution": false,
+  "preflight": {
+    "authorization_file": "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\R30_EXECUTION_AUTHORIZATION.json",
+    "authorization_gate": null,
+    "babcock_leighton_authorized": false,
+    "calibration_status": "EVIDENCE_LIMITED_NOT_VALIDATED",
+    "identifiability": "NOT_ESTABLISHED",
+    "inputs": {
+      "cycle_metadata_sha256": "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25",
+      "monthly_sha256": "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194",
+      "protocol_sha256": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048"
+    },
+    "model_execution_performed": false,
+    "scientific_acceptance": "NOT_GRANTED",
+    "scope_directories": [
+      {
+        "directory": "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\01_configuration_selection",
+        "scope_id": "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+      },
+      {
+        "directory": "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\02_calibration",
+        "scope_id": "V3_R30_C13_C15_CALIBRATION_20261111_220209_UTC"
+      },
+      {
+        "directory": "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\03_historical_backtesting",
+        "scope_id": "V3_R30_C16_C24_BACKTEST_20261111_220209_UTC"
+      },
+      {
+        "directory": "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\04_cycle25_exploratory",
+        "scope_id": "V3_R30_C25_EXPLORATORY_20261111_220209_UTC"
+      },
+      {
+        "directory": "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\05_kf_enkf_comparison",
+        "scope_id": "V3_R30_KF_ENKF_COMPARE_20261111_220209_UTC"
+      }
+    ],
+    "source_hash_limitation": "Current source hashes are recorded, but no independent approved source-hash baseline is asserted by this runner.",
+    "source_syntax_checks": [
+      {
+        "path": "src/v3/solarshield_v3_orchestration.py",
+        "sha256_at_check": "332E51CAD5EEB166BD1A06C935AD44127B4B184A4458C9A8C238CBF3768AB988",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_forecasting.py",
+        "sha256_at_check": "5B90BFD27AA50656297FED92B998A41DFBA12AA9A065D303F2794F95A695EAD7",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_forecast_integration.py",
+        "sha256_at_check": "80F1AE74DAEF8AE1F27985252F171C26FB09394CB9F4DBB2E01B4AAD2CF94552",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_calibration.py",
+        "sha256_at_check": "42983FDC4A0BAC2307E9A1BAEF7218D2F4D2AA2E6207D08CFDD91B7860E95851",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_noise_estimation.py",
+        "sha256_at_check": "8F1BBECEB5CD32B970EB3F15CBC27F26629426D6BC337FD085CFAC6BF4E1F3CF",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_cycle_detection.py",
+        "sha256_at_check": "52DB9A3FB61EF523E4177FADE855A3BE24687EC84024F3B9799BD1EC8AD921A7",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_dtw.py",
+        "sha256_at_check": "6982E96ABA36C9A03C8B5927F84E4C50A06CD8559913426701516C6A4F26BE21",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_peaks.py",
+        "sha256_at_check": "263CBF32493138D016D0D09D3FF456FFF83599AC5136D847E4961894256DBA6D",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_losses.py",
+        "sha256_at_check": "09C03C1B7F58589B02614F74F21C23CAC3498834AC9C0E0C88AAE3C2F5567910",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_acceptance.py",
+        "sha256_at_check": "8E47DF91AA8FA65A73FE86BB875AF45CF9D882E971D0C699707034C5CBDBED60",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_kalman.py",
+        "sha256_at_check": "EFE4CB78194CBDE4546A8D7AD1B8BA39AA372DD936537D7D07B1127D6156D5B7",
+        "syntax": "PASS"
+      },
+      {
+        "path": "src/v3/solarshield_v3_enkf.py",
+        "sha256_at_check": "92F6171C5FB6C15EC0F2817B4DE2CD83E5D71D97FD49E451249715CC6102EB64",
+        "syntax": "PASS"
+      }
+    ],
+    "status": "PREFLIGHT_PASS"
+  },
+  "pytest_regression": {
+    "command": [
+      "R:\\SolarShield AI\\.venv-astropy\\Scripts\\python.exe",
+      "-m",
+      "pytest",
+      "-q",
+      "tests/v3",
+      "src/v3/test_v3_acceptance.py"
+    ],
+    "return_code": 0,
+    "stderr": "",
+    "stdout": ".................................................................... [ 36%]\n.....................................................................................................................         [100%]\n185 passed, 23 subtests passed in 35.26s\n"
+  },
+  "runner": "run_v3_r30_runner_v4.py",
+  "synthetic_smoke": {
+    "cycle_id": 6,
+    "dtw_distance_finite": true,
+    "enkf_ensemble_size": 100,
+    "enkf_initialized_at": 7,
+    "forecast_generated": false,
+    "historical_data_used": false,
+    "kf_initialized_at": 7,
+    "peak_detector_invoked": true,
+    "status": "SYNTHETIC_SMOKE_PASS"
+  },
+  "timestamp_utc": "2026-11-12T20:00:44.737893+00:00"
+}

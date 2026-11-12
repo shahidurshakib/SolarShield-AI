@@ -1,0 +1,106 @@
+﻿SOLARSHIELD-AI V2-007 ERROR DECOMPOSITION
+Generated: 11/04/2026 14:36:21
+Prediction rows: 16093
+Validated folds: 133
+
+===== CANDIDATE ERROR DECOMPOSITION =====
+
+Candidate: A4-S1
+Folds: 19
+MAE: 37.886
+Mean absolute peak error: 60.5813
+Mean signed peak bias: 0.33
+Mean absolute amplitude component: 22.3588
+Mean absolute shape component: 30.8416
+Normalized shape MAE: 0.14157
+Mean peak shift: 10
+
+Candidate: A2-S1
+Folds: 19
+MAE: 39.6053
+Mean absolute peak error: 70.8673
+Mean signed peak bias: -2.129
+Mean absolute amplitude component: 26.4464
+Mean absolute shape component: 29.7509
+Normalized shape MAE: 0.14157
+Mean peak shift: 10
+
+Candidate: A1-S1
+Folds: 19
+MAE: 40.0611
+Mean absolute peak error: 65.7657
+Mean signed peak bias: 7.8192
+Mean absolute amplitude component: 23.4314
+Mean absolute shape component: 32.8317
+Normalized shape MAE: 0.14157
+Mean peak shift: 10
+
+Candidate: A3-S1
+Folds: 19
+MAE: 40.928
+Mean absolute peak error: 65.962
+Mean signed peak bias: 5.1688
+Mean absolute amplitude component: 23.6843
+Mean absolute shape component: 32.001
+Normalized shape MAE: 0.14157
+Mean peak shift: 10
+
+Candidate: A1-S4
+Folds: 19
+MAE: 41.2568
+Mean absolute peak error: 65.7657
+Mean signed peak bias: 7.8192
+Mean absolute amplitude component: 23.4314
+Mean absolute shape component: 34.0142
+Normalized shape MAE: 0.14678
+Mean peak shift: 11.37
+
+Candidate: A1-S3
+Folds: 19
+MAE: 43.2926
+Mean absolute peak error: 65.7657
+Mean signed peak bias: 7.8192
+Mean absolute amplitude component: 23.4314
+Mean absolute shape component: 36.3666
+Normalized shape MAE: 0.15718
+Mean peak shift: 11.16
+
+Candidate: A1-S2
+Folds: 19
+MAE: 45.256
+Mean absolute peak error: 65.7657
+Mean signed peak bias: 7.8192
+Mean absolute amplitude component: 23.4314
+Mean absolute shape component: 38.1741
+Normalized shape MAE: 0.16482
+Mean peak shift: 12.84
+
+===== RISE VS DECAY =====
+A1-S1: Rise MAE=40.9611; Decay MAE=36.6441
+A2-S1: Rise MAE=40.7726; Decay MAE=37.8478
+A3-S1: Rise MAE=40.7761; Decay MAE=39.2832
+A4-S1: Rise MAE=38.8444; Decay MAE=35.5167
+A1-S2: Rise MAE=43.9694; Decay MAE=42.8402
+A1-S3: Rise MAE=43.0307; Decay MAE=40.2406
+A1-S4: Rise MAE=42.2595; Decay MAE=37.4089
+
+===== WORST 15 FOLDS =====
+6 | A1-S2 | MAE=101.1554 | PeakError=139.085 | ShapeMAE=0.2695 | PeakShift=25
+6 | A1-S3 | MAE=101.1554 | PeakError=139.085 | ShapeMAE=0.2695 | PeakShift=25
+6 | A1-S4 | MAE=93.51 | PeakError=139.085 | ShapeMAE=0.25114 | PeakShift=25
+6 | A1-S1 | MAE=80.7492 | PeakError=139.085 | ShapeMAE=0.21205 | PeakShift=4
+20 | A2-S1 | MAE=80.3961 | PeakError=169.62 | ShapeMAE=0.08591 | PeakShift=5
+12 | A1-S2 | MAE=75.5168 | PeakError=112.2375 | ShapeMAE=0.16536 | PeakShift=14
+6 | A3-S1 | MAE=73.7086 | PeakError=122.4892 | ShapeMAE=0.21205 | PeakShift=4
+12 | A3-S1 | MAE=72.3503 | PeakError=130.0175 | ShapeMAE=0.14799 | PeakShift=17
+24 | A1-S2 | MAE=71.227 | PeakError=98.615 | ShapeMAE=0.16317 | PeakShift=15
+12 | A2-S1 | MAE=70.7685 | PeakError=126.45 | ShapeMAE=0.14799 | PeakShift=17
+12 | A1-S3 | MAE=68.991 | PeakError=112.2375 | ShapeMAE=0.15178 | PeakShift=14
+24 | A1-S4 | MAE=68.0104 | PeakError=98.615 | ShapeMAE=0.15092 | PeakShift=15
+12 | A4-S1 | MAE=67.5761 | PeakError=119.2498 | ShapeMAE=0.14799 | PeakShift=17
+24 | A1-S3 | MAE=67.362 | PeakError=98.615 | ShapeMAE=0.14881 | PeakShift=15
+24 | A3-S1 | MAE=66.615 | PeakError=100.839 | ShapeMAE=0.14231 | PeakShift=4
+
+NOTE: Amplitude and shape components are mean absolute component magnitudes.
+They are not additive MAE percentages because signed components can cancel.
+Rise/decay split uses the actual peak index as the boundary.

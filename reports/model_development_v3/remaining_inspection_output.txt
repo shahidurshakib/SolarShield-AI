@@ -1,0 +1,1907 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261112051940
+Username: SHAHIDUR_RAHMAN\msr15
+RunAs User: SHAHIDUR_RAHMAN\msr15
+Configuration Name: 
+Machine: SHAHIDUR_RAHMAN (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\msr15\AppData\Local\Programs\Microsoft VS Code\c4453f8ea4\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 8508
+PSVersion: 5.1.26100.9818
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9818
+BuildVersion: 10.0.26100.9818
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is R:\SolarShield AI\reports\model_development_v3\remaining_inspection_output.txt
+
+========== FILE: src\solarshield_cycle_shapes.py ==========
+--- SOURCE (maximum 20000 characters) ---
+from pathlib import Path
+import hashlib
+
+import numpy as np
+import pandas as pd
+
+
+PHASE_POINTS = 121
+COMPLETED_CYCLES = tuple(range(1, 25))
+
+
+class CyclePreparationError(ValueError):
+    """Raised when shared source data cannot be safely interpreted."""
+
+
+def sha256_file(path):
+    digest = hashlib.sha256()
+    with Path(path).open("rb") as handle:
+        for block in iter(lambda: handle.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def month_diff(start, end):
+    return (end.year - start.year) * 12 + end.month - start.month
+
+
+def prepare_cycle_curves(monthly_path, cycle_path, phase_points=PHASE_POINTS):
+    """
+    Prepare completed solar-cycle curves using one shared V2 convention.
+
+    Returns:
+        curves: {cycle_number: 1D numpy array}
+        durations: {cycle_number: float}
+        raw_peaks: {cycle_number: float}
+        raw_peak_indices: {cycle_number: int}
+        source_errors: {cycle_number: reason}
+        phase_grid: 1D numpy array
+        monthly_sha256, cycle_sha256
+
+    Invalid individual cycles are recorded in source_errors.
+    Invalid global source structure raises CyclePreparationError.
+    No model fitting or experiment output is performed.
+    """
+    if not isinstance(phase_points, int) or phase_points < 2:
+        raise CyclePreparationError("phase_points must be an integer >= 2.")
+
+    monthly_path = Path(monthly_path)
+    cycle_path = Path(cycle_path)
+
+    if not monthly_path.is_file():
+        raise CyclePreparationError(f"Monthly dataset not found: {monthly_path}")
+    if not cycle_path.is_file():
+        raise CyclePreparationError(f"Cycle summary not found: {cycle_path}")
+
+    monthly_hash = sha256_file(monthly_path)
+    cycle_hash = sha256_file(cycle_path)
+
+    monthly = pd.read_csv(monthly_path)
+    cycles = pd.read_csv(cycle_path)
+
+    required_monthly = {"month_start", "ssn"}
+    required_cycles = {
+        "cycle_number",
+        "status",
+        "published_minimum_month",
+        "months_expected_min_to_min",
+    }
+
+    missing_monthly = required_monthly - set(monthly.columns)
+    missing_cycles = required_cycles - set(cycles.columns)
+
+    if missing_monthly:
+        raise CyclePreparationError(
+            f"Missing monthly columns: {sorted(missing_monthly)}"
+        )
+    if missing_cycles:
+        raise CyclePreparationError(
+            f"Missing cycle columns: {sorted(missing_cycles)}"
+        )
+
+    monthly["month_start"] = pd.to_datetime(
+        monthly["month_start"], errors="coerce"
+    )
+    monthly["ssn"] = pd.to_numeric(monthly["ssn"], errors="coerce")
+
+    if monthly["month_start"].isna().any():
+        raise CyclePreparationError("Monthly dataset contains invalid dates.")
+
+    if not monthly["month_start"].is_unique:
+        raise CyclePreparationError("Monthly dataset contains duplicate dates.")
+
+    if not monthly["month_start"].eq(
+        monthly["month_start"].dt.to_period("M").dt.to_timestamp()
+    ).all():
+        raise CyclePreparationError(
+            "Monthly dates must be normalized to month-start timestamps."
+        )
+
+    monthly = monthly.sort_values("month_start").reset_index(drop=True)
+
+    cycles["cycle_number"] = pd.to_numeric(
+        cycles["cycle_number"], errors="coerce"
+    )
+    cycles["published_minimum_month"] = pd.to_datetime(
+        cycles["published_minimum_month"], errors="coerce"
+    )
+    cycles["months_expected_min_to_min"] = pd.to_numeric(
+        cycles["months_expected_min_to_min"], errors="coerce"
+    )
+
+    if cycles["cycle_number"].isna().any():
+        raise CyclePreparationError("Cycle summary contains invalid cycle numbers.")
+
+    cycle_numbers = cycles["cycle_number"].to_numpy(dtype=float)
+
+    if not np.isfinite(cycle_numbers).all():
+        raise CyclePreparationError(
+            "Cycle numbers must all be finite."
+        )
+
+    if not np.equal(cycle_numbers, np.floor(cycle_numbers)).all():
+        raise CyclePreparationError(
+            "Cycle numbers must all be integers."
+        )
+
+    if cycles["cycle_number"].duplicated().any():
+        raise CyclePreparationError("Cycle summary contains duplicate cycle numbers.")
+
+    cycle_rows = {
+        int(row["cycle_number"]): row
+        for _, row in cycles.iterrows()
+    }
+
+    if 25 not in cycle_rows:
+        raise CyclePreparationError("Cycle 25 row is required for Cycle 24 boundary.")
+
+    cycle25 = cycle_rows[25]
+    next_minimum = cycle25["published_minimum_month"]
+
+    if pd.isna(next_minimum):
+        raise CyclePreparationError(
+            "Cycle 25 published minimum is required as Cycle 24 boundary."
+        )
+
+    starts = {}
+    source_errors = {}
+
+    for cycle in COMPLETED_CYCLES:
+        row = cycle_rows.get(cycle)
+
+        if row is None:
+            source_errors[cycle] = "missing_cycle_summary_row"
+            continue
+
+        # Preserve a valid published minimum as a boundary independently
+        # of whether this cycle is eligible as a training/heldout curve.
+        if pd.isna(row["published_minimum_month"]):
+            source_errors[cycle] = "missing_published_minimum"
+            continue
+
+        starts[cycle] = row["published_minimum_month"]
+
+        if str(row["status"]).strip().lower() != "completed":
+            source_errors[cycle] = "cycle_not_marked_completed"
+            continue
+
+        if pd.isna(row["months_expected_min_to_min"]):
+            source_errors[cycle] = "missing_expected_duration"
+            continue
+
+        duration = float(row["months_expected_min_to_min"])
+        if not np.isfinite(duration) or not duration.is_integer() or duration < 2:
+            source_errors[cycle] = "invalid_expected_duration"
+            continue
+
+    starts[25] = next_minimum
+
+    date_index = monthly.set_index("month_start")
+    phase_grid = np.linspace(0.0, 1.0, phase_points)
+
+    curves = {}
+    durations = {}
+    raw_peaks = {}
+    raw_peak_indices = {}
+    raw_peak_months = {}
+    official_smoothed_max_strengths = {}
+    official_smoothed_max_months = {}
+
+    for cycle in COMPLETED_CYCLES:
+        if cycle in source_errors:
+            continue
+
+        if cycle not in starts or (cycle + 1) not in starts:
+            source_errors[cycle] = "missing_cycle_boundary"
+            continue
+
+        start = starts[cycle]
+        end = starts[cycle + 1]
+        row = cycle_rows[cycle]
+        expected_duration = int(row["months_expected_min_to_min"])
+
+        if pd.isna(start) or pd.isna(end) or end <= start:
+            source_errors[cycle] = "invalid_cycle_boundaries"
+            continue
+
+        if month_diff(start, end) != expected_duration:
+            source_errors[cycle] = "boundary_duration_mismatch"
+            continue
+
+        expected_months = pd.date_range(
+            start, end, freq="MS", inclusive="left"
+        )
+
+        segment = monthly.loc[
+            (monthly["month_start"] >= start)
+            & (monthly["month_start"] < end)
+        ].sort_values("month_start")
+
+        if segment["month_start"].tolist() != list(expected_months):
+            source_errors[cycle] = "missing_or_extra_monthly_rows"
+            continue
+
+        if len(segment) != expected_duration:
+            source_errors[cycle] = "observed_duration_mismatch"
+            continue
+
+        values = segment["ssn"].to_numpy(dtype=float)
+
+        if not np.isfinite(values).all():
+            source_errors[cycle] = "non_finite_monthly_ssn"
+            continue
+
+        source_phase = np.linspace(0.0, 1.0, len(values))
+        curves[cycle] = np.interp(phase_grid, source_phase, values)
+
+        peak_index = int(np.argmax(values))
+        durations[cycle] = float(expected_duration)
+        raw_peaks[cycle] = float(values[peak_index])
+        raw_peak_indices[cycle] = peak_index
+        raw_peak_months[cycle] = (
+            pd.Timestamp(segment.iloc[peak_index]["month_start"]).strftime("%Y-%m")
+        )
+
+        official_strength = row.get("official_smoothed_max_sn")
+        official_month = row.get("official_smoothed_max_month")
+
+        official_smoothed_max_strengths[cycle] = (
+            None if pd.isna(official_strength) else float(official_strength)
+        )
+        official_smoothed_max_months[cycle] = (
+            None
+            if pd.isna(official_month) or not str(official_month).strip()
+            else str(official_month)[:7]
+        )
+
+    return {
+        "curves": curves,
+        "durations": durations,
+        "raw_peaks": raw_peaks,
+        "raw_peak_indices": raw_peak_indices,
+        "raw_peak_months": raw_peak_months,
+        "official_smoothed_max_strengths": official_smoothed_max_strengths,
+        "official_smoothed_max_months": official_smoothed_max_months,
+        "source_errors": source_errors,
+        "phase_grid": phase_grid,
+        "phase_points": phase_points,
+        "monthly_sha256": monthly_hash,
+        "cycle_sha256": cycle_hash,
+        "cycle_boundary_convention": (
+            "Published minimum inclusive; next published minimum exclusive. "
+            "Cycle 25 minimum is used only as Cycle 24 end boundary."
+        ),
+        "phase_convention": (
+            "First observed month maps to phase 0; last observed month "
+            "before the next minimum maps to phase 1; linear interpolation."
+        ),
+    }
+
+========== FILE: src\solarshield_loaders.py ==========
+--- SOURCE (maximum 20000 characters) ---
+"""Read-only loaders for SolarShield-AI raw data.
+
+-1 is a "no value" sentinel in some columns (sunspot counts and indices cannot
+be negative). These loaders turn -1 into NaN IN MEMORY ONLY, in explicitly
+listed columns, and report how many values were masked. Files under data/ are
+never written. Nothing is imputed.
+"""
+from __future__ import annotations
+import json
+from pathlib import Path
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+RAW = ROOT / "data" / "raw"
+SENTINEL = -1
+
+SILSO_COLS = ["year", "month", "decimal_year", "ssn", "ssn_std", "n_obs", "definitive"]
+SILSO_SENTINEL_COLS = ["ssn_std", "n_obs"]
+NOAA_OBSERVED_SENTINEL_COLS = ["smoothed_ssn", "observed_swpc_ssn", "smoothed_swpc_ssn", "f10.7", "smoothed_f10.7"]
+
+
+def mask_sentinels(df: pd.DataFrame, columns, sentinel=SENTINEL):
+    """Return (copy with sentinel -> NaN in `columns`, {column: count masked})."""
+    out = df.copy()
+    counts = {}
+    for c in columns:
+        m = out[c] == sentinel
+        counts[c] = int(m.sum())
+        out[c] = out[c].astype("float64").mask(m, np.nan)
+    return out, counts
+
+
+def load_silso(raw_dir: Path = RAW):
+    df = pd.read_csv(raw_dir / "SILSO_Monthly_Sunspot_Data.csv", sep=";", header=None,
+                     names=SILSO_COLS, skipinitialspace=True)
+    df, counts = mask_sentinels(df, SILSO_SENTINEL_COLS)
+    df["month_start"] = pd.to_datetime(dict(year=df["year"], month=df["month"], day=1))
+    return df, counts
+
+
+def load_noaa_observed(raw_dir: Path = RAW):
+    with open(raw_dir / "NOAA_Observed_Solar_Cycle.json", encoding="utf-8") as fh:
+        df = pd.DataFrame(json.load(fh))
+    df, counts = mask_sentinels(df, NOAA_OBSERVED_SENTINEL_COLS)
+    df["month_start"] = pd.to_datetime(df["time-tag"] + "-01")
+    return df, counts
+
+
+def load_solar_cycle_reference(root: Path = ROOT):
+    """Standardized cycle table; dates stay month-precision strings (YYYY-MM), blanks -> NA."""
+    return pd.read_csv(root / "data" / "metadata" / "solar_cycle_reference.csv",
+                       dtype=str, keep_default_na=False).replace("", pd.NA)
+
+========== FILE: scripts\development\run_task1_monthly_baselines.py ==========
+--- SOURCE (maximum 20000 characters) ---
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib
+import json
+import platform
+import sys
+
+import pandas as pd
+import numpy as np
+
+ROOT = Path(__file__).resolve().parents[2]
+DATA_PATH = ROOT / "data" / "processed" / "sunspot_monthly_clean.csv"
+START = pd.Timestamp("1976-01-01")
+LAST_ORIGIN = pd.Timestamp("2025-06-01")
+CUTOFF = pd.Timestamp("2026-06-01")
+HORIZONS = (1, 3, 6, 12)
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for block in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def parse_bool(series):
+    result = series.astype(str).str.lower().map({
+        "true": True, "false": False, "1": True, "0": False
+    })
+    if result.isna().any():
+        raise ValueError("Unrecognized is_provisional value.")
+    return result.astype(bool)
+
+
+def main():
+    if not DATA_PATH.is_file():
+        raise FileNotFoundError(DATA_PATH)
+
+    dataset_hash = sha256_file(DATA_PATH)
+    data = pd.read_csv(DATA_PATH, parse_dates=["month_start"])
+
+    required = {"month_start", "ssn", "is_provisional"}
+    if not required.issubset(data.columns):
+        raise ValueError(f"Missing columns: {required - set(data.columns)}")
+    if data["month_start"].isna().any() or data["month_start"].duplicated().any():
+        raise ValueError("Missing or duplicate month_start values.")
+
+    data = data.sort_values("month_start").reset_index(drop=True)
+    if data["ssn"].isna().any():
+        raise ValueError("Missing SSN values.")
+    data["is_provisional"] = parse_bool(data["is_provisional"])
+
+    expected = pd.date_range(
+        data["month_start"].iloc[0], data["month_start"].iloc[-1], freq="MS"
+    )
+    if data["month_start"].tolist() != list(expected):
+        raise ValueError("Monthly dates are not continuous month-start dates.")
+
+    indexed = data.set_index("month_start", drop=False)
+    origins = pd.date_range(START, LAST_ORIGIN, freq="MS")
+    if not origins.isin(indexed.index).all():
+        raise ValueError("One or more forecast origins are missing.")
+
+    records = []
+    excluded = []
+    for origin in origins:
+        training = data.loc[data["month_start"] <= origin, "ssn"].astype(float)
+        if len(training) < 2:
+            raise ValueError(f"Insufficient training data at {origin:%Y-%m}")
+
+        # Non-seasonal MASE denominator: mean absolute first difference
+        # calculated strictly from observations available through origin.
+        mase_scale = float(training.diff().abs().dropna().mean())
+        if not np.isfinite(mase_scale) or mase_scale <= 0:
+            raise ValueError(f"Invalid MASE scale at {origin:%Y-%m}")
+
+        for horizon in HORIZONS:
+            target = origin + pd.DateOffset(months=horizon)
+            if target > CUTOFF:
+                excluded.append({
+                    "origin": origin, "horizon": horizon,
+                    "target_month": target, "reason": "beyond_cutoff"
+                })
+                continue
+            if target not in indexed.index:
+                excluded.append({
+                    "origin": origin, "horizon": horizon,
+                    "target_month": target, "reason": "target_missing"
+                })
+                continue
+
+            target_row = indexed.loc[target]
+            if bool(target_row["is_provisional"]):
+                excluded.append({
+                    "origin": origin, "horizon": horizon,
+                    "target_month": target, "reason": "provisional_target"
+                })
+                continue
+
+            persistence_source = origin
+            seasonal_source = target - pd.DateOffset(months=12)
+            for source in (persistence_source, seasonal_source):
+                if source > origin:
+                    raise ValueError(
+                        f"Leakage: source {source} exceeds origin {origin}"
+                    )
+                if source not in indexed.index:
+                    raise ValueError(f"Missing baseline source month: {source}")
+
+            actual = float(target_row["ssn"])
+            predictions = {
+                "persistence": (
+                    float(indexed.loc[persistence_source, "ssn"]),
+                    persistence_source
+                ),
+                "seasonal_naive_12": (
+                    float(indexed.loc[seasonal_source, "ssn"]),
+                    seasonal_source
+                ),
+            }
+
+            for model, (prediction, source_month) in predictions.items():
+                if not np.isfinite(prediction):
+                    raise ValueError("Non-finite baseline prediction.")
+                records.append({
+                    "origin": origin,
+                    "training_start": data["month_start"].iloc[0],
+                    "training_cutoff": origin,
+                    "training_size": len(training),
+                    "target_month": target,
+                    "horizon_months": horizon,
+                    "model": model,
+                    "prediction": prediction,
+                    "actual_ssn": actual,
+                    "source_month": source_month,
+                    "source_ssn": prediction,
+                    "absolute_error": abs(actual - prediction),
+                    "squared_error": (actual - prediction) ** 2,
+                    "mase_scale_training_only": mase_scale,
+                    "scaled_absolute_error": abs(actual - prediction) / mase_scale,
+                    "dataset_sha256": dataset_hash,
+                })
+
+    forecasts = pd.DataFrame(records)
+    if forecasts.empty:
+        raise ValueError("No eligible forecasts were generated.")
+
+    # Check the two baselines coincide at the 12-month horizon.
+    h12 = forecasts.loc[forecasts["horizon_months"] == 12]
+    pivot = h12.pivot(index="origin", columns="model", values="prediction")
+    if not np.allclose(
+        pivot["persistence"].to_numpy(),
+        pivot["seasonal_naive_12"].to_numpy(),
+    ):
+        raise ValueError("12-month baseline equality check failed.")
+
+    summary_rows = []
+    for (horizon, model), group in forecasts.groupby(
+        ["horizon_months", "model"], sort=True
+    ):
+        summary_rows.append({
+            "horizon_months": int(horizon),
+            "model": model,
+            "n_forecasts": len(group),
+            "MAE": float(group["absolute_error"].mean()),
+            "RMSE": float(np.sqrt(group["squared_error"].mean())),
+            "MASE": float(group["scaled_absolute_error"].mean()),
+            "mean_training_size": float(group["training_size"].mean()),
+        })
+    summary = pd.DataFrame(summary_rows)
+
+    # Positive skill means lower MAE than the named reference baseline.
+    mae = summary.pivot(index="horizon_months", columns="model", values="MAE")
+    skill_rows = []
+    for horizon in mae.index:
+        p_mae = float(mae.loc[horizon, "persistence"])
+        s_mae = float(mae.loc[horizon, "seasonal_naive_12"])
+        for model in ("persistence", "seasonal_naive_12"):
+            model_mae = float(mae.loc[horizon, model])
+            skill_rows.append({
+                "horizon_months": int(horizon),
+                "model": model,
+                "skill_vs_persistence": (
+                    1.0 - model_mae / p_mae if p_mae > 0 else np.nan
+                ),
+                "skill_vs_seasonal_naive_12": (
+                    1.0 - model_mae / s_mae if s_mae > 0 else np.nan
+                ),
+            })
+    skill = pd.DataFrame(skill_rows)
+
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    outdir = ROOT / "reports" / "development" / "v1_1" / f"task1_monthly_{stamp}"
+    outdir.mkdir(parents=True, exist_ok=False)
+
+    forecasts.to_csv(outdir / "forecast_records.csv", index=False)
+    summary.to_csv(outdir / "metrics_by_horizon.csv", index=False)
+    skill.to_csv(outdir / "baseline_relative_skill.csv", index=False)
+    pd.DataFrame(excluded).to_csv(outdir / "excluded_targets.csv", index=False)
+
+    metadata = {
+        "protocol": "SolarShield-AI Forecasting Strategy v1.1",
+        "task": "Task 1 monthly baseline hindcasts",
+        "dataset_path": str(DATA_PATH.relative_to(ROOT)),
+        "dataset_sha256": dataset_hash,
+        "source_version_note": (
+            "Current processed SILSO dataset; archived historical vintages "
+            "not established. Results are retrospective hindcasts."
+        ),
+        "primary_cutoff": str(CUTOFF.date()),
+        "first_origin": str(START.date()),
+        "last_origin": str(LAST_ORIGIN.date()),
+        "horizons_months": list(HORIZONS),
+        "training_rule": "Expanding window, observations through origin inclusive",
+        "target_rule": "Targets after cutoff or provisional targets excluded",
+        "mase_definition": (
+            "Mean absolute first difference of training SSN through each origin; "
+            "per-forecast scaled absolute errors averaged by horizon and model"
+        ),
+        "models": {
+            "persistence": "Forecast equals SSN at forecast origin",
+            "seasonal_naive_12": "Forecast equals SSN 12 calendar months before target",
+        },
+        "software": {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "pandas": pd.__version__,
+            "numpy": np.__version__,
+        },
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "forecast_records": len(forecasts),
+        "excluded_target_records": len(excluded),
+        "outputs": [
+            "forecast_records.csv", "metrics_by_horizon.csv",
+            "baseline_relative_skill.csv", "excluded_targets.csv"
+        ],
+        "limitations": [
+            "Overlapping-origin errors are dependent.",
+            "Historical data revisions prevent strict real-time simulation.",
+            "Baselines are comparators, not evidence of model superiority."
+        ],
+    }
+    (outdir / "run_metadata.json").write_text(
+        json.dumps(metadata, indent=2), encoding="utf-8"
+    )
+
+    print("PASS: Task 1 baseline hindcasts completed.")
+    print(f"Output directory: {outdir}")
+    print(f"Forecast records: {len(forecasts)}")
+    print(f"Excluded target records: {len(excluded)}")
+    print("\nMetrics by horizon:")
+    print(summary.to_string(index=False))
+    print("\nBaseline-relative skill:")
+    print(skill.to_string(index=False))
+    print("\n12-month baseline equality: PASS")
+    print("No old selection artifacts were read or written by this runner.")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"FAILED: {exc}", file=sys.stderr)
+        raise
+
+========== FILE: scripts\development\run_task2_cycle_analogs.py ==========
+--- SOURCE (maximum 20000 characters) ---
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib
+import json
+import sys
+import platform
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[2]
+CYCLE_PATH = ROOT / "data" / "processed" / "solar_cycle_summary.csv"
+TARGETS = ("peak_strength", "peak_timing_months", "duration_months")
+
+
+def sha256_file(path):
+    h = hashlib.sha256()
+    with path.open("rb") as f:
+        for block in iter(lambda: f.read(1024 * 1024), b""):
+            h.update(block)
+    return h.hexdigest()
+
+
+def main():
+    if not CYCLE_PATH.is_file():
+        raise FileNotFoundError(CYCLE_PATH)
+
+    source_hash = sha256_file(CYCLE_PATH)
+    df = pd.read_csv(CYCLE_PATH)
+
+    required = {
+        "cycle_number", "status", "published_minimum_month",
+        "official_smoothed_max_month", "official_smoothed_max_sn",
+        "months_expected_min_to_min",
+    }
+    if not required.issubset(df.columns):
+        raise ValueError(f"Missing columns: {required - set(df.columns)}")
+
+    df["cycle_number"] = pd.to_numeric(df["cycle_number"], errors="raise")
+    df["published_minimum_month"] = pd.to_datetime(
+        df["published_minimum_month"], errors="coerce"
+    )
+    df["official_smoothed_max_month"] = pd.to_datetime(
+        df["official_smoothed_max_month"], errors="coerce"
+    )
+
+    complete = df.loc[
+        df["cycle_number"].between(1, 24)
+        & df["status"].eq("completed")
+    ].copy().sort_values("cycle_number")
+
+    if complete["cycle_number"].astype(int).tolist() != list(range(1, 25)):
+        raise ValueError("Expected exactly completed Cycles 1-24.")
+
+    if complete[
+        [
+            "published_minimum_month", "official_smoothed_max_month",
+            "official_smoothed_max_sn", "months_expected_min_to_min"
+        ]
+    ].isna().any().any():
+        raise ValueError("Missing published labels in completed cycles.")
+
+    complete["peak_strength"] = complete["official_smoothed_max_sn"].astype(float)
+    complete["peak_timing_months"] = (
+        (complete["official_smoothed_max_month"].dt.year
+         - complete["published_minimum_month"].dt.year) * 12
+        + complete["official_smoothed_max_month"].dt.month
+        - complete["published_minimum_month"].dt.month
+    ).astype(float)
+    complete["duration_months"] = complete["months_expected_min_to_min"].astype(float)
+
+    if (complete["peak_timing_months"] < 0).any():
+        raise ValueError("Peak month precedes the published cycle minimum.")
+    if (complete["duration_months"] <= 0).any():
+        raise ValueError("Non-positive cycle duration.")
+
+    records = []
+    for heldout in range(13, 25):
+        train = complete.loc[complete["cycle_number"] < heldout]
+        test = complete.loc[complete["cycle_number"] == heldout]
+        if len(test) != 1 or len(train) != heldout - 1:
+            raise ValueError(f"Invalid fold for Cycle {heldout}.")
+
+        actual_row = test.iloc[0]
+        for target in TARGETS:
+            values = train[target].astype(float).to_numpy()
+            actual = float(actual_row[target])
+            prediction = float(np.median(values))
+            lower = float(np.quantile(values, 0.10))
+            upper = float(np.quantile(values, 0.90))
+
+            records.append({
+                "heldout_cycle": heldout,
+                "training_cycles_start": int(train["cycle_number"].min()),
+                "training_cycles_end": int(train["cycle_number"].max()),
+                "training_cycle_count": len(train),
+                "target": target,
+                "actual": actual,
+                "prediction_median": prediction,
+                "absolute_error": abs(actual - prediction),
+                "squared_error": (actual - prediction) ** 2,
+                "interval_lower_q10": lower,
+                "interval_upper_q90": upper,
+                "interval_width": upper - lower,
+                "interval_covered": bool(lower <= actual <= upper),
+                "training_cycle_values_sha256": hashlib.sha256(
+                    np.asarray(values, dtype="<f8").tobytes()
+                ).hexdigest(),
+                "cycle_summary_sha256": source_hash,
+            })
+
+    forecasts = pd.DataFrame(records)
+    metrics = []
+    for target, group in forecasts.groupby("target", sort=False):
+        metrics.append({
+            "target": target,
+            "n_heldout_cycles": len(group),
+            "MAE": float(group["absolute_error"].mean()),
+            "RMSE": float(np.sqrt(group["squared_error"].mean())),
+            "q10_q90_empirical_coverage": float(group["interval_covered"].mean()),
+            "mean_interval_width": float(group["interval_width"].mean()),
+        })
+    metrics = pd.DataFrame(metrics)
+
+    stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    outdir = ROOT / "reports" / "development" / "v1_1" / f"task2_cycle_analogs_{stamp}"
+    outdir.mkdir(parents=True, exist_ok=False)
+
+    forecasts.to_csv(outdir / "cycle_hindcast_records.csv", index=False)
+    metrics.to_csv(outdir / "cycle_hindcast_metrics.csv", index=False)
+
+    metadata = {
+        "task": "Task 2 solar-cycle characteristic hindcasts",
+        "method": "Expanding-cycle median analog baseline",
+        "training_rule": "For held-out cycle c, train only on completed cycles 1..c-1",
+        "heldout_cycles": list(range(13, 25)),
+        "targets": list(TARGETS),
+        "peak_reference": "Published official_smoothed_max_sn and official_smoothed_max_month",
+        "timing_definition": "Elapsed calendar months from published minimum to published smoothed maximum",
+        "duration_definition": "Published months_expected_min_to_min",
+        "interval_definition": "Training-only empirical 10th and 90th percentiles; descriptive, not assumed calibrated",
+        "cycle_summary_sha256": source_hash,
+        "software": {
+            "python": sys.version,
+            "platform": platform.platform(),
+            "pandas": pd.__version__,
+            "numpy": np.__version__,
+        },
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "limitations": [
+            "Only 12 held-out cycles; metrics and interval coverage have substantial small-sample uncertainty.",
+            "Empirical intervals are not guaranteed to have nominal coverage.",
+            "Published cycle labels are used as supplied and are not recomputed from raw SSN.",
+        ],
+    }
+    (outdir / "run_metadata.json").write_text(
+        json.dumps(metadata, indent=2), encoding="utf-8"
+    )
+
+    print("Task 2 cycle analog hindcasts completed.")
+    print(f"Output directory: {outdir}")
+    print(f"Hindcast records: {len(forecasts)}")
+    print("\nMetrics:")
+    print(metrics.to_string(index=False))
+    print("\nCycle 25 excluded: PASS")
+    print("Training uses only cycles preceding each held-out cycle: PASS")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"FAILED: {exc}", file=sys.stderr)
+        raise
+
+========== FILE: scripts\development\validate_forecasting_protocol.py ==========
+--- SOURCE (maximum 20000 characters) ---
+from pathlib import Path
+import sys
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[2]
+MONTHLY_PATH = ROOT / "data" / "processed" / "sunspot_monthly_clean.csv"
+CYCLE_PATH = ROOT / "data" / "processed" / "solar_cycle_summary.csv"
+
+START = pd.Timestamp("1976-01-01")
+LAST_ORIGIN = pd.Timestamp("2025-06-01")
+CUTOFF = pd.Timestamp("2026-06-01")
+HORIZONS = (1, 3, 6, 12)
+
+
+def require(condition, message):
+    if not condition:
+        raise ValueError(message)
+
+
+def month_offset(origin, target):
+    return (target.year - origin.year) * 12 + target.month - origin.month
+
+
+def training_mase_scale(training_values, seasonal_period=1):
+    """MASE scale computed from training data only."""
+    values = pd.Series(training_values, dtype=float)
+    require(len(values) > seasonal_period,
+            "Insufficient training values for MASE scale.")
+    differences = values.diff(seasonal_period).dropna().abs()
+    require(len(differences) > 0, "Empty MASE denominator.")
+    scale = float(differences.mean())
+    require(pd.notna(scale) and scale > 0,
+            "MASE denominator is zero or invalid.")
+    return scale
+
+
+def main():
+    print("SolarShield-AI: read-only forecasting protocol validation")
+    print(f"Project root: {ROOT}")
+
+    monthly = pd.read_csv(MONTHLY_PATH, parse_dates=["month_start"])
+    cycles = pd.read_csv(CYCLE_PATH)
+
+    required_monthly = {
+        "month_start", "ssn", "is_provisional", "cycle_number"
+    }
+    require(required_monthly.issubset(monthly.columns),
+            f"Missing monthly columns: {required_monthly - set(monthly.columns)}")
+    require(monthly["month_start"].notna().all(), "Missing month_start.")
+    require(monthly["month_start"].is_unique, "Duplicate month_start values.")
+    require(monthly["ssn"].notna().all(), "Missing SSN values.")
+
+    monthly = monthly.sort_values("month_start").reset_index(drop=True)
+    expected_dates = pd.date_range(
+        monthly["month_start"].iloc[0],
+        monthly["month_start"].iloc[-1],
+        freq="MS",
+    )
+    require(
+        monthly["month_start"].tolist() == list(expected_dates),
+        "Monthly dates are not a continuous month-start sequence.",
+    )
+
+    monthly["is_provisional"] = (
+        monthly["is_provisional"].astype(str).str.lower().map(
+            {"true": True, "false": False, "1": True, "0": False}
+        )
+    )
+    require(monthly["is_provisional"].notna().all(),
+            "Unrecognized is_provisional values.")
+
+    indexed = monthly.set_index("month_start", drop=False)
+    origins = pd.date_range(START, LAST_ORIGIN, freq="MS")
+    require(origins.isin(indexed.index).all(),
+            "One or more planned forecast origins are absent.")
+
+    print(f"Monthly rows: {len(monthly)}")
+    print(f"Dataset range: {monthly['month_start'].min():%Y-%m} to "
+          f"{monthly['month_start'].max():%Y-%m}")
+    print(f"Planned monthly origins: {len(origins)}")
+
+    print("\nMonthly target and leakage checks")
+    for horizon in HORIZONS:
+        eligible = 0
+        provisional = 0
+        missing = 0
+        beyond_cutoff = 0
+        source_errors = 0
+
+        for origin in origins:
+            target = origin + pd.DateOffset(months=horizon)
+
+            if month_offset(origin, target) != horizon or target <= origin:
+                source_errors += 1
+                continue
+
+            if target > CUTOFF:
+                beyond_cutoff += 1
+                continue
+
+            if target not in indexed.index:
+                missing += 1
+                continue
+
+            target_row = indexed.loc[target]
+            if bool(target_row["is_provisional"]):
+                provisional += 1
+                continue
+
+            eligible += 1
+
+            # Validate baseline predictor dates against forecast origin.
+            persistence_source = origin
+            seasonal_source = target - pd.DateOffset(months=12)
+
+            if persistence_source > origin or seasonal_source > origin:
+                source_errors += 1
+            if persistence_source not in indexed.index:
+                source_errors += 1
+            if seasonal_source not in indexed.index:
+                source_errors += 1
+
+        require(source_errors == 0,
+                f"Leakage or alignment errors found at horizon {horizon}.")
+        print(
+            f"h={horizon:2d}: eligible={eligible}, "
+            f"provisional={provisional}, missing={missing}, "
+            f"beyond_cutoff={beyond_cutoff}, source_errors={source_errors}"
+        )
+
+    # Verify MASE scaling can be calculated from a training prefix only.
+    example_origin = pd.Timestamp("2000-01-01")
+    training = monthly.loc[
+        monthly["month_start"] <= example_origin, "ssn"
+    ]
+    scale = training_mase_scale(training)
+    require(pd.notna(scale) and scale > 0, "Invalid example MASE scale.")
+    print(
+        f"\nTraining-only MASE scale check: PASS "
+        f"(example cutoff={example_origin:%Y-%m}, "
+        f"training_rows={len(training)})"
+    )
+
+    required_cycle = {
+        "cycle_number", "status", "published_minimum_month",
+        "official_smoothed_max_month", "official_smoothed_max_sn",
+        "months_expected_min_to_min",
+    }
+    require(required_cycle.issubset(cycles.columns),
+            f"Missing cycle columns: {required_cycle - set(cycles.columns)}")
+
+    complete = cycles.loc[
+        cycles["cycle_number"].between(1, 24)
+        & cycles["status"].eq("completed")
+    ].copy().sort_values("cycle_number")
+
+    require(
+        complete["cycle_number"].astype(int).tolist() == list(range(1, 25)),
+        "Completed-cycle labels are not exactly Cycles 1-24.",
+    )
+
+    for col in (
+        "published_minimum_month",
+        "official_smoothed_max_month",
+        "official_smoothed_max_sn",
+        "months_expected_min_to_min",
+    ):
+        require(complete[col].notna().all(),
+                f"Missing required completed-cycle label: {col}")
+
+    require(
+        not ((cycles["cycle_number"] == 25)
+             & (cycles["status"] == "completed")).any(),
+        "Cycle 25 must not be treated as a completed cycle.",
+    )
+
+    print("\nCycle-wise fold eligibility")
+    for held_out in range(13, 25):
+        training_cycles = list(range(1, held_out))
+        require(max(training_cycles) < held_out,
+                f"Cycle leakage at holdout {held_out}.")
+        print(
+            f"holdout={held_out:2d}; training="
+            f"{training_cycles[0]}-{training_cycles[-1]}; "
+            f"training_count={len(training_cycles)}"
+        )
+
+    print("\nPASS: validation checks completed.")
+    print("No models trained. No forecast or report files written.")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"VALIDATION FAILED: {exc}", file=sys.stderr)
+        raise
+
+========== FILE: scripts\run_backtesting.py ==========
+--- SOURCE (maximum 20000 characters) ---
+#!/usr/bin/env python
+"""Run leakage-safe chronological baseline forecasts for monthly SILSO SSN.
+
+Run from any directory:
+    python scripts/run_backtesting.py
+    python scripts/run_backtesting.py --exclude-provisional-targets
+
+Only the prepared monthly SILSO series is read. Forecasts are evaluated for
+target months from January 2016 through the latest prepared observation.
+"""
+from __future__ import annotations
+
+import argparse
+import hashlib
+import sys
+from pathlib import Path
+
+import matplotlib
+
+matplotlib.use("Agg")
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+INPUT_PATH = Path("data") / "processed" / "sunspot_monthly_clean.csv"
+EVALUATION_START = pd.Timestamp("2016-01-01")
+HORIZONS = (1, 3, 6, 12)
+MODELS = ("persistence", "seasonal_naive")
+
+
+def sha256(path: Path) -> str:
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def load_monthly(root: Path) -> pd.DataFrame:
+    data = pd.read_csv(
+        root / INPUT_PATH,
+        usecols=["month_start", "ssn", "is_provisional"],
+        parse_dates=["month_start"],
+    )
+    data["ssn"] = pd.to_numeric(data["ssn"], errors="coerce")
+    if data["is_provisional"].dtype != bool:
+        data["is_provisional"] = (
+            data["is_provisional"].astype("string").str.lower().map({"true": True, "false": False})
+        )
+    return data
+
+
+def validate_input(data: pd.DataFrame) -> list[tuple[str, str, str]]:
+    checks: list[tuple[str, str, str]] = []
+    dates = data["month_start"]
+    valid_dates = dates.notna().all() and (dates.dt.day == 1).all()
+    checks.append((
+        "PASS" if valid_dates else "FAIL",
+        "Valid month-start dates",
+        f"{len(data)} nonmissing dates, all on day 1" if valid_dates else "Missing or non-month-start dates found",
+    ))
+    month_index = dates.dt.year * 12 + dates.dt.month
+    steps = month_index.diff().dropna()
+    continuity = dates.is_monotonic_increasing and not dates.duplicated().any() and bool((steps == 1).all())
+    checks.append((
+        "PASS" if continuity else "FAIL",
+        "Unique consecutive monthly input",
+        "one row per consecutive month" if continuity else "duplicate months or monthly gaps found",
+    ))
+    target_valid = data["ssn"].notna().all() and (data["ssn"] >= 0).all()
+    checks.append((
+        "PASS" if target_valid else "FAIL",
+        "Valid SSN targets",
+        "ssn is present and nonnegative for every month" if target_valid else "missing or negative ssn value found",
+    ))
+    provisional_valid = data["is_provisional"].notna().all()
+    checks.append((
+        "PASS" if provisional_valid else "FAIL",
+        "Provisional flags present",
+        "every row has a provisional status" if provisional_valid else "missing provisional status found",
+    ))
+    return checks
+
+
+def build_predictions(
+    data: pd.DataFrame,
+    horizons: tuple[int, ...] = HORIZONS,
+    evaluation_start: pd.Timestamp = EVALUATION_START,
+    exclude_provisional_targets: bool = False,
+) -> pd.DataFrame:
+    """Build target-aligned forecasts at fixed monthly origins.
+
+    Seasonal naive uses the observed value 12 months before the target. Since
+    requested horizons are at most 12 months, this source is no later than
+    the forecast origin. At a 12-month horizon this definition equals
+    persistence; this is expected for a period-12 seasonal-naive forecast.
+    Persistence repeats the value at the origin.
+    """
+    ordered = data.sort_values("month_start").reset_index(drop=True)
+    dates = ordered["month_start"]
+    values = ordered["ssn"].to_numpy(dtype=float)
+    provisional = ordered["is_provisional"].to_numpy(dtype=bool)
+    start_idx = int(np.searchsorted(dates.to_numpy(), evaluation_start.to_datetime64()))
+    rows = []
+    for target_idx in range(start_idx, len(ordered)):
+        for horizon in horizons:
+            if horizon < 1 or horizon > 12:
+                raise ValueError("Supported forecast horizons must be between 1 and 12 months")
+            origin_idx = target_idx - horizon
+            seasonal_source_idx = target_idx - 12
+            if origin_idx < 0 or seasonal_source_idx < 0:
+                continue
+            origin_month = dates.iloc[origin_idx]
+            target_month = dates.iloc[target_idx]
+            actual = float(values[target_idx])
+            is_provisional = bool(provisional[target_idx])
+            included = not (exclude_provisional_targets and is_provisional)
+            forecasts = (
+                ("persistence", origin_idx, float(values[origin_idx])),
+                ("seasonal_naive", seasonal_source_idx, float(values[seasonal_source_idx])),
+            )
+            for model, source_idx, prediction in forecasts:
+                source_month = dates.iloc[source_idx]
+                rows.append({
+                    "forecast_origin": origin_month,
+                    "target_month": target_month,
+                    "actual_ssn": actual,
+                    "prediction_ssn": prediction,
+                    "horizon_months": horizon,
+                    "model": model,
+                    "is_provisional_target": is_provisional,
+                    "included_in_scoring": included,
+                    "scoring_exclusion_reason": "provisional_target" if not included else "",
+                    "predictor_source_month": source_month,
+                    "predictor_source_ssn": float(values[source_idx]),
+                })
+    return pd.DataFrame(rows).sort_values(
+        ["forecast_origin", "horizon_months", "model"]
+    ).reset_index(drop=True)
+
+
+def build_metrics(predictions: pd.DataFrame) -> pd.DataFrame:
+    rows = []
+    for (model, horizon), group in predictions.groupby(["model", "horizon_months"], sort=True):
+        scored = group[group["included_in_scoring"]]
+        errors = scored["prediction_ssn"] - scored["actual_ssn"]
+        rows.append({
+            "model": model,
+            "horizon_months": int(horizon),
+            "evaluation_start": EVALUATION_START.strftime("%Y-%m"),
+            "evaluation_end": group["target_month"].max().strftime("%Y-%m"),
+            "scored_observations": len(scored),
+            "provisional_targets_retained": int(
+                (scored["is_provisional_target"] & scored["included_in_scoring"]).sum()
+            ),
+            "provisional_targets_excluded": int(
+                (group["is_provisional_target"] & ~group["included_in_scoring"]).sum()
+            ),
+            "mae": float(errors.abs().mean()) if len(errors) else np.nan,
+            "rmse": float(np.sqrt(np.square(errors).mean())) if len(errors) else np.nan,
+        })
+    return pd.DataFrame(rows).sort_values(["horizon_months", "model"]).reset_index(drop=True)
+
+
+def validate_predictions(predictions: pd.DataFrame, data: pd.DataFrame) -> list[tuple[str, str, str]]:
+    checks: list[tuple[str, str, str]] = []
+    chronology = bool((predictions["forecast_origin"] < predictions["target_month"]).all())
+    checks.append((
+        "PASS" if chronology else "FAIL",
+        "Forecast chronology",
+        "every origin precedes its target" if chronology else "a forecast origin is not before its target",
+    ))
+    origin_order = predictions["forecast_origin"].is_monotonic_increasing
+    checks.append((
+        "PASS" if origin_order else "FAIL",
+        "Chronological forecast-origin order",
+        "prediction rows are ordered by forecast origin" if origin_order else
+        "forecast origins are not in chronological order",
+    ))
+
+    horizon_alignment = (
+        predictions["target_month"].dt.year * 12 + predictions["target_month"].dt.month
+        - predictions["forecast_origin"].dt.year * 12 - predictions["forecast_origin"].dt.month
+    )
+    aligned = bool((horizon_alignment == predictions["horizon_months"]).all())
+    checks.append((
+        "PASS" if aligned else "FAIL",
+        "Target-date alignment",
+        "target month is exactly horizon months after origin" if aligned else "origin/target/horizon mismatch",
+    ))
+
+    data_by_month = data.set_index("month_start")
+    source_available = bool((predictions["predictor_source_month"] <= predictions["forecast_origin"]).all())
+    source_dates_exist = bool(predictions["predictor_source_month"].isin(data_by_month.index).all())
+    source_values_match = source_dates_exist and all(
+        np.isclose(float(row.predictor_source_ssn),
+                   float(data_by_month.loc[row.predictor_source_month, "ssn"]), atol=1e-12)
+        for row in predictions.itertuples(index=False)
+    )
+    prediction_matches_source = bool(np.isclose(
+        predictions["prediction_ssn"], predictions["predictor_source_ssn"], atol=1e-12
+    ).all())
+    model_sources_correct = True
+    for row in predictions.itertuples(index=False):
+        expected_source = row.forecast_origin if row.model == "persistence" else (
+            row.target_month - pd.DateOffset(months=12)
+        )
+        if row.predictor_source_month != expected_source:
+            model_sources_correct = False
+            break
+    leakage_free = (
+        source_available and source_dates_exist and source_values_match and
+        prediction_matches_source and model_sources_correct
+    )
+    detail = (
+        "all source months and values are valid, source months are available by origin, "
+        "and baseline source rules match"
+        if leakage_free else
+        "future, missing, mismatched, or baseline-inconsistent predictor source found"
+    )
+    checks.append(("PASS" if leakage_free else "FAIL", "Forecast-origin leakage", detail))
+
+    target_dates_exist = bool(predictions["target_month"].isin(data_by_month.index).all())
+    actuals_match = target_dates_exist and all(
+        np.isclose(float(row.actual_ssn), float(data_by_month.loc[row.target_month, "ssn"]), atol=1e-12)
+        for row in predictions.itertuples(index=False)
+    )
+    flags_match = target_dates_exist and all(
+        bool(row.is_provisional_target) == bool(data_by_month.loc[row.target_month, "is_provisional"])
+        for row in predictions.itertuples(index=False)
+    )
+    checks.append((
+        "PASS" if actuals_match and flags_match else "FAIL",
+        "Target values and provisional flags",
+        "actuals and provisional flags match the prepared data" if actuals_match and flags_match else
+        "a target value or provisional flag differs from the prepared data",
+    ))
+    target_window = bool((predictions["target_month"] >= EVALUATION_START).all())
+    checks.append((
+        "PASS" if target_window else "FAIL",
+        "Locked evaluation window",
+        f"all scored target rows start no earlier than {EVALUATION_START:%Y-%m}" if target_window else
+        f"target before locked start {EVALUATION_START:%Y-%m} found",
+    ))
+    paired = predictions.groupby(["target_month", "horizon_months"])["model"].agg(set)
+    horizons_covered = set(predictions["horizon_months"].unique()) == set(HORIZONS)
+    paired_comparison = horizons_covered and bool((paired.map(frozenset) == frozenset(MODELS)).all())
+    checks.append((
+        "PASS" if paired_comparison else "FAIL",
+        "Fair paired baseline coverage",
+        "both baselines cover the same targets at every horizon" if paired_comparison else
+        "baseline target coverage differs",
+    ))
+    seasonal_12 = predictions[
+        (predictions["horizon_months"] == 12) &
+        (predictions["model"] == "seasonal_naive")
+    ]
+    persistence_12 = predictions[
+        (predictions["horizon_months"] == 12) &
+        (predictions["model"] == "persistence")
+    ]
+    seasonal_12_by_target = seasonal_12.set_index("target_month")["prediction_ssn"]
+    persistence_12_by_target = persistence_12.set_index("target_month")["prediction_ssn"]
+    equivalent_12 = (
+        len(seasonal_12) > 0 and
+        seasonal_12_by_target.index.equals(persistence_12_by_target.index) and
+        bool(np.isclose(seasonal_12_by_target, persistence_12_by_target, atol=1e-12).all())
+    )
+    checks.append((
+        "PASS" if equivalent_12 else "FAIL",
+        "12-month seasonal-naive equivalence",
+        "period-12 seasonal naive equals persistence at a 12-month horizon by definition"
+        if equivalent_12 else "12-month seasonal-naive predictions differ from persistence",
+    ))
+    return checks
+
+
+def plot_metrics(metrics: pd.DataFrame, output: Path) -> None:
+    fig, ax = plt.subplots(figsize=(8, 5))
+    for model in MODELS:
+        group = metrics[metrics["model"] == model].sort_values("horizon_months")
+        ax.plot(group["horizon_months"], group["mae"], marker="o", label=f"{model} MAE")
+        ax.plot(group["horizon_months"], group["rmse"], marker="s", linestyle="--",
+                label=f"{model} RMSE")
+    ax.set(title="Locked chronological evaluation: baseline errors",
+           xlabel="Forecast horizon (months)", ylabel="Error (sunspot number)")
+    ax.set_xticks(HORIZONS)
+    ax.grid(alpha=0.25)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(output, dpi=160)
+    plt.close(fig)
+
+
+def plot_forecasts(predictions: pd.DataFrame, output: Path) -> None:
+    horizon = max(HORIZONS)
+    data = predictions[predictions["horizon_months"] == horizon]
+    actual = data.drop_duplicates("target_month").sort_values("target_month")
+    fig, ax = plt.subplots(figsize=(13, 5))
+    ax.plot(actual["target_month"], actual["actual_ssn"], color="#222222",
+            linewidth=1, label="Actual SILSO SSN")
+    for model, color in (("persistence", "#2878b5"), ("seasonal_naive", "#e07a24")):
+        group = data[data["model"] == model].sort_values("target_month")
+        ax.plot(group["target_month"], group["prediction_ssn"], color=color,
+                linewidth=0.9, alpha=0.85, label=f"{model} ({horizon}-month)")
+    provisional = actual[actual["is_provisional_target"]]
+    if not provisional.empty:
+        ax.scatter(provisional["target_month"], provisional["actual_ssn"], color="#c62828",
+                   marker="x", s=40, label="Provisional target")
+    ax.set(title=f"Locked evaluation forecasts at {horizon}-month horizon",
+           xlabel="Target month", ylabel="Monthly SILSO sunspot number")
+    ax.xaxis.set_major_locator(mdates.YearLocator(2))
+    ax.xaxis.set_major_formatter(mdates.DateFormatter("%Y"))
+    ax.grid(alpha=0.2)
+    ax.legend()
+    fig.tight_layout()
+    fig.savefig(output, dpi=160)
+    plt.close(fig)
+
+
+def markdown_table(frame: pd.DataFrame, floatfmt: str = ".3f") -> str:
+    columns = list(frame.columns)
+    lines = ["| " + " | ".join(columns) + " |", "|" + "|".join("---" for _ in columns) + "|"]
+    for row in frame.itertuples(index=False, name=None):
+        values = []
+        for value in row:
+            if pd.isna(value):
+                values.append("")
+            elif isinstance(value, (float, np.floating)):
+                values.append(format(value, floatfmt))
+            else:
+                values.append(str(value))
+        lines.append("| " + " | ".join(values) + " |")
+    return "\n".join(lines)
+
+
+def make_report(predictions: pd.DataFrame, metrics: pd.DataFrame,
+                checks: list[tuple[str, str, str]], exclude_provisional_targets: bool) -> str:
+    start = EVALUATION_START.strftime("%Y-%m")
+    end = predictions["target_month"].max().strftime("%Y-%m")
+    all_target_rows = predictions.drop_duplicates(["target_month", "horizon_months"])
+    provisional_targets = int(all_target_rows["is_provisional_target"].sum())
+    total_targets = len(all_target_rows)
+    scored_targets = int(all_target_rows["included_in_scoring"].sum())
+    excluded_targets = int((~all_target_rows["included_in_scoring"]).sum())
+    provisional_retained = int(
+        (all_target_rows["is_provisional_target"] & all_target_rows["included_in_scoring"]).sum()
+    )
+    provisional_excluded = int(
+        (all_target_rows["is_provisional_target"] & ~all_target_rows["included_in_scoring"]).sum()
+    )
+    comparison = []
+    for horizon in HORIZONS:
+        rows = metrics[metrics["horizon_months"] == horizon].set_index("model")
+        if {"persistence", "seasonal_naive"}.issubset(rows.index):
+            p_mae, s_mae = rows.loc["persistence", "mae"], rows.loc["seasonal_naive", "mae"]
+            p_rmse, s_rmse = rows.loc["persistence", "rmse"], rows.loc["seasonal_naive", "rmse"]
+            if p_mae < s_mae and p_rmse < s_rmse:
+                result = "persistence has lower MAE and RMSE"
+            elif p_mae == s_mae and p_rmse == s_rmse:
+                result = "equal MAE and RMSE"
+            else:
+                result = "mixed or seasonal-naive-favored errors"
+            comparison.append(f"- {horizon}-month horizon: {result}.")
+    check_table = "\n".join(f"| {level} | {name} | {detail} |" for level, name, detail in checks)
+    return f"""# SolarShield-AI baseline walk-forward backtesting
+
+Generated by `python scripts/run_backtesting.py{' --exclude-provisional-targets' if exclude_provisional_targets else ''}` from `data/processed/sunspot_monthly_clean.csv` only.
+
+## Evaluation design
+
+- Target: observed monthly SILSO `ssn`. The only predictor values are historical SILSO `ssn` observations from the prepared file.
+- Locked final evaluation period: target months **{start} through {end}**. Every target has an origin exactly 1, 3, 6, or 12 calendar months earlier. Origins are chronological; no random split is used.
+- This is a fixed-origin, direct-horizon comparison of two pre-specified baselines. Persistence predicts the origin-month SSN at every horizon. Seasonal naive is defined as the target month's calendar-season observation from 12 months earlier; for horizons at most 12 months, that source is available on or before origin. Consequently, at a 12-month horizon its source equals the origin and it is exactly the persistence baseline. This period-12 seasonal-naive definition is intentional; it is not a separate 12-month comparator. No parameters are fitted or selected, and no configurations are chosen using the final-period performance.
+- The baselines are included at all horizons. Persistence is applicable whenever there is a last observation. Seasonal naive is applicable when the prior-year target-month observation exists; the target evaluation period starts after that history exists.
+- Provisional targets are {'excluded' if exclude_provisional_targets else 'included'} in metric scoring by this run. They remain in the predictions CSV with their original flag in either mode. There are **{total_targets} paired target-month/horizon instances** in total; **{scored_targets} are scored** and **{excluded_targets} are excluded**. Of these, **{provisional_targets} are provisional**: **{provisional_retained} provisional instances are retained** and **{provisional_excluded} provisional instances are excluded**. Counts are horizon-specific target instances, not unique calendar months.
+- Metrics are paired: both baselines are scored on identical target months at each horizon. MAE and RMSE are computed over scored monthly target instances.
+
+## Leakage and scope controls
+
+Only `month_start`, `ssn`, and `is_provisional` are loaded from the prepared monthly file. The cycle summary, NOAA observations/predictions, official cycle extrema, centered smoothing, and all other columns are not used as inputs or predictors. For each prediction, the output records its predictor source month/value; checks verify that source is no later than forecast origin and matches the declared baseline rule. Actual target values are used only for evaluation.
+
+No deep learning or fitted statistical model is used. Monthly forecast cases are repeated time origins with overlappi
+[TRUNCATED: 26112 total characters]
+
+========== FILE: scripts\run_statistical_backtesting.py ==========
+--- SOURCE (maximum 20000 characters) ---
+#!/usr/bin/env python
+"""Run the pre-2016 ARIMA/SARIMA selection or confirmation stage.
+
+Examples (use the approved isolated environment):
+    <venv>\\Scripts\\python.exe scripts\\run_statistical_backtesting.py --stage selection
+    <venv>\\Scripts\\python.exe scripts\\run_statistical_backtesting.py --stage confirmation
+
+Selection reads prepared SILSO rows only through 1995-12. Confirmation reads
+only through 2015-12 and requires the frozen selection manifest. There is no
+final-evaluation runner in this script.
+"""
+from __future__ import annotations
+
+import argparse
+import csv
+import hashlib
+import json
+import math
+import sys
+import warnings
+from dataclasses import asdict, dataclass
+from pathlib import Path
+from typing import Any
+
+import numpy as np
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parent.parent
+INPUT_PATH = Path("data") / "processed" / "sunspot_monthly_clean.csv"
+OUTPUT_ROOT = ROOT / "reports" / "statistical_backtesting"
+HORIZONS = (1, 3, 6, 12)
+SELECTION_START = pd.Timestamp("1976-01-01")
+SELECTION_END = pd.Timestamp("1995-12-01")
+CONFIRMATION_START = pd.Timestamp("1996-01-01")
+CONFIRMATION_END = pd.Timestamp("2015-12-01")
+SELECTION_AGGREGATE_LIMIT = 0.95
+HORIZON_GUARDRAIL = 1.05
+ORIGIN_STEP_MONTHS = 3
+PROVISIONAL_POLICY = "include"
+BASELINE_NAMES = ("persistence", "seasonal_naive")
+PROTOCOL_ID = "solarshield-arima-selection-v1"
+TRUE_PROVISIONAL_VALUES = {"true", "1", "yes"}
+FALSE_PROVISIONAL_VALUES = {"false", "0", "no"}
+
+
+@dataclass(frozen=True)
+class Candidate:
+    name: str
+    order: tuple[int, int, int]
+    seasonal_order: tuple[int, int, int, int]
+    trend: str
+
+
+CANDIDATES = (
+    Candidate("arima_100_mean", (1, 0, 0), (0, 0, 0, 0), "c"),
+    Candidate("arima_110", (1, 1, 0), (0, 0, 0, 0), "n"),
+    Candidate("arima_011", (0, 1, 1), (0, 0, 0, 0), "n"),
+    Candidate("sarima_110_100_120", (1, 1, 0), (1, 0, 0, 120), "n"),
+    Candidate("sarima_110_100_132", (1, 1, 0), (1, 0, 0, 132), "n"),
+    Candidate("sarima_110_100_144", (1, 1, 0), (1, 0, 0, 144), "n"),
+)
+
+STAGES = {
+    "selection": (SELECTION_START, SELECTION_END),
+    "confirmation": (CONFIRMATION_START, CONFIRMATION_END),
+}
+
+
+def load_monthly_until(path: Path, inclusive_end: pd.Timestamp) -> pd.DataFrame:
+    """Read model fields through the cutoff while checking dates through EOF.
+
+    Post-cutoff SSN and provisional values are not parsed or retained.
+    """
+    rows: list[dict[str, Any]] = []
+    previous_month: pd.Timestamp | None = None
+    with path.open("r", encoding="utf-8", newline="") as stream:
+        reader = csv.DictReader(stream)
+        required = {"month_start", "ssn", "is_provisional"}
+        if not reader.fieldnames or not required.issubset(reader.fieldnames):
+            raise ValueError(f"Prepared monthly input must contain columns: {sorted(required)}")
+        for row_number, row in enumerate(reader, start=2):
+            month = pd.Timestamp(row["month_start"])
+            if pd.isna(month) or month.day != 1:
+                raise ValueError(
+                    f"Invalid month_start on CSV row {row_number}: {row['month_start']!r}"
+                )
+            if previous_month is not None and month <= previous_month:
+                raise ValueError(
+                    "Input dates must be strictly increasing and unique across the CSV; "
+                    f"duplicate or out-of-order month on row {row_number}: {month:%Y-%m}"
+                )
+            previous_month = month
+            if month > inclusive_end:
+                continue
+            flag = row.get("is_provisional")
+            normalized_flag = flag.strip().lower() if flag is not None else ""
+            if normalized_flag in TRUE_PROVISIONAL_VALUES:
+                is_provisional = True
+            elif normalized_flag in FALSE_PROVISIONAL_VALUES:
+                is_provisional = False
+            else:
+                raise ValueError(
+                    f"Invalid is_provisional value on CSV row {row_number} "
+                    f"({month:%Y-%m}): {flag!r}; expected true/false, yes/no, or 1/0"
+                )
+            rows.append({
+                "month_start": month,
+                "ssn": float(row["ssn"]),
+                "is_provisional": is_provisional,
+            })
+    result = pd.DataFrame(rows, columns=["month_start", "ssn", "is_provisional"])
+    validate_monthly(result, inclusive_end)
+    return result
+
+
+def monthly_input_hash(data: pd.DataFrame) -> str:
+    serialized = data.to_csv(
+        index=False,
+        date_format="%Y-%m-%d",
+        float_format="%.17g",
+    ).encode("utf-8")
+    return hashlib.sha256(serialized).hexdigest()
+
+
+def verify_selection_input_hash(manifest: dict[str, Any], input_path: Path) -> None:
+    selection_data = load_monthly_until(input_path, SELECTION_END)
+    if manifest.get("input_sha256") != monthly_input_hash(selection_data):
+        raise ValueError(
+            "Selection manifest input hash does not match the current selection-period input"
+        )
+
+
+def validate_monthly(data: pd.DataFrame, inclusive_end: pd.Timestamp) -> None:
+    if data.empty:
+        raise ValueError("No monthly observations were read")
+    if data["month_start"].isna().any() or (data["month_start"].dt.day != 1).any():
+        raise ValueError("Input dates must be valid first-of-month dates")
+    month_numbers = data["month_start"].dt.year * 12 + data["month_start"].dt.month
+    if not data["month_start"].is_monotonic_increasing or data["month_start"].duplicated().any():
+        raise ValueError("Input dates must be strictly increasing and unique")
+    if not bool((month_numbers.diff().dropna() == 1).all()):
+        raise ValueError("Input dates must be consecutive monthly observations")
+    if data["ssn"].isna().any() or not np.isfinite(data["ssn"].to_numpy(dtype=float)).all():
+        raise ValueError("SSN values must be finite and nonmissing")
+    if (data["ssn"] < 0).any():
+        raise ValueError("SSN values must be nonnegative")
+    if data["is_provisional"].isna().any():
+        raise ValueError("Provisional flags must be present")
+    if data["month_start"].max() > inclusive_end:
+        raise ValueError("Input contains observations after the authorized stage cutoff")
+
+
+def quarter_origins(start: pd.Timestamp, end: pd.Timestamp) -> list[pd.Timestamp]:
+    """Return Mar/Jun/Sep/Dec origin months on a fixed quarterly cadence."""
+    current = pd.Timestamp(year=start.year, month=1, day=1)
+    result = []
+    while current <= end:
+        if current.month in (3, 6, 9, 12):
+            result.append(current)
+        current += pd.DateOffset(months=1)
+    return result
+
+
+def stage_targets(
+    data: pd.DataFrame,
+    stage_start: pd.Timestamp,
+    stage_end: pd.Timestamp,
+) -> pd.DataFrame:
+    """Create target rows from the frozen quarter-end origin schedule."""
+    origins = quarter_origins(stage_start - pd.DateOffset(months=12), stage_end)
+    date_to_index = pd.Series(data.index.to_numpy(), index=data["month_start"])
+    rows = []
+    for origin in origins:
+        for horizon in HORIZONS:
+            target_month = origin + pd.DateOffset(months=horizon)
+            if not stage_start <= target_month <= stage_end:
+                continue
+            if origin not in date_to_index.index:
+                raise ValueError(
+                    f"Missing required forecast-origin month: {origin:%Y-%m}"
+                )
+            origin_idx = int(date_to_index.loc[origin])
+            if target_month not in date_to_index.index:
+                raise ValueError(f"Missing target month on required schedule: {target_month:%Y-%m}")
+            target_idx = int(date_to_index.loc[target_month])
+            rows.append({
+                "forecast_origin": origin,
+                "target_month": target_month,
+                "horizon_months": horizon,
+                "origin_index": origin_idx,
+                "target_index": target_idx,
+                "actual_ssn": float(data.loc[target_idx, "ssn"]),
+                "is_provisional_target": bool(data.loc[target_idx, "is_provisional"]),
+            })
+    result = pd.DataFrame(rows)
+    if result.empty:
+        raise ValueError("No target rows generated for this stage")
+    offsets = month_offset(result["forecast_origin"], result["target_month"])
+    if not bool((offsets == result["horizon_months"]).all()):
+        raise AssertionError("Internal schedule error: target/horizon mismatch")
+    if not bool((result["forecast_origin"] < result["target_month"]).all()):
+        raise AssertionError("Internal schedule error: origin must precede target")
+    return result
+
+
+def month_offset(origin: pd.Series, target: pd.Series) -> pd.Series:
+    return (target.dt.year * 12 + target.dt.month) - (origin.dt.year * 12 + origin.dt.month)
+
+
+def baseline_forecast(
+    data: pd.DataFrame,
+    origin_index: int,
+    target_index: int,
+    model: str,
+) -> tuple[float, pd.Timestamp]:
+    if model == "persistence":
+        source_index = origin_index
+    elif model == "seasonal_naive":
+        source_index = target_index - 12
+    else:
+        raise ValueError(f"Unknown baseline: {model}")
+    if source_index < 0 or source_index > origin_index:
+        raise ValueError("Baseline predictor is unavailable at this origin")
+    return float(data.loc[source_index, "ssn"]), pd.Timestamp(data.loc[source_index, "month_start"])
+
+
+def classify_fit(
+    *,
+    exception: BaseException | None,
+    converged: bool | None,
+    parameters_finite: bool,
+    ar_stationary: bool,
+    ma_invertible: bool,
+    point_forecasts_finite: bool,
+) -> tuple[str, str]:
+    """Pure classification helper for controlled, deterministic testing."""
+    if exception is not None:
+        return "fatal_point_failure", f"fit_exception:{type(exception).__name__}:{exception}"
+    if converged is not True:
+        return "fatal_point_failure", "optimizer_nonconvergence_or_status_missing"
+    if not parameters_finite:
+        return "fatal_point_failure", "nonfinite_parameters"
+    if not ar_stationary:
+        return "fatal_point_failure", "ar_stationarity_diagnostic_failed"
+    if not ma_invertible:
+        return "fatal_point_failure", "ma_invertibility_diagnostic_failed"
+    if not point_forecasts_finite:
+        return "fatal_point_failure", "nonfinite_or_missing_point_forecast"
+    return "point_fit_success", "converged_finite_diagnostics_pass"
+
+
+def _roots_pass(roots: Any) -> bool:
+    values = np.asarray(roots, dtype=complex)
+    return bool(np.isfinite(values).all() and (np.abs(values) > 1.0 + 1e-8).all())
+
+
+def classify_warnings(
+    captured: list[warnings.WarningMessage],
+    phase: str,
+) -> tuple[str, str]:
+    """Classify warnings by operation; interval warnings never invalidate points."""
+    details = []
+    fatal_categories = []
+    for item in captured:
+        category = item.category.__name__
+        classification = "nonfatal_diagnostic_warning"
+        if category == "ConvergenceWarning":
+            classification = (
+                "fatal_optimizer_warning" if phase in {"fit", "point_forecast"}
+                else "interval_warning_not_point_fatal"
+            )
+        details.append({
+            "phase": phase,
+            "category": category,
+            "classification": classification,
+            "message": str(item.message),
+        })
+        if classification == "fatal_optimizer_warning":
+            fatal_categories.append(category)
+    return json.dumps(details, sort_keys=True), ", ".join(sorted(set(fatal_categories)))
+
+
+def fit_and_forecast(
+    training: pd.Series,
+    candidate: Candidate,
+    max_horizon: int = max(HORIZONS),
+) -> tuple[dict[str, Any], list[dict[str, Any]]]:
+    """Fit one candidate and return point forecasts plus two PI levels."""
+    from statsmodels.tsa.statespace.sarimax import SARIMAX
+
+    forecast_steps = max(max_horizon, max(HORIZONS))
+    diagnostic = {
+        "candidate": candidate.name,
+        "order": str(candidate.order),
+        "seasonal_order": str(candidate.seasonal_order),
+        "trend": candidate.trend,
+        "optimizer_converged": None,
+        "optimizer_status": "",
+        "ar_stationary": False,
+        "ma_invertible": False,
+        "fit_classification": "",
+        "fit_reason": "",
+        "warning_text": "",
+        "warning_categories": "",
+        "warning_classification": "[]",
+        "interval_80_failure": "",
+        "interval_95_failure": "",
+    }
+    warning_details: list[dict[str, str]] = []
+    fatal_warning_categories: list[str] = []
+    fitted = None
+    error: BaseException | None = None
+    converged: bool | None = None
+    fit_warnings: list[warnings.WarningMessage] = []
+    try:
+        with warnings.catch_warnings(record=True) as fit_warnings:
+            warnings.simplefilter("always")
+            model = SARIMAX(
+                training.to_numpy(dtype=float),
+                order=candidate.order,
+                seasonal_order=candidate.seasonal_order,
+                trend=candidate.trend,
+                enforce_stationarity=True,
+                enforce_invertibility=True,
+            )
+            fitted = model.fit(method="lbfgs", maxiter=200, disp=False)
+    except Exception as exc:  # fit error is preserved in per-origin diagnostics
+        error = exc
+    finally:
+        serialized, fatal = classify_warnings(fit_warnings, "fit")
+        warning_details.extend(json.loads(serialized))
+        if fatal:
+            fatal_warning_categories.extend(fatal.split(", "))
+
+    point_values = np.full(forecast_steps, np.nan, dtype=float)
+    interval_values: dict[int, np.ndarray] = {
+        80: np.full((forecast_steps, 2), np.nan, dtype=float),
+        95: np.full((forecast_steps, 2), np.nan, dtype=float),
+    }
+    interval_failures: dict[int, dict[int, str]] = {
+        level: {horizon: "" for horizon in HORIZONS}
+        for level in (80, 95)
+    }
+    interval_warning_details: dict[int, list[dict[str, str]]] = {80: [], 95: []}
+    parameters_finite = False
+    point_finite = False
+    ar_stationary = False
+    ma_invertible = False
+    if fitted is not None:
+        retvals = getattr(fitted, "mle_retvals", {})
+        converged = retvals.get("converged") if isinstance(retvals, dict) else None
+        diagnostic["optimizer_converged"] = converged
+        diagnostic["optimizer_status"] = json.dumps(
+            retvals, default=lambda obj: np.asarray(obj).tolist(), sort_keys=True
+        )
+        params = np.asarray(getattr(fitted, "params", []), dtype=float)
+        parameters_finite = bool(params.size and np.isfinite(params).all())
+        try:
+            ar_stationary = _roots_pass(fitted.arroots)
+        except (AttributeError, ValueError, TypeError):
+            ar_stationary = False
+        try:
+            ma_roots = np.asarray(fitted.maroots, dtype=complex)
+            ma_invertible = _roots_pass(ma_roots) if ma_roots.size else True
+        except (AttributeError, ValueError, TypeError):
+            ma_invertible = False
+        prediction = None
+        forecast_warnings: list[warnings.WarningMessage] = []
+        try:
+            with warnings.catch_warnings(record=True) as forecast_warnings:
+                warnings.simplefilter("always")
+                prediction = fitted.get_forecast(steps=forecast_steps)
+                point_values = np.asarray(prediction.predicted_mean, dtype=float).reshape(-1)
+                point_finite = (
+                    point_values.shape == (forecast_steps,) and
+                    bool(np.isfinite(point_values).all())
+                )
+        except Exception as exc:
+            error = exc
+            point_finite = False
+        finally:
+            serialized, fatal = classify_warnings(forecast_warnings, "point_forecast")
+            warning_details.extend(json.loads(serialized))
+            if fatal:
+                fatal_warning_categories.extend(fatal.split(", "))
+
+        if prediction is not None:
+            for level, alpha in ((80, 0.20), (95, 0.05)):
+                interval_warnings: list[warnings.WarningMessage] = []
+                try:
+                    with warnings.catch_warnings(record=True) as interval_warnings:
+                        warnings.simplefilter("always")
+                        interval = np.asarray(prediction.conf_int(alpha=alpha), dtype=float)
+                except Exception as exc:
+                    failure = f"{type(exc).__name__}:{exc}"
+                    for horizon in HORIZONS:
+                        interval_failures[level][horizon] = failure
+                else:
+                    if interval.shape != (forecast_steps, 2):
+                        failure = f"invalid_interval_shape:{interval.shape}"
+                        for horizon in HORIZONS:
+                            interval_failures[level][horizon] = failure
+                    else:
+                        for horizon in HORIZONS:
+                            bounds = interval[horizon - 1]
+                            if not np.isfinite(bounds).all():
+                                interval_failures[level][horizon] = "nonfinite_interval_bounds"
+                            elif bounds[0] > bounds[1]:
+                                interval_failures[level][horizon] = "unordered_interval_bounds"
+                            else:
+                                interval_values[level][horizon - 1] = bounds
+                finally:
+                    serialized, _ = classify_warnings(interval_warnings, f"interval_{level}")
+                    level_warnings = json.loads(serialized)
+                    warning_details.extend(level_warnings)
+                    interval_warning_details[level].extend(level_warnings)
+    if fatal_warning_categories and error is None:
+        error = RuntimeError(
+            f"fatal optimizer warning: {', '.join(sorted(set(fatal_warning_categories)))}"
+        )
+    status, reason = classify_fit(
+        exception=error,
+        converged=converged,
+        parameters_finite=parameters_finite,
+        ar_stationary=ar_stationary,
+        ma_invertible=ma_invertible,
+        point_forecasts_finite=point_finite,
+    )
+    diagnostic.update({
+        "ar_stationary": ar_stationary,
+        "ma_invertible": ma_invertible,
+        "fit_classification": status,
+        "fit_reason": reason,
+        "warning_text": " || ".join(item["message"] for item in warning_details),
+        "warning_categories": " || ".join(item["category"] for item in warning_details),
+        "warning_classification": json.dumps(warning_details, sort_keys=True),
+        "fit_warnings": json.dumps(
+            [item for item in warning_details if item["phase"] == "fit"], sort_keys=True
+        ),
+        "point_forecast_warnings": json.dumps(
+            [item for item in warning_details if item["phase"] == "point_forecast"],
+            sort_keys=True,
+        ),
+        "interval_warnings": json.dumps(interval_warning_details, sort_keys=True),
+        "interval_80_failure": json.dumps(interval_failures[80], sort_keys=True),
+        "interval_95_failure": json.dumps(interval_failures[95], sort_keys=True),
+    })
+    intervals = []
+    for horizon in HORIZONS:
+        point = point_values[horizon - 1] if point_finite else math.nan
+        row: dict[str, Any] = {"horizon_months": horizon, "point_forecast": point}
+        for level in (80, 95):
+            bounds = interval_values[level][horizon - 1]
+            valid = (
+                status == "point_fit_success" and
+                np.isfinite(bounds).all() and
+                bounds[0] <= bounds[1]
+            )
+            row[f"pi_{level}_valid"]
+[TRUNCATED: 52266 total characters]
+
+========== NATIVE CYCLE METADATA ==========
+PS>TerminatingError(Import-Csv): "Cannot validate argument on parameter 'Encoding'. The argument "cp1252" does not belong to the set "Unicode,UTF7,UTF8,ASCII,UTF32,BigEndianUnicode,Default,OEM" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again."
+ENCODING_FAILED: cp1252 : Cannot validate argument on parameter 'Encoding'. The argument "cp1252" does not belong to the set "Unicode,UTF7,UTF8,ASCII,UTF32,BigEndianUnicode,Default,OEM" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again.
+PS>TerminatingError(Import-Csv): "Cannot validate argument on parameter 'Encoding'. The argument "latin1" does not belong to the set "Unicode,UTF7,UTF8,ASCII,UTF32,BigEndianUnicode,Default,OEM" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again."
+ENCODING_FAILED: latin1 : Cannot validate argument on parameter 'Encoding'. The argument "latin1" does not belong to the set "Unicode,UTF7,UTF8,ASCII,UTF32,BigEndianUnicode,Default,OEM" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again.
+PS>TerminatingError(Import-Csv): "Cannot validate argument on parameter 'Encoding'. The argument "utf-8-sig" does not belong to the set "Unicode,UTF7,UTF8,ASCII,UTF32,BigEndianUnicode,Default,OEM" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again."
+ENCODING_FAILED: utf-8-sig : Cannot validate argument on parameter 'Encoding'. The argument "utf-8-sig" does not belong to the set "Unicode,UTF7,UTF8,ASCII,UTF32,BigEndianUnicode,Default,OEM" specified by the ValidateSet attribute. Supply an argument that is in the set and then try the command again.
+METADATA_READ_FAILED
+
+========== V3 TEST INVENTORY ==========
+
+Name                               Length
+----                               ------
+test_v3_acceptance.py                5934
+test_v3_api_edges.py                 1479
+test_v3_atomic_assimilation.py       2668
+test_v3_calibration.py               6187
+test_v3_cycle_detection.py           1444
+test_v3_detector_reset.py            5078
+test_v3_dtw.py                       3685
+test_v3_enkf.py                      1038
+test_v3_enkf_ensemble_snapshots.py   3232
+test_v3_forecasting.py               5017
+test_v3_forecast_integration.py      3997
+test_v3_kalman.py                     918
+test_v3_losses.py                    7988
+test_v3_noise_estimation.py          3996
+test_v3_numerical_edges.py           5587
+test_v3_orchestration.py             4318
+test_v3_peaks.py                     3067
+test_v3_robustness.py                4371
+
+========== V3 SOURCE INVENTORY ==========
+
+Name                                   Length
+----                                   ------
+solarshield_v3_acceptance.py            14339
+solarshield_v3_calibration.py            8939
+solarshield_v3_cycle_detection.py        6898
+solarshield_v3_dtw.py                    4592
+solarshield_v3_enkf.py                   6617
+solarshield_v3_forecasting.py            9355
+solarshield_v3_forecast_integration.py   5833
+solarshield_v3_kalman.py                 5516
+solarshield_v3_losses.py                 9097
+solarshield_v3_noise_estimation.py      11401
+solarshield_v3_orchestration.py         10615
+solarshield_v3_peaks.py                  5295
+test_v3_acceptance.py                    5818
+__init__.py                                 0
+
+========== INSPECTION COMPLETE ==========
+**********************
+Windows PowerShell transcript end
+End time: 20261112051940
+**********************

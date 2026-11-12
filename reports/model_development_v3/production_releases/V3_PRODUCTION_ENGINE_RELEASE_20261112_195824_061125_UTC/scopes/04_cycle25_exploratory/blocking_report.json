@@ -1,0 +1,17 @@
+{
+  "authorization_present": true,
+  "blockers": [
+    "R22-R25/R21 production configuration dependencies remain unresolved for the full authorized candidate set.",
+    "Draft 1.7 specifies official snapshot origins but no separate Cycle 25 target horizon; selecting a horizon would be an unsupported assumption.",
+    "Cycle 25 has 82 records, of which 3 are provisional; no forecast output was generated."
+  ],
+  "execution_attempted": false,
+  "historical_model_execution_performed": false,
+  "no_scope_expansion": true,
+  "prior_r30_authorization_gate_status": "CLEARED",
+  "r20_c6_c12_rerun": false,
+  "scientific_acceptance": "NOT_EVALUATED",
+  "scope": "Cycle 25 exploratory forecast",
+  "scope_id": "V3_R30_C25_EXPLORATORY_20261111_220209_UTC",
+  "status": "BLOCKED"
+}

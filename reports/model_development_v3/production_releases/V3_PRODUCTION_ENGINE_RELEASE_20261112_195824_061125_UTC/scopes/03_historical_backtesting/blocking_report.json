@@ -1,0 +1,17 @@
+{
+  "authorization_present": true,
+  "blockers": [
+    "C13-C15 calibration outputs are not complete, so the downstream calibration dependency is unmet.",
+    "R22-R25 selected configurations and R21 target-cycle covariance inputs are not available.",
+    "No A0/A1/A2 identical-origin execution may be reported complete without those inputs."
+  ],
+  "execution_attempted": false,
+  "historical_model_execution_performed": false,
+  "no_scope_expansion": true,
+  "prior_r30_authorization_gate_status": "CLEARED",
+  "r20_c6_c12_rerun": false,
+  "scientific_acceptance": "NOT_EVALUATED",
+  "scope": "Historical backtesting cycles 16-24",
+  "scope_id": "V3_R30_C16_C24_BACKTEST_20261111_220209_UTC",
+  "status": "BLOCKED"
+}

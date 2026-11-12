@@ -1,0 +1,13 @@
+{
+  "partA_fold_metrics.csv": "c5b5e727bad0d572c427541007d78710a45fa7fa94ad9f0a0126625eb3011290",
+  "partA_hyperparameter_selection.csv": "dd68f45455a6105e94a53c1063550c208c20a71454519212eb7e7240b365b861",
+  "partA_point_predictions.csv": "9967ab1538b02e94d982fa036358900f619af33e3ab3ca8039bb520f6b531662",
+  "partA_summary.csv": "9fd461c630525640ee7ef98de47ea6a971c548f7bde9498c28ab802c41c06aeb",
+  "partB_mae_by_horizon.png": "b9b437cda3baafb740289bc0bf53e74f12ba10adc3d1b0375f030a4d77ded617",
+  "partB_predictions.csv": "4b1ae3acc954f22c2d95c9ca3b3cd34f8d0dcf3ccb8a45f7ec842b33189ac02f",
+  "partB_summary.csv": "8e8bd8477f72ed1f75de169dd7058f40d8ee7fb92d3da2dab837798e2499b1e7",
+  "partC_cycle25_forecast.csv": "a7a66fe90c379783f414b5f7630ed02274ff81887ece84eb35ccdbe758b47951",
+  "partC_cycle25_forecast.png": "139e5fd96a695259b6337af2315f6758b8e5fddaf5daa92ef9f15ba669919577",
+  "run_metadata.json": "e3e4e0dec1fbb4b95351e990379b46bd2b3ecaa63dbf250df7416db69af824a6",
+  "V3_RUN_REPORT.md": "d6cb07d92779b8f577bd0f5d356850069b8a0b6ae038d6ab51be2fe7373c30d6"
+}

@@ -1,0 +1,13 @@
+{
+  "method": "T2_anchored_template",
+  "selection_mean_fold_mae": 36.35724549274487,
+  "selection_mean_fold_rmse": 44.52158937017872,
+  "tau": 12,
+  "tie_break": [
+    "mean_fold_mae",
+    "mean_fold_rmse",
+    "w",
+    "tau"
+  ],
+  "w": 0.5
+}

@@ -1,0 +1,18 @@
+run,relative_path,exists,bytes,sha256,rows,status
+Task 1 - monthly baselines,reports\development\v1_1\task1_monthly_20261025_020728\forecast_records.csv,True,1067808,4d153233c0c32887ad8ca0155b68748e121f65beb269bc3671ec9e39aefbe3bb,4752.0,PRESENT
+Task 1 - monthly baselines,reports\development\v1_1\task1_monthly_20261025_020728\metrics_by_horizon.csv,True,745,b1cc65139869eb6ab3ff3057ba567d1734282e93fbe2ca497234581a0fffacc7,8.0,PRESENT
+Task 1 - monthly baselines,reports\development\v1_1\task1_monthly_20261025_020728\baseline_relative_skill.csv,True,375,4ac0261d936ce511da01994465f4df481e4c04b125b2dc504632ca78973f7770,8.0,PRESENT
+Task 1 - monthly baselines,reports\development\v1_1\task1_monthly_20261025_020728\excluded_targets.csv,True,2,7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6,0.0,PRESENT
+Task 1 - monthly baselines,reports\development\v1_1\task1_monthly_20261025_020728\run_metadata.json,True,1738,451d2b934906370e4164aa9cd7e8f8f2cd2fc829029dae46c241adca2639d95c,,PRESENT
+Task 1 - ETS candidate,reports\development\v1_1\task1_ets_20261025_021105\ets_forecast_records.csv,True,678110,c36628e5de01eda66dd4ea2fb73778a23b45ab85eefb5c7eee2e5db10b5cc6d6,2376.0,PRESENT
+Task 1 - ETS candidate,reports\development\v1_1\task1_ets_20261025_021105\paired_metrics_and_skill.csv,True,1273,12394fff0b19db408d46c84bf505df63f31baecb823ca480cec46e0dcff28b27,12.0,PRESENT
+Task 1 - ETS candidate,reports\development\v1_1\task1_ets_20261025_021105\fit_failures.csv,True,2,7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6,0.0,PRESENT
+Task 1 - ETS candidate,reports\development\v1_1\task1_ets_20261025_021105\fit_warnings.csv,True,2,7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6,0.0,PRESENT
+Task 1 - ETS candidate,reports\development\v1_1\task1_ets_20261025_021105\run_metadata.json,True,1024,9c90531e2d0e5b5c370c0505ea167df0583cce5314fcdec9bb61c450b34996e3,,PRESENT
+Task 2 - cycle analogs,reports\development\v1_1\task2_cycle_analogs_20261025_021231\cycle_hindcast_records.csv,True,8076,7f99af1d26475efac1f74b928451f2c178069630384a964a120d28aede8208be,36.0,PRESENT
+Task 2 - cycle analogs,reports\development\v1_1\task2_cycle_analogs_20261025_021231\cycle_hindcast_metrics.csv,True,315,7241793ff9dbb979b477c9c682f8bcc9dcf1710ccc5f7f7f64978650fc2d1dee,3.0,PRESENT
+Task 2 - cycle analogs,reports\development\v1_1\task2_cycle_analogs_20261025_021231\run_metadata.json,True,1462,d23d88360e712d999ad517cf693c944059203c963ee3101e0bf645cfead4f41a,,PRESENT
+Task 3 - curve analogs,reports\development\v1_1\task3_curve_analogs_20261025_021825\curve_hindcast_metrics.csv,True,2686,8a78b334cbb476a71fdbd795be8f9e9b39ab38e91b0124ebe02e4615f939ed72,12.0,PRESENT
+Task 3 - curve analogs,reports\development\v1_1\task3_curve_analogs_20261025_021825\curve_hindcast_records.csv,True,129926,1d051943e781bde8799140edfb191df22632979c6381807f4031147390614553,1452.0,PRESENT
+Task 3 - curve analogs,reports\development\v1_1\task3_curve_analogs_20261025_021825\exploratory_cycle26_27_curves.csv,True,21946,9e1aebc6e02815e16c73a4bc43e49a3e4eef92a7917a4fd2e97452dc04da3b04,242.0,PRESENT
+Task 3 - curve analogs,reports\development\v1_1\task3_curve_analogs_20261025_021825\run_metadata.json,True,2169,05b33a452609d92e1b33e9c3e14e24d2a15fdb12a7224ce5a9fa60df22969461,,PRESENT

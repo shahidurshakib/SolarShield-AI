@@ -1,0 +1,190 @@
+﻿
+  src\v3\solarshield_v3_acceptance.py:15:    "origin",
+  src\v3\solarshield_v3_acceptance.py:16:    "target",
+> src\v3\solarshield_v3_acceptance.py:17:    "prediction",
+  src\v3\solarshield_v3_acceptance.py:18:    "observation",
+  src\v3\solarshield_v3_acceptance.py:19:)
+  src\v3\solarshield_v3_acceptance.py:20:
+  src\v3\solarshield_v3_acceptance.py:21:_METRIC_NAMES = (
+  src\v3\solarshield_v3_acceptance.py:104:                continue
+  src\v3\solarshield_v3_acceptance.py:105:
+> src\v3\solarshield_v3_acceptance.py:106:            prediction = _number(
+> src\v3\solarshield_v3_acceptance.py:107:                row["prediction"], f"{prefix}.prediction"
+  src\v3\solarshield_v3_acceptance.py:108:            )
+  src\v3\solarshield_v3_acceptance.py:109:            observation = _number(
+  src\v3\solarshield_v3_acceptance.py:110:                row["observation"], f"{prefix}.observation"
+  src\v3\solarshield_v3_acceptance.py:111:            )
+  src\v3\solarshield_v3_acceptance.py:115:                "origin": origin,
+  src\v3\solarshield_v3_acceptance.py:116:                "target": target,
+> src\v3\solarshield_v3_acceptance.py:117:                "prediction": prediction,
+  src\v3\solarshield_v3_acceptance.py:118:                "observation": observation,
+  src\v3\solarshield_v3_acceptance.py:119:            }
+  src\v3\solarshield_v3_acceptance.py:120:
+  src\v3\solarshield_v3_acceptance.py:121:        except ValueError as exc:
+  src\v3\solarshield_v3_acceptance.py:157:
+  src\v3\solarshield_v3_acceptance.py:158:
+> src\v3\solarshield_v3_acceptance.py:159:def _peak_errors(observations, predictions):
+  src\v3\solarshield_v3_acceptance.py:160:    """Calculate global-maximum amplitude and timing errors for 
+one curve."""
+  src\v3\solarshield_v3_acceptance.py:161:    y = np.asarray(observations, dtype=float)
+> src\v3\solarshield_v3_acceptance.py:162:    p = np.asarray(predictions, dtype=float)
+  src\v3\solarshield_v3_acceptance.py:163:
+  src\v3\solarshield_v3_acceptance.py:164:    if y.ndim != 1 or p.ndim != 1 or y.size != p.size:
+  src\v3\solarshield_v3_acceptance.py:165:        raise ValueError("Reference and candidate curves must 
+have equal lengths.")
+  src\v3\solarshield_v3_acceptance.py:166:
+  src\v3\solarshield_v3_acceptance.py:230:
+  src\v3\solarshield_v3_acceptance.py:231:    Each record must contain:
+> src\v3\solarshield_v3_acceptance.py:232:        cycle_id, origin, target, prediction, observation
+  src\v3\solarshield_v3_acceptance.py:233:
+  src\v3\solarshield_v3_acceptance.py:234:    MAE/RMSE use all matched points.
+  src\v3\solarshield_v3_acceptance.py:235:    Peak metrics use the macro-average across cycle-origin 
+curves.
+  src\v3\solarshield_v3_acceptance.py:236:    """
+  src\v3\solarshield_v3_acceptance.py:310:    for key in ordered_keys:
+  src\v3\solarshield_v3_acceptance.py:311:        reference_errors_point.append(
+> src\v3\solarshield_v3_acceptance.py:312:            reference[key]["prediction"]
+  src\v3\solarshield_v3_acceptance.py:313:            - reference[key]["observation"]
+  src\v3\solarshield_v3_acceptance.py:314:        )
+  src\v3\solarshield_v3_acceptance.py:315:        candidate_errors_point.append(
+> src\v3\solarshield_v3_acceptance.py:316:            candidate[key]["prediction"]
+  src\v3\solarshield_v3_acceptance.py:317:            - candidate[key]["observation"]
+  src\v3\solarshield_v3_acceptance.py:318:        )
+  src\v3\solarshield_v3_acceptance.py:319:
+  src\v3\solarshield_v3_acceptance.py:320:    ref_error = np.asarray(reference_errors_point, dtype=float)
+  src\v3\solarshield_v3_acceptance.py:365:                row["observation"] for row in ref_rows
+  src\v3\solarshield_v3_acceptance.py:366:            ]
+> src\v3\solarshield_v3_acceptance.py:367:            ref_predictions = [
+> src\v3\solarshield_v3_acceptance.py:368:                row["prediction"] for row in ref_rows
+  src\v3\solarshield_v3_acceptance.py:369:            ]
+> src\v3\solarshield_v3_acceptance.py:370:            cand_predictions = [
+> src\v3\solarshield_v3_acceptance.py:371:                row["prediction"] for row in cand_rows
+  src\v3\solarshield_v3_acceptance.py:372:            ]
+  src\v3\solarshield_v3_acceptance.py:373:
+  src\v3\solarshield_v3_acceptance.py:374:            ref_amp, ref_timing = _peak_errors(
+> src\v3\solarshield_v3_acceptance.py:375:                observations, ref_predictions
+  src\v3\solarshield_v3_acceptance.py:376:            )
+  src\v3\solarshield_v3_acceptance.py:377:            cand_amp, cand_timing = _peak_errors(
+> src\v3\solarshield_v3_acceptance.py:378:                observations, cand_predictions
+  src\v3\solarshield_v3_acceptance.py:379:            )
+  src\v3\solarshield_v3_acceptance.py:380:
+  src\v3\solarshield_v3_acceptance.py:381:            reference_peak_amplitude.append(ref_amp)
+  src\v3\solarshield_v3_acceptance.py:382:            candidate_peak_amplitude.append(cand_amp)
+  src\v3\solarshield_v3_enkf.py:75:
+  src\v3\solarshield_v3_enkf.py:76:            if not np.all(np.isfinite(predicted_ensemble)):
+> src\v3\solarshield_v3_enkf.py:77:                raise ValueError("Prediction produced a non-finite 
+ensemble.")
+  src\v3\solarshield_v3_enkf.py:78:
+  src\v3\solarshield_v3_enkf.py:79:            self.ensemble = predicted_ensemble
+  src\v3\solarshield_v3_enkf.py:80:            return self.ensemble.copy()
+  src\v3\solarshield_v3_enkf.py:81:
+  src\v3\solarshield_v3_kalman.py:77:            or not np.all(np.isfinite(predicted_covariance))
+  src\v3\solarshield_v3_kalman.py:78:        ):
+> src\v3\solarshield_v3_kalman.py:79:            raise ValueError("Prediction produced non-finite state 
+or covariance.")
+  src\v3\solarshield_v3_kalman.py:80:
+  src\v3\solarshield_v3_kalman.py:81:        self.x = predicted_state
+  src\v3\solarshield_v3_kalman.py:82:        self.P = predicted_covariance
+  src\v3\solarshield_v3_kalman.py:83:        return self.snapshot()
+  src\v3\solarshield_v3_losses.py:18:    shape_dtw: float
+  src\v3\solarshield_v3_losses.py:19:    peak_timing_phase_error: float
+> src\v3\solarshield_v3_losses.py:20:    peak_amplitude_absolute_error: float
+  src\v3\solarshield_v3_losses.py:21:    reference_peak_count: int = 1
+  src\v3\solarshield_v3_losses.py:22:    candidate_peak_count: int = 1
+  src\v3\solarshield_v3_losses.py:23:    multiple_peak_regions: bool = False
+  src\v3\solarshield_v3_losses.py:24:    shape_dtw_normalized: float = 0.0
+  src\v3\solarshield_v3_losses.py:284:        shape_dtw=float(raw_dtw),
+  src\v3\solarshield_v3_losses.py:285:        peak_timing_phase_error=float(legacy_timing_error),
+> src\v3\solarshield_v3_losses.py:286:        peak_amplitude_absolute_error=float(amplitude_error),
+  src\v3\solarshield_v3_losses.py:287:        reference_peak_count=len(reference_global),
+  src\v3\solarshield_v3_losses.py:288:        candidate_peak_count=len(candidate_global),
+  src\v3\solarshield_v3_losses.py:289:        multiple_peak_regions=multiple_global_peaks,
+  src\v3\solarshield_v3_losses.py:290:        shape_dtw_normalized=float(normalized_dtw),
+  src\v3\solarshield_v3_orchestration.py:45:
+  src\v3\solarshield_v3_orchestration.py:46:
+> src\v3\solarshield_v3_orchestration.py:47:def run_kf_cycle(
+  src\v3\solarshield_v3_orchestration.py:48:    cycle_id: int,
+  src\v3\solarshield_v3_orchestration.py:49:    observations: Sequence,
+  src\v3\solarshield_v3_orchestration.py:50:    baseline_predictor: Callable,
+  src\v3\solarshield_v3_orchestration.py:51:    initial_state_factory: Callable,
+  src\v3\solarshield_v3_orchestration.py:134:
+  src\v3\solarshield_v3_orchestration.py:135:
+> src\v3\solarshield_v3_orchestration.py:136:def run_enkf_cycle(
+  src\v3\solarshield_v3_orchestration.py:137:    cycle_id: int,
+  src\v3\solarshield_v3_orchestration.py:138:    observations: Sequence,
+  src\v3\solarshield_v3_orchestration.py:139:    baseline_predictor: Callable,
+  src\v3\solarshield_v3_orchestration.py:140:    initial_state_factory: Callable,
+  src\v3\solarshield_v3_orchestration.py:247:        "quantile_method": "Hyndman-Fan Type 8",
+  src\v3\solarshield_v3_orchestration.py:248:        "nominal_levels": tuple(probabilities),
+> src\v3\solarshield_v3_orchestration.py:249:        "absolute_error_quantiles": tuple(float(x) for x in 
+quantiles),
+  src\v3\solarshield_v3_orchestration.py:250:        "sample_count": int(values.size),
+  src\v3\solarshield_v3_orchestration.py:251:        "status": "EVIDENCE_LIMITED_NOT_VALIDATED",
+  src\v3\solarshield_v3_orchestration.py:252:        "coverage_guarantee": False,
+  src\v3\solarshield_v3_orchestration.py:253:    }
+  src\v3\solarshield_v3_orchestration.py:273:    return tuple({
+  src\v3\solarshield_v3_orchestration.py:274:        "key": key,
+> src\v3\solarshield_v3_orchestration.py:275:        "candidate_prediction": candidate[key]["prediction"],
+> src\v3\solarshield_v3_orchestration.py:276:        "reference_prediction": reference[key]["prediction"],
+  src\v3\solarshield_v3_orchestration.py:277:        "difference": (
+> src\v3\solarshield_v3_orchestration.py:278:            float(candidate[key]["prediction"])
+> src\v3\solarshield_v3_orchestration.py:279:            - float(reference[key]["prediction"])
+  src\v3\solarshield_v3_orchestration.py:280:        ),
+  src\v3\solarshield_v3_orchestration.py:281:    } for key in sorted(candidate))
+  src\v3\test_v3_acceptance.py:9:
+  src\v3\test_v3_acceptance.py:10:
+> src\v3\test_v3_acceptance.py:11:def make_records(predictions, cycle_id=6, origin="2020-01-01"):
+  src\v3\test_v3_acceptance.py:12:    observations = [0.0, 1.0, 3.0, 1.0, 0.0]
+  src\v3\test_v3_acceptance.py:13:
+  src\v3\test_v3_acceptance.py:14:    return [
+  src\v3\test_v3_acceptance.py:15:        {
+  src\v3\test_v3_acceptance.py:17:            "origin": origin,
+  src\v3\test_v3_acceptance.py:18:            "target": f"2020-{index + 1:02d}-01",
+> src\v3\test_v3_acceptance.py:19:            "prediction": prediction,
+  src\v3\test_v3_acceptance.py:20:            "observation": observation,
+  src\v3\test_v3_acceptance.py:21:        }
+> src\v3\test_v3_acceptance.py:22:        for index, (prediction, observation) in enumerate(
+> src\v3\test_v3_acceptance.py:23:            zip(predictions, observations)
+  src\v3\test_v3_acceptance.py:24:        )
+  src\v3\test_v3_acceptance.py:25:    ]
+  src\v3\test_v3_acceptance.py:26:
+  src\v3\test_v3_acceptance.py:27:
+  src\v3\test_v3_acceptance.py:109:
+  src\v3\test_v3_acceptance.py:110:
+> src\v3\test_v3_acceptance.py:111:def test_nonfinite_prediction_is_unresolved():
+  src\v3\test_v3_acceptance.py:112:    a0 = make_records([0, 0, 2, 0, 0])
+  src\v3\test_v3_acceptance.py:113:    a1 = make_records([0, 1, 2.5, 1, 0])
+> src\v3\test_v3_acceptance.py:114:    a1[2]["prediction"] = float("nan")
+  src\v3\test_v3_acceptance.py:115:
+  src\v3\test_v3_acceptance.py:116:    result = evaluate_r32_candidate(
+  src\v3\test_v3_acceptance.py:117:        a0, a1, candidate_id="A1"
+  src\v3\test_v3_acceptance.py:118:    )
+  src\v3\test_v3_acceptance.py:143:            "origin": "origin_01",
+  src\v3\test_v3_acceptance.py:144:            "target": index,
+> src\v3\test_v3_acceptance.py:145:            "prediction": prediction,
+  src\v3\test_v3_acceptance.py:146:            "observation": observation,
+  src\v3\test_v3_acceptance.py:147:        }
+> src\v3\test_v3_acceptance.py:148:        for index, (prediction, observation) in enumerate(
+  src\v3\test_v3_acceptance.py:149:            zip([0.0, 1.0], observations)
+  src\v3\test_v3_acceptance.py:150:        )
+  src\v3\test_v3_acceptance.py:151:    ]
+  src\v3\test_v3_acceptance.py:152:
+  src\v3\test_v3_acceptance.py:156:            "origin": "origin_01",
+  src\v3\test_v3_acceptance.py:157:            "target": index,
+> src\v3\test_v3_acceptance.py:158:            "prediction": prediction,
+  src\v3\test_v3_acceptance.py:159:            "observation": observation,
+  src\v3\test_v3_acceptance.py:160:        }
+> src\v3\test_v3_acceptance.py:161:        for index, (prediction, observation) in enumerate(
+  src\v3\test_v3_acceptance.py:162:            zip([0.0, 2.0], observations)
+  src\v3\test_v3_acceptance.py:163:        )
+  src\v3\test_v3_acceptance.py:164:    ]
+  src\v3\test_v3_acceptance.py:165:
+  src\v3\test_v3_acceptance.py:207:    a0 = make_records([0, 0, 2, 0, 0])
+  src\v3\test_v3_acceptance.py:208:    a1 = make_records([0, 1, 2.5, 1, 0])
+> src\v3\test_v3_acceptance.py:209:    a1[1]["prediction"] = None
+  src\v3\test_v3_acceptance.py:210:
+  src\v3\test_v3_acceptance.py:211:    result = evaluate_r32_candidate(
+  src\v3\test_v3_acceptance.py:212:        a0, a1, candidate_id="A1"
+  src\v3\test_v3_acceptance.py:213:    )
+
+

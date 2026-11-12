@@ -1,0 +1,26 @@
+﻿{
+    "project":  "SolarShield-AI V3",
+    "protocol":  "V3 Technical Validation Protocol Draft 1.6",
+    "approval_timestamp_utc":  "20261111_203955",
+    "owner_approval":  true,
+    "approved_scope":  "R19-R33 normative requirements",
+    "R32_acceptance_criteria":  {
+                                    "A1_vs_A0":  {
+                                                     "peak_amplitude_error":  "EQUAL_OR_LOWER",
+                                                     "MAE":  "STRICTLY_LOWER",
+                                                     "RMSE":  "EQUAL_OR_LOWER",
+                                                     "peak_timing_error":  "EQUAL_OR_LOWER"
+                                                 },
+                                    "A2_vs_A0":  {
+                                                     "peak_amplitude_error":  "EQUAL_OR_LOWER",
+                                                     "MAE":  "STRICTLY_LOWER",
+                                                     "RMSE":  "EQUAL_OR_LOWER",
+                                                     "peak_timing_error":  "EQUAL_OR_LOWER"
+                                                 },
+                                    "matched_records_required":  true,
+                                    "missing_or_nonfinite_required_metrics":  "REJECT_OR_UNRESOLVED",
+                                    "overall_acceptance":  "ALL_FOUR_CONDITIONS_MUST_PASS"
+                                },
+    "execution_condition":  "All R30 gates must independently pass before protocol freeze or model execution.",
+    "babcock_leighton_integration":  "NOT AUTHORIZED"
+}

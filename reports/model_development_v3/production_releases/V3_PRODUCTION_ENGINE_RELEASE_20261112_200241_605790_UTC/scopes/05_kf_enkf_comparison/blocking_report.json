@@ -1,0 +1,18 @@
+{
+  "authorization_present": true,
+  "blockers": [
+    "No R22 selected EnKF ensemble configuration exists; test-only seed/size values are not a production selection.",
+    "R21 production Q/R/P0 application inputs and R23-R25 selected diagnostic settings are missing.",
+    "Identical-origin comparison was not run; no acceptance or superiority claim is made."
+  ],
+  "execution_attempted": false,
+  "historical_model_execution_performed": false,
+  "no_scope_expansion": true,
+  "prior_r30_authorization_gate_status": "CLEARED",
+  "r20_c6_c12_rerun": false,
+  "release_id": "V3_PRODUCTION_ENGINE_RELEASE_20261112_200241_605790_UTC",
+  "scientific_acceptance": "NOT_EVALUATED",
+  "scope": "KF versus EnKF comparison",
+  "scope_id": "V3_R30_KF_ENKF_COMPARE_20261111_220209_UTC",
+  "status": "BLOCKED"
+}

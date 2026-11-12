@@ -1,0 +1,9 @@
+horizon_months,model,skill_vs_persistence,skill_vs_seasonal_naive_12
+1,persistence,0.0,0.5154322908793427
+1,seasonal_naive_12,-1.0636950856975078,0.0
+3,persistence,0.0,0.38713952643103466
+3,seasonal_naive_12,-0.6316927638954182,0.0
+6,persistence,0.0,0.2939127367330291
+6,seasonal_naive_12,-0.41625554237182283,0.0
+12,persistence,0.0,0.0
+12,seasonal_naive_12,0.0,0.0

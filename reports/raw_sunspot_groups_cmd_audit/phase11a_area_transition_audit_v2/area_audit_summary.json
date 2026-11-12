@@ -1,0 +1,107 @@
+{
+  "total_records": 257852,
+  "length_errors": 0,
+  "parse_errors": 0,
+  "periods": {
+    "pre_1977": {
+      "observed_umbral": {
+        "count": 161839,
+        "zero": 18164,
+        "negative": 0,
+        "nonzero": 143675,
+        "max": 1805
+      },
+      "observed_whole": {
+        "count": 161839,
+        "zero": 134,
+        "negative": 0,
+        "nonzero": 161705,
+        "max": 9803
+      },
+      "corrected_umbral": {
+        "count": 161839,
+        "zero": 18098,
+        "negative": 0,
+        "nonzero": 143741,
+        "max": 1057
+      },
+      "corrected_whole": {
+        "count": 161839,
+        "zero": 131,
+        "negative": 0,
+        "nonzero": 161708,
+        "max": 6132
+      },
+      "spot_count": {}
+    },
+    "1977_1981": {
+      "observed_umbral": {
+        "count": 18285,
+        "zero": 18285,
+        "negative": 0,
+        "nonzero": 0,
+        "max": 0
+      },
+      "observed_whole": {
+        "count": 18285,
+        "zero": 19,
+        "negative": 0,
+        "nonzero": 18266,
+        "max": 4532
+      },
+      "corrected_umbral": {
+        "count": 18285,
+        "zero": 18285,
+        "negative": 0,
+        "nonzero": 0,
+        "max": 0
+      },
+      "corrected_whole": {
+        "count": 18285,
+        "zero": 11,
+        "negative": 0,
+        "nonzero": 18274,
+        "max": 2301
+      },
+      "spot_count": {}
+    },
+    "post_1981": {
+      "observed_umbral": {
+        "count": 77728,
+        "zero": 77728,
+        "negative": 0,
+        "nonzero": 0,
+        "max": 0
+      },
+      "observed_whole": {
+        "count": 77728,
+        "zero": 4985,
+        "negative": 0,
+        "nonzero": 72743,
+        "max": 5608
+      },
+      "corrected_umbral": {
+        "count": 77728,
+        "zero": 77728,
+        "negative": 0,
+        "nonzero": 0,
+        "max": 0
+      },
+      "corrected_whole": {
+        "count": 77728,
+        "zero": 4671,
+        "negative": 0,
+        "nonzero": 73057,
+        "max": 3600
+      },
+      "spot_count": {
+        "count": 77728,
+        "zero": 7,
+        "negative": 0,
+        "nonzero": 77721,
+        "max": 118
+      }
+    }
+  },
+  "anomaly_count": 0
+}

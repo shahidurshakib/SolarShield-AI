@@ -1,0 +1,26 @@
+{
+  "created_utc": "2026-10-24T20:28:08.798782+00:00",
+  "audit_status": "PASS",
+  "files": [
+    {
+      "file": "audit_inventory.csv",
+      "bytes": 3308,
+      "sha256": "02161073510894753581d05f36acf88d8b4067d1b1beb965ef3b7d682be0e7c5"
+    },
+    {
+      "file": "audit_validations.csv",
+      "bytes": 1155,
+      "sha256": "ff4b1c6867606b230eb265bf609773f44645321ae94fc6574ed6d6e2575a4ce4"
+    },
+    {
+      "file": "consolidated_audit_report.md",
+      "bytes": 12479,
+      "sha256": "56e90f52968d1d2d466d70286fdbfd3b2cc72588c3b3c78822e883141340571e"
+    },
+    {
+      "file": "consolidated_metrics.csv",
+      "bytes": 8687,
+      "sha256": "3a56d40c8b18b471b231bb7d09ab9fefb56d2723bd36059c43f268dc6ac59ea7"
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+﻿SOLARSHIELD-AI
+PHASE 11A — RAW SUNSPOT GROUP ARCHIVE VALIDATION
+STATUS: PASS WITH OPEN EXCEPTIONS
+
+Archive:
+data/raw/sunspot_groups/updated_2025/AR_databse-202508.zip
+
+Archive SHA-256:
+a494d401f45b838fd4fcfba14b8373774ddc3111788b8aa79d9ca2d8631f87c6
+
+Structural audit:
+- Archive members: 152
+- Records: 257852
+- Record-length errors: 0
+- Area parser errors: 0
+
+Reconciliation and review:
+- Missing-day candidates: 131/131 date-level matches
+- Identity-aware repeated-observation keys: 4 unresolved
+- Carrington values above 360 degrees: 6
+- High CMD ephemeris residual candidates: 13
+- High PA exceptions at distance >= 0.10: 12
+
+Open scope:
+- Dedicated post-1981 NOAA identifier structural validation
+  is not confirmed complete.
+- All unresolved records remain unchanged.
+- No automatic deletion, merging, correction, or exclusion.
+- No model execution authorized.
+
+Area interpretation:
+- Post-1981 columns must follow the revised NASA format.
+- Post-1981 classification and spot-count fields must not be
+  interpreted as umbral-area fields.
+
+FINAL DISPOSITION:
+PASS WITH OPEN EXCEPTIONS
+
+RAW ARCHIVE MODIFIED: NO
+MODEL EXECUTION: NOT AUTHORIZED

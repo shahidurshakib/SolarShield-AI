@@ -1,0 +1,33 @@
+{
+  "records_tested": 257852,
+  "distance_error_statistics": {
+    "median": 0.0005285340940164862,
+    "p95": 0.002589539453178896,
+    "p99": 0.003623533067688596,
+    "max": 0.1261951552926791
+  },
+  "pa_error_statistics": {
+    "median": 0.08732312265406961,
+    "p95": 0.4267657210501312,
+    "p99": 0.855125489030831,
+    "max": 180.0
+  },
+  "distance_threshold_counts": {
+    "0.001": 74488,
+    "0.002": 26085,
+    "0.005": 172,
+    "0.01": 124
+  },
+  "pa_threshold_counts": {
+    "0.1": 116472,
+    "0.2": 54041,
+    "0.5": 8962,
+    "1.0": 1767,
+    "2.0": 447
+  },
+  "combined_review_threshold": {
+    "distance_error_gt": 0.005,
+    "pa_error_gt_degrees": 0.5
+  },
+  "combined_review_records": 9065
+}

@@ -1,0 +1,97 @@
+﻿{
+    "snapshot_id":  "V3_updated_implementation_20261111_203515_UTC",
+    "created_utc":  "20261111_203515",
+    "snapshot_status":  "IMPLEMENTATION_SNAPSHOT",
+    "protocol_status":  "CONTROLLED DRAFT - NOT FROZEN",
+    "scientific_validation":  "NOT ESTABLISHED",
+    "historical_execution":  "NOT PERFORMED",
+    "cycle_25_forecast_execution":  "NOT PERFORMED",
+    "babcock_leighton_authorization":  "NOT AUTHORIZED",
+    "regression":  {
+                       "passed":  167,
+                       "subtests_passed":  23,
+                       "duration_seconds":  31.47,
+                       "exit_code":  0,
+                       "evidence_type":  "USER_REPORTED_AUDIT_OUTPUT"
+                   },
+    "file_count":  15,
+    "source_test_script_count":  14,
+    "verification":  "ALL COPIED FILE HASHES MATCHED",
+    "files":  [
+                  {
+                      "path":  "src\\v3\\solarshield_v3_orchestration.py",
+                      "sha256":  "332E51CAD5EEB166BD1A06C935AD44127B4B184A4458C9A8C238CBF3768AB988",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "src\\v3\\solarshield_v3_forecasting.py",
+                      "sha256":  "5B90BFD27AA50656297FED92B998A41DFBA12AA9A065D303F2794F95A695EAD7",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "src\\v3\\solarshield_v3_forecast_integration.py",
+                      "sha256":  "80F1AE74DAEF8AE1F27985252F171C26FB09394CB9F4DBB2E01B4AAD2CF94552",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "src\\v3\\solarshield_v3_acceptance.py",
+                      "sha256":  "8E47DF91AA8FA65A73FE86BB875AF45CF9D882E971D0C699707034C5CBDBED60",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "src\\v3\\test_v3_acceptance.py",
+                      "sha256":  "71E8441AA1AC8721A64043BC4C0EB98940998939EF9D6D58EF51BC67E782C7C8",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "tests\\v3\\test_v3_orchestration.py",
+                      "sha256":  "BB1F8D32C00116FA667DA01A973B5C337598E39F61C30BB5695CCB324DEDC22C",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "tests\\v3\\test_v3_enkf_ensemble_snapshots.py",
+                      "sha256":  "C0BDD45632E9DFE635A943A74A3BF7E3255A263C13A3580130122CA5A2C70AC4",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "tests\\v3\\test_v3_forecasting.py",
+                      "sha256":  "A9CA2505671A2DDD5405A7A4C626DB7D50A1BA5875DF4BA2481B80E41435FBFE",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "tests\\v3\\test_v3_forecast_integration.py",
+                      "sha256":  "511F218EC50E2AD0FCD7886C5A610DCAEEEA6FC9C38009E5EAF25E21456FC596",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "scripts\\apply_enkf_ensemble_capture.py",
+                      "sha256":  "A10AAAE3689F2D7277B224FD2514B4400460DD56C703D2C6D350CCBD275880E4",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "scripts\\fix_enkf_missing_capture_guard.py",
+                      "sha256":  "917B6E3D5C3E2BA7D213D4319EBE30C28B70171DEF92836BDC97F23F967D1746",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "scripts\\patch_strict_enkf_forecast_seed.py",
+                      "sha256":  "97000D2A8F412E34E3DA7B2B9ECB12C0416083CEEE012DF9E9AE1726307D9F4B",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "scripts\\create_enkf_snapshot_tests.py",
+                      "sha256":  "E7DC9E2C7BB45008EA5D673EFC8C3AF42687453B27CFFCC32F3BE9ED99BDED40",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "reports\\model_development_v3\\protocols\\drafts\\V3_Technical_Validation_Protocol_Draft_1.6.md",
+                      "sha256":  "D2A6B43215EBAE29C79F86ECB2DA9194F2DC64DAEEA0229D15E0692513DF417E",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "path":  "REGRESSION_EVIDENCE.txt",
+                      "sha256":  "8197999F028696C2BC23C95C7A7C3BFDF51CCAE7A38965DBEF27E29DF32563E7",
+                      "verification":  "PASS"
+                  }
+              ]
+}

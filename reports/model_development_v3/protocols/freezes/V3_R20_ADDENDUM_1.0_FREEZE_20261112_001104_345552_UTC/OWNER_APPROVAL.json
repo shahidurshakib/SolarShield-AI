@@ -1,0 +1,37 @@
+{
+  "record_type": "R20_OWNER_APPROVAL",
+  "approval_status": "OWNER_APPROVED",
+  "approved_change": "Exclude all eight folds lacking three prior-cycle template observations, uniformly across all R20 candidates.",
+  "approved_selection_population": {
+    "nominal_folds": 28,
+    "eligible_folds": 20,
+    "not_evaluable_folds": 8,
+    "eligible_cycles": [
+      7,
+      8,
+      10,
+      11,
+      12
+    ],
+    "not_evaluable_cycles": [
+      6,
+      9
+    ],
+    "observed_prefix_months": [
+      24,
+      36,
+      48,
+      60
+    ]
+  },
+  "approval_basis": "Explicit user approval in the project conversation after review of the R20 prior-template coverage audit.",
+  "approval_scope": "R20 configuration selection only",
+  "base_protocol": "V3 Technical Validation Protocol Draft 1.7",
+  "base_protocol_sha256": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+  "scientific_acceptance": "NOT_GRANTED",
+  "r21_identifiability": "NOT_ESTABLISHED",
+  "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+  "babcock_leighton_authorized": false,
+  "other_r30_scopes_authorized_by_this_record": false,
+  "recorded_at_utc": "2026-11-12T00:11:04.345585+00:00"
+}

@@ -1,0 +1,20 @@
+﻿SOLARSHIELD-AI V3 — R26 CALIBRATION EVIDENCE-SUFFICIENCY DIAGNOSTIC
+Generated UTC: 20261111_211850_UTC
+Protocol: Draft 1.6
+
+Protocol calibration partition: cycles 13-15 only.
+Forecast origins: 24, 36, 48 and 60 observed months.
+Required reporting: error count, distinct origins, distinct target cycles,
+horizon distribution, interval width, empirical coverage and dependence limitations.
+
+No calibration fitting or historical model execution was performed for this diagnostic.
+No empirical calibration errors, interval coverage or validated prediction intervals
+are claimed by this report.
+
+Independent cycle evidence: LIMITED TO THREE DESIGNATED CALIBRATION CYCLES.
+Actual eligible forecast-origin and horizon counts: NOT ESTABLISHED.
+Empirical coverage: NOT ESTABLISHED.
+Guaranteed coverage: NOT CLAIMED.
+
+R26 status: UNRESOLVED_CALIBRATION_EVIDENCE.
+This limitation is explicitly retained for subsequent authorized calibration work.

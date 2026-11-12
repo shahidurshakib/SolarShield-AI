@@ -1,0 +1,53 @@
+{
+    "protocol_id":  "SOLARSHIELD_V3_DRAFT_1.6",
+    "freeze_timestamp_utc":  "20261111_211850_UTC",
+    "snapshot_status":  "IMMUTABLE_PROTOCOL_SNAPSHOT",
+    "manifest_created_utc":  "2026-11-11T21:19:45.2901208Z",
+    "execution_performed":  false,
+    "scientific_acceptance":  "NOT_GRANTED",
+    "r21_identifiability":  "NOT_ESTABLISHED",
+    "r26_calibration":  "UNRESOLVED_CALIBRATION_EVIDENCE",
+    "babcock_leighton":  "NOT_AUTHORIZED",
+    "files":  [
+                  {
+                      "file":  "FINAL_PROTOCOL_REVIEW_RECORD.txt",
+                      "bytes":  1686,
+                      "sha256":  "C818263C175822A311553E7F704AD1D24EEEE03E0BABECECAB6EE6BDF8939C21"
+                  },
+                  {
+                      "file":  "R21_OPTION_A_PROTOCOL_APPROVAL_20261111_210041_UTC.json",
+                      "bytes":  1909,
+                      "sha256":  "19A386202A73EFBB7B6EAA7D791AAD8904C7BCD6EC42165A9DA32EA06620A537"
+                  },
+                  {
+                      "file":  "R26_EVIDENCE_SUFFICIENCY_DIAGNOSTIC.txt",
+                      "bytes":  942,
+                      "sha256":  "81E7DE533E8995450D5EAE22E88DB78E0108DDE22B89E75A64220DEBCD03F914"
+                  },
+                  {
+                      "file":  "REGRESSION_EVIDENCE.txt",
+                      "bytes":  824,
+                      "sha256":  "8197999F028696C2BC23C95C7A7C3BFDF51CCAE7A38965DBEF27E29DF32563E7"
+                  },
+                  {
+                      "file":  "SHA256_MANIFEST.json",
+                      "bytes":  4933,
+                      "sha256":  "D2F06391E0F71398C3D0BBF9F4D3785851A610725559A84674B5D53E82300BB3"
+                  },
+                  {
+                      "file":  "V3_PARTITION_PRESERVATION_DIAGNOSTIC_20261111_204631_UTC.txt",
+                      "bytes":  4074,
+                      "sha256":  "8928FE7B26BC5280B40B26F12794FC37B50211686F1C5F6EDC727041EEB22F0B"
+                  },
+                  {
+                      "file":  "V3_STAGE7_PRESERVATION_AUDIT_20261111_164007_UTC.txt",
+                      "bytes":  764,
+                      "sha256":  "033845E75B59696F9D44EE2D1F1D9309E97C4B1E0EC728E96ADD0DC3EE16C356"
+                  },
+                  {
+                      "file":  "V3_Technical_Validation_Protocol_Draft_1.6.md",
+                      "bytes":  70365,
+                      "sha256":  "D2A6B43215EBAE29C79F86ECB2DA9194F2DC64DAEEA0229D15E0692513DF417E"
+                  }
+              ]
+}

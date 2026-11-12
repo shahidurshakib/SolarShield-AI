@@ -1,0 +1,3227 @@
+﻿========== MATCHED DEPENDENCIES ==========
+
+========== FILE: R:\SolarShield AI\reports\model_development_v3\executions\R30_AUTHORIZED_20261111_220209_UTC\R30_EXECUTION_AUTHORIZATION.json ==========
+SIZE: 3273
+SHA256: 2EA9246AF2DD7FF618EE7A7748C42B1F47E99A29C440A3A3747EDD7D5A0474D6
+{
+    "protocol":  "SolarShield-AI V3 Draft 1.7",
+    "protocol_sha256":  "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+    "freeze_manifest_sha256":  "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3",
+    "gate_status":  "CLEARED",
+    "gate_timestamp_utc":  "20261111_220209_UTC",
+    "input_monthly_sha256":  "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194",
+    "input_metadata_sha256":  "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25",
+    "source_manifest_comparison":  "PASS",
+    "cycle_partition_verification":  "PASS",
+    "preservation_verification":  "PASS",
+    "synthetic_regression":  "PASS",
+    "model_execution_performed":  false,
+    "scientific_acceptance":  "NOT_GRANTED",
+    "r21_identifiability":  "NOT_ESTABLISHED",
+    "r26_calibration":  "EVIDENCE_LIMITED_NOT_VALIDATED",
+    "babcock_leighton_authorized":  false,
+    "authorized_scopes":  [
+                              {
+                                  "scope":  "Configuration selection cycles 6-12",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\01_configuration_selection",
+                                  "folder":  "01_configuration_selection",
+                                  "id":  "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "Calibration fitting cycles 13-15",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\02_calibration",
+                                  "folder":  "02_calibration",
+                                  "id":  "V3_R30_C13_C15_CALIBRATION_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "Historical backtesting cycles 16-24",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\03_historical_backtesting",
+                                  "folder":  "03_historical_backtesting",
+                                  "id":  "V3_R30_C16_C24_BACKTEST_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "Cycle 25 exploratory forecast",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\04_cycle25_exploratory",
+                                  "folder":  "04_cycle25_exploratory",
+                                  "id":  "V3_R30_C25_EXPLORATORY_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "KF versus EnKF comparison",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\05_kf_enkf_comparison",
+                                  "folder":  "05_kf_enkf_comparison",
+                                  "id":  "V3_R30_KF_ENKF_COMPARE_20261111_220209_UTC"
+                              }
+                          ]
+}
+
+
+========== FILE: R:\SolarShield AI\scripts\run_v3_r20_production_runner_v1.py ==========
+SIZE: 16805
+SHA256: DC491157A8E0C33075349DD694AE17965555A4832CB80F6CD3D31CAAA46CAB20
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from src.v3.solarshield_v3_t2_engine_v4 import (
+    select_t2_configuration,
+)
+
+BUNDLE_MANIFEST_REL = Path("reports/model_development_v3/engineering_inputs/R20_PRODUCTION_BUNDLE_20261112_001104_345552_UTC/SHA256_MANIFEST.json")
+ADDENDUM_FREEZE_REL = Path("reports/model_development_v3/protocols/freezes/V3_R20_ADDENDUM_1.0_FREEZE_20261112_001104_345552_UTC")
+
+MONTHLY_REL = Path("data/processed/sunspot_monthly_clean.csv")
+METADATA_REL = Path("data/metadata/SILSO_solar_cycle_min_max_native.csv")
+AUTH_REL = Path(
+    "reports/model_development_v3/executions/"
+    "R30_AUTHORIZED_20261111_220209_UTC/"
+    "R30_EXECUTION_AUTHORIZATION.json"
+)
+DRAFT_REL = Path(
+    "reports/model_development_v3/protocols/drafts/"
+    "V3_Technical_Validation_Protocol_Draft_1.7.md"
+)
+BASE_FREEZE_REL = Path(
+    "reports/model_development_v3/protocols/freezes/"
+    "V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC"
+)
+BASE_FREEZE_MANIFEST_SHA = (
+    "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3"
+)
+DRAFT_SHA = (
+    "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048"
+)
+MONTHLY_SHA = (
+    "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194"
+)
+METADATA_SHA = (
+    "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25"
+)
+R20_SCOPE_ID = "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+
+
+def utc_stamp():
+    return datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f_UTC")
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def project_path(relative):
+    return ROOT / relative
+
+
+def find_key_values(value, wanted):
+    found = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key == wanted:
+                found.append(item)
+            found.extend(find_key_values(item, wanted))
+    elif isinstance(value, list):
+        for item in value:
+            found.extend(find_key_values(item, wanted))
+    return found
+
+
+def verify_bundle_manifest():
+    manifest_path = project_path(BUNDLE_MANIFEST_REL)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    entries = manifest.get("files", {})
+    if not entries:
+        raise RuntimeError("Production bundle manifest is empty.")
+
+    for relative, expected in entries.items():
+        path = project_path(Path(relative))
+        if not path.is_file():
+            raise RuntimeError(f"Manifest file missing: {relative}")
+        actual = digest(path)
+        if actual != expected:
+            raise RuntimeError(f"Source hash mismatch: {relative}")
+
+    return digest(manifest_path), manifest
+
+
+def verify_addendum_freeze():
+    folder = project_path(ADDENDUM_FREEZE_REL)
+    manifest_path = folder / "SHA256_MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    for name, expected in manifest["files"].items():
+        if digest(folder / name) != expected:
+            raise RuntimeError(f"Addendum freeze hash mismatch: {name}")
+
+    approval = json.loads(
+        (folder / "OWNER_APPROVAL.json").read_text(encoding="utf-8")
+    )
+    if approval.get("approval_status") != "OWNER_APPROVED":
+        raise RuntimeError("R20 owner approval is not present.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "eligible_folds"
+    ) != 20:
+        raise RuntimeError("Addendum eligible fold count mismatch.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "not_evaluable_folds"
+    ) != 8:
+        raise RuntimeError("Addendum excluded fold count mismatch.")
+
+    return digest(manifest_path), approval
+
+
+def verify_base_protocol():
+    if digest(project_path(DRAFT_REL)) != DRAFT_SHA:
+        raise RuntimeError("Draft 1.7 hash mismatch.")
+
+    base_manifest = project_path(BASE_FREEZE_REL / "SHA256_MANIFEST.json")
+    if digest(base_manifest) != BASE_FREEZE_MANIFEST_SHA:
+        raise RuntimeError("Draft 1.7 freeze manifest hash mismatch.")
+
+
+def verify_authorization():
+    path = project_path(AUTH_REL)
+    auth = json.loads(path.read_text(encoding="utf-8"))
+    serialized = json.dumps(auth, sort_keys=True).upper()
+
+    for required in (
+        R20_SCOPE_ID,
+        DRAFT_SHA,
+        MONTHLY_SHA,
+        METADATA_SHA,
+    ):
+        if required.upper() not in serialized:
+            raise RuntimeError(
+                f"R30 authorization does not contain required evidence: {required}"
+            )
+
+    bl_values = find_key_values(auth, "babcock_leighton_authorized")
+    if not bl_values or any(value is not False for value in bl_values):
+        raise RuntimeError("Babcock-Leighton authorization state is unsafe.")
+
+    acceptance_values = find_key_values(auth, "scientific_acceptance")
+    if not acceptance_values or any(
+        str(value).upper() != "NOT_GRANTED" for value in acceptance_values
+    ):
+        raise RuntimeError("Unexpected scientific acceptance state.")
+
+    return digest(path)
+
+
+def load_monthly_cycles():
+    path = project_path(MONTHLY_REL)
+    df = pd.read_csv(path, parse_dates=["month_start"])
+
+    required = {
+        "month_start", "ssn", "cycle_number",
+        "months_since_cycle_start", "is_provisional"
+    }
+    if not required.issubset(df.columns):
+        raise RuntimeError("Monthly dataset schema mismatch.")
+
+    df = df.sort_values("month_start").reset_index(drop=True)
+    if df["month_start"].duplicated().any():
+        raise RuntimeError("Duplicate monthly observations detected.")
+
+    cycles = {}
+    for cycle_id in range(1, 25):
+        part = df.loc[df["cycle_number"] == cycle_id].sort_values(
+            "month_start"
+        )
+        if part.empty:
+            raise RuntimeError(f"Cycle {cycle_id} is missing.")
+
+        values = part["ssn"].to_numpy(dtype=float)
+        offsets = part["months_since_cycle_start"].to_numpy(dtype=int)
+        periods = part["month_start"].dt.to_period("M")
+
+        if not pd.notna(values).all() or (values < 0).any():
+            raise RuntimeError(f"Invalid SSN values in cycle {cycle_id}.")
+
+        if not (offsets == range(len(offsets))).all():
+            raise RuntimeError(f"Invalid month offsets in cycle {cycle_id}.")
+
+        if len(periods) > 1 and not (
+            periods.diff().dropna().astype("int64") == 1
+        ).all():
+            raise RuntimeError(f"Non-contiguous months in cycle {cycle_id}.")
+
+        if int(part["is_provisional"].sum()) != 0:
+            raise RuntimeError(
+                f"Unexpected provisional records in completed cycle {cycle_id}."
+            )
+
+        cycles[cycle_id] = values
+
+    return cycles
+
+
+def run_coverage_audit(cycles):
+    from src.v3.solarshield_v3_t2_engine_v4 import (
+        selection_coverage_audit,
+    )
+
+    records = selection_coverage_audit(cycles)
+    eligible = [r for r in records if r["status"] == "ELIGIBLE"]
+    excluded = [r for r in records if r["status"] != "ELIGIBLE"]
+
+    if len(records) != 28 or len(eligible) != 20 or len(excluded) != 8:
+        raise RuntimeError("R20 coverage population differs from addendum.")
+
+    excluded_keys = {
+        (r["held_out_cycle"], r["observed_months"])
+        for r in excluded
+    }
+    expected_excluded = {
+        (cycle, k)
+        for cycle in (6, 9)
+        for k in (24, 36, 48, 60)
+    }
+    if excluded_keys != expected_excluded:
+        raise RuntimeError("Unexpected R20 excluded-fold population.")
+
+    if any(
+        r["status"] != "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+        for r in excluded
+    ):
+        raise RuntimeError("Unexpected exclusion reason.")
+
+    return records
+
+
+def run_regression_tests():
+    commands = [
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3/test_v3_t2_engine_v4.py"
+        ],
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3", "src/v3/test_v3_acceptance.py"
+        ],
+    ]
+
+    results = []
+    for command in commands:
+        completed = subprocess.run(
+            command, cwd=ROOT, capture_output=True, text=True
+        )
+        results.append({
+            "command": command,
+            "return_code": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+        })
+        if completed.returncode != 0:
+            raise RuntimeError(
+                "Regression tests failed:\n" + completed.stdout
+                + "\n" + completed.stderr
+            )
+    return results
+
+
+def preflight():
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, approval = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    monthly_path = project_path(MONTHLY_REL)
+    metadata_path = project_path(METADATA_REL)
+
+    if digest(monthly_path) != MONTHLY_SHA:
+        raise RuntimeError("Monthly SILSO source hash mismatch.")
+    if digest(metadata_path) != METADATA_SHA:
+        raise RuntimeError("Native cycle metadata hash mismatch.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+    regression = run_regression_tests()
+
+    gate_root = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_GATE_{utc_stamp()}")
+    )
+    gate_root.mkdir(parents=True, exist_ok=False)
+
+    evidence = {
+        "gate_status": "CLEARED",
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "scope_id": R20_SCOPE_ID,
+        "protocol": "Draft 1.7 + R20 Template-Support Addendum 1.0",
+        "base_protocol_sha256": DRAFT_SHA,
+        "base_freeze_manifest_sha256": BASE_FREEZE_MANIFEST_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "owner_approval_status": approval["approval_status"],
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "nominal_fold_count": len(coverage),
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+        "excluded_cycles": [6, 9],
+        "candidate_count": 12,
+        "candidate_fold_records_expected": 240,
+        "regression_tests": regression,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_authorized": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+
+    evidence_path = gate_root / "R20_GATE_EVIDENCE.json"
+    evidence_path.write_text(
+        json.dumps(evidence, indent=2) + "\n", encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "status": "R20_PREFLIGHT_PASS",
+        "gate_status": "CLEARED",
+        "gate_evidence": str(evidence_path.relative_to(ROOT)),
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidates": 12,
+        "expected_candidate_fold_records": 240,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+    }, indent=2))
+
+
+def execute_r20(gate_evidence_path):
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, _ = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    evidence_path = Path(gate_evidence_path)
+    if not evidence_path.is_absolute():
+        evidence_path = project_path(evidence_path)
+
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+
+    required_matches = {
+        "gate_status": "CLEARED",
+        "scope_id": R20_SCOPE_ID,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+    }
+    for key, expected in required_matches.items():
+        if evidence.get(key) != expected:
+            raise RuntimeError(f"Gate evidence mismatch: {key}")
+
+    if evidence.get("historical_model_execution_performed") is not False:
+        raise RuntimeError("Gate evidence is not a pre-execution record.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+
+    result = select_t2_configuration(cycles)
+
+    if result["eligible_fold_count"] != 20:
+        raise RuntimeError("Execution fold count mismatch.")
+    if result["candidate_count"] != 12:
+        raise RuntimeError("Execution candidate count mismatch.")
+    if len(result["fold_records"]) != 240:
+        raise RuntimeError("Execution fold record count mismatch.")
+
+    output = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_EXECUTION_{utc_stamp()}")
+    )
+    output.mkdir(parents=True, exist_ok=False)
+
+    pd.DataFrame(result["candidates"]).to_csv(
+        output / "candidate_metrics.csv", index=False
+    )
+    pd.DataFrame(result["fold_records"]).to_csv(
+        output / "candidate_fold_metrics.csv", index=False
+    )
+    pd.DataFrame(coverage).to_csv(
+        output / "fold_coverage_audit.csv", index=False
+    )
+
+    summary = {
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "protocol": "Draft 1.7 + R20 Addendum 1.0",
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": result["candidate_count"],
+        "eligible_fold_count": result["eligible_fold_count"],
+        "not_evaluable_fold_count": result["not_evaluable_fold_count"],
+        "candidate_fold_record_count": len(result["fold_records"]),
+        "candidates": result["candidates"],
+        "coverage_records": coverage,
+    }
+    (output / "selection_summary.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+    )
+
+    execution_manifest = {
+        "execution_status": "COMPLETED",
+        "scope_id": R20_SCOPE_ID,
+        "protocol_sha256": DRAFT_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "historical_model_execution_performed": True,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_executed": False,
+        "other_r30_scopes_executed": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    (output / "execution_manifest.json").write_text(
+        json.dumps(execution_manifest, indent=2) + "\n",
+        encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "execution_status": "COMPLETED",
+        "output_directory": str(output.relative_to(ROOT)),
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "other_scopes_executed": False,
+    }, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--preflight", action="store_true")
+    parser.add_argument("--execute-r20", action="store_true")
+    parser.add_argument("--gate-evidence")
+    args = parser.parse_args()
+
+    if args.preflight == args.execute_r20:
+        parser.error("Choose exactly one of --preflight or --execute-r20.")
+
+    if args.preflight:
+        preflight()
+    else:
+        if not args.gate_evidence:
+            parser.error("--execute-r20 requires --gate-evidence.")
+        execute_r20(args.gate_evidence)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"R20 RUNNER FAILED CLOSED: {exc}", file=sys.stderr)
+        raise
+
+
+========== FILE: R:\SolarShield AI\scripts\run_v3_r20_production_runner_v2.py ==========
+SIZE: 16824
+SHA256: 28AD3F7F6A5B603CC6C79A6A2717D766CC1B4149D4004242BD582FEBA0532879
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from src.v3.solarshield_v3_t2_engine_v4 import (
+    select_t2_configuration,
+)
+
+BUNDLE_MANIFEST_REL = Path("reports/model_development_v3/engineering_inputs/R20_PRODUCTION_BUNDLE_V2_20261112_001430_961818_UTC/SHA256_MANIFEST.json")
+ADDENDUM_FREEZE_REL = Path("reports/model_development_v3/protocols/freezes/V3_R20_ADDENDUM_1.0_FREEZE_20261112_001104_345552_UTC")
+
+MONTHLY_REL = Path("data/processed/sunspot_monthly_clean.csv")
+METADATA_REL = Path("data/metadata/SILSO_solar_cycle_min_max_native.csv")
+AUTH_REL = Path(
+    "reports/model_development_v3/executions/"
+    "R30_AUTHORIZED_20261111_220209_UTC/"
+    "R30_EXECUTION_AUTHORIZATION.json"
+)
+DRAFT_REL = Path(
+    "reports/model_development_v3/protocols/drafts/"
+    "V3_Technical_Validation_Protocol_Draft_1.7.md"
+)
+BASE_FREEZE_REL = Path(
+    "reports/model_development_v3/protocols/freezes/"
+    "V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC"
+)
+BASE_FREEZE_MANIFEST_SHA = (
+    "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3"
+)
+DRAFT_SHA = (
+    "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048"
+)
+MONTHLY_SHA = (
+    "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194"
+)
+METADATA_SHA = (
+    "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25"
+)
+R20_SCOPE_ID = "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+
+
+def utc_stamp():
+    return datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f_UTC")
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def project_path(relative):
+    return ROOT / relative
+
+
+def find_key_values(value, wanted):
+    found = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key == wanted:
+                found.append(item)
+            found.extend(find_key_values(item, wanted))
+    elif isinstance(value, list):
+        for item in value:
+            found.extend(find_key_values(item, wanted))
+    return found
+
+
+def verify_bundle_manifest():
+    manifest_path = project_path(BUNDLE_MANIFEST_REL)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+    entries = manifest.get("files", {})
+    if not entries:
+        raise RuntimeError("Production bundle manifest is empty.")
+
+    for relative, expected in entries.items():
+        path = project_path(Path(relative))
+        if not path.is_file():
+            raise RuntimeError(f"Manifest file missing: {relative}")
+        actual = digest(path)
+        if actual != expected:
+            raise RuntimeError(f"Source hash mismatch: {relative}")
+
+    return digest(manifest_path), manifest
+
+
+def verify_addendum_freeze():
+    folder = project_path(ADDENDUM_FREEZE_REL)
+    manifest_path = folder / "SHA256_MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+
+    for name, expected in manifest["files"].items():
+        if digest(folder / name) != expected:
+            raise RuntimeError(f"Addendum freeze hash mismatch: {name}")
+
+    approval = json.loads(
+        (folder / "OWNER_APPROVAL.json").read_text(encoding="utf-8")
+    )
+    if approval.get("approval_status") != "OWNER_APPROVED":
+        raise RuntimeError("R20 owner approval is not present.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "eligible_folds"
+    ) != 20:
+        raise RuntimeError("Addendum eligible fold count mismatch.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "not_evaluable_folds"
+    ) != 8:
+        raise RuntimeError("Addendum excluded fold count mismatch.")
+
+    return digest(manifest_path), approval
+
+
+def verify_base_protocol():
+    if digest(project_path(DRAFT_REL)) != DRAFT_SHA:
+        raise RuntimeError("Draft 1.7 hash mismatch.")
+
+    base_manifest = project_path(BASE_FREEZE_REL / "PROTOCOL_FREEZE_SHA256_MANIFEST.json")
+    if digest(base_manifest) != BASE_FREEZE_MANIFEST_SHA:
+        raise RuntimeError("Draft 1.7 freeze manifest hash mismatch.")
+
+
+def verify_authorization():
+    path = project_path(AUTH_REL)
+    auth = json.loads(path.read_text(encoding="utf-8"))
+    serialized = json.dumps(auth, sort_keys=True).upper()
+
+    for required in (
+        R20_SCOPE_ID,
+        DRAFT_SHA,
+        MONTHLY_SHA,
+        METADATA_SHA,
+    ):
+        if required.upper() not in serialized:
+            raise RuntimeError(
+                f"R30 authorization does not contain required evidence: {required}"
+            )
+
+    bl_values = find_key_values(auth, "babcock_leighton_authorized")
+    if not bl_values or any(value is not False for value in bl_values):
+        raise RuntimeError("Babcock-Leighton authorization state is unsafe.")
+
+    acceptance_values = find_key_values(auth, "scientific_acceptance")
+    if not acceptance_values or any(
+        str(value).upper() != "NOT_GRANTED" for value in acceptance_values
+    ):
+        raise RuntimeError("Unexpected scientific acceptance state.")
+
+    return digest(path)
+
+
+def load_monthly_cycles():
+    path = project_path(MONTHLY_REL)
+    df = pd.read_csv(path, parse_dates=["month_start"])
+
+    required = {
+        "month_start", "ssn", "cycle_number",
+        "months_since_cycle_start", "is_provisional"
+    }
+    if not required.issubset(df.columns):
+        raise RuntimeError("Monthly dataset schema mismatch.")
+
+    df = df.sort_values("month_start").reset_index(drop=True)
+    if df["month_start"].duplicated().any():
+        raise RuntimeError("Duplicate monthly observations detected.")
+
+    cycles = {}
+    for cycle_id in range(1, 25):
+        part = df.loc[df["cycle_number"] == cycle_id].sort_values(
+            "month_start"
+        )
+        if part.empty:
+            raise RuntimeError(f"Cycle {cycle_id} is missing.")
+
+        values = part["ssn"].to_numpy(dtype=float)
+        offsets = part["months_since_cycle_start"].to_numpy(dtype=int)
+        periods = part["month_start"].dt.to_period("M")
+
+        if not pd.notna(values).all() or (values < 0).any():
+            raise RuntimeError(f"Invalid SSN values in cycle {cycle_id}.")
+
+        if not (offsets == range(len(offsets))).all():
+            raise RuntimeError(f"Invalid month offsets in cycle {cycle_id}.")
+
+        if len(periods) > 1 and not (
+            periods.diff().dropna().astype("int64") == 1
+        ).all():
+            raise RuntimeError(f"Non-contiguous months in cycle {cycle_id}.")
+
+        if int(part["is_provisional"].sum()) != 0:
+            raise RuntimeError(
+                f"Unexpected provisional records in completed cycle {cycle_id}."
+            )
+
+        cycles[cycle_id] = values
+
+    return cycles
+
+
+def run_coverage_audit(cycles):
+    from src.v3.solarshield_v3_t2_engine_v4 import (
+        selection_coverage_audit,
+    )
+
+    records = selection_coverage_audit(cycles)
+    eligible = [r for r in records if r["status"] == "ELIGIBLE"]
+    excluded = [r for r in records if r["status"] != "ELIGIBLE"]
+
+    if len(records) != 28 or len(eligible) != 20 or len(excluded) != 8:
+        raise RuntimeError("R20 coverage population differs from addendum.")
+
+    excluded_keys = {
+        (r["held_out_cycle"], r["observed_months"])
+        for r in excluded
+    }
+    expected_excluded = {
+        (cycle, k)
+        for cycle in (6, 9)
+        for k in (24, 36, 48, 60)
+    }
+    if excluded_keys != expected_excluded:
+        raise RuntimeError("Unexpected R20 excluded-fold population.")
+
+    if any(
+        r["status"] != "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+        for r in excluded
+    ):
+        raise RuntimeError("Unexpected exclusion reason.")
+
+    return records
+
+
+def run_regression_tests():
+    commands = [
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3/test_v3_t2_engine_v4.py"
+        ],
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3", "src/v3/test_v3_acceptance.py"
+        ],
+    ]
+
+    results = []
+    for command in commands:
+        completed = subprocess.run(
+            command, cwd=ROOT, capture_output=True, text=True
+        )
+        results.append({
+            "command": command,
+            "return_code": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+        })
+        if completed.returncode != 0:
+            raise RuntimeError(
+                "Regression tests failed:\n" + completed.stdout
+                + "\n" + completed.stderr
+            )
+    return results
+
+
+def preflight():
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, approval = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    monthly_path = project_path(MONTHLY_REL)
+    metadata_path = project_path(METADATA_REL)
+
+    if digest(monthly_path) != MONTHLY_SHA:
+        raise RuntimeError("Monthly SILSO source hash mismatch.")
+    if digest(metadata_path) != METADATA_SHA:
+        raise RuntimeError("Native cycle metadata hash mismatch.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+    regression = run_regression_tests()
+
+    gate_root = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_GATE_{utc_stamp()}")
+    )
+    gate_root.mkdir(parents=True, exist_ok=False)
+
+    evidence = {
+        "gate_status": "CLEARED",
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "scope_id": R20_SCOPE_ID,
+        "protocol": "Draft 1.7 + R20 Template-Support Addendum 1.0",
+        "base_protocol_sha256": DRAFT_SHA,
+        "base_freeze_manifest_sha256": BASE_FREEZE_MANIFEST_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "owner_approval_status": approval["approval_status"],
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "nominal_fold_count": len(coverage),
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+        "excluded_cycles": [6, 9],
+        "candidate_count": 12,
+        "candidate_fold_records_expected": 240,
+        "regression_tests": regression,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_authorized": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+
+    evidence_path = gate_root / "R20_GATE_EVIDENCE.json"
+    evidence_path.write_text(
+        json.dumps(evidence, indent=2) + "\n", encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "status": "R20_PREFLIGHT_PASS",
+        "gate_status": "CLEARED",
+        "gate_evidence": str(evidence_path.relative_to(ROOT)),
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidates": 12,
+        "expected_candidate_fold_records": 240,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+    }, indent=2))
+
+
+def execute_r20(gate_evidence_path):
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, _ = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    evidence_path = Path(gate_evidence_path)
+    if not evidence_path.is_absolute():
+        evidence_path = project_path(evidence_path)
+
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+
+    required_matches = {
+        "gate_status": "CLEARED",
+        "scope_id": R20_SCOPE_ID,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+    }
+    for key, expected in required_matches.items():
+        if evidence.get(key) != expected:
+            raise RuntimeError(f"Gate evidence mismatch: {key}")
+
+    if evidence.get("historical_model_execution_performed") is not False:
+        raise RuntimeError("Gate evidence is not a pre-execution record.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+
+    result = select_t2_configuration(cycles)
+
+    if result["eligible_fold_count"] != 20:
+        raise RuntimeError("Execution fold count mismatch.")
+    if result["candidate_count"] != 12:
+        raise RuntimeError("Execution candidate count mismatch.")
+    if len(result["fold_records"]) != 240:
+        raise RuntimeError("Execution fold record count mismatch.")
+
+    output = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_EXECUTION_{utc_stamp()}")
+    )
+    output.mkdir(parents=True, exist_ok=False)
+
+    pd.DataFrame(result["candidates"]).to_csv(
+        output / "candidate_metrics.csv", index=False
+    )
+    pd.DataFrame(result["fold_records"]).to_csv(
+        output / "candidate_fold_metrics.csv", index=False
+    )
+    pd.DataFrame(coverage).to_csv(
+        output / "fold_coverage_audit.csv", index=False
+    )
+
+    summary = {
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "protocol": "Draft 1.7 + R20 Addendum 1.0",
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": result["candidate_count"],
+        "eligible_fold_count": result["eligible_fold_count"],
+        "not_evaluable_fold_count": result["not_evaluable_fold_count"],
+        "candidate_fold_record_count": len(result["fold_records"]),
+        "candidates": result["candidates"],
+        "coverage_records": coverage,
+    }
+    (output / "selection_summary.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+    )
+
+    execution_manifest = {
+        "execution_status": "COMPLETED",
+        "scope_id": R20_SCOPE_ID,
+        "protocol_sha256": DRAFT_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "historical_model_execution_performed": True,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_executed": False,
+        "other_r30_scopes_executed": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    (output / "execution_manifest.json").write_text(
+        json.dumps(execution_manifest, indent=2) + "\n",
+        encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "execution_status": "COMPLETED",
+        "output_directory": str(output.relative_to(ROOT)),
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "other_scopes_executed": False,
+    }, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--preflight", action="store_true")
+    parser.add_argument("--execute-r20", action="store_true")
+    parser.add_argument("--gate-evidence")
+    args = parser.parse_args()
+
+    if args.preflight == args.execute_r20:
+        parser.error("Choose exactly one of --preflight or --execute-r20.")
+
+    if args.preflight:
+        preflight()
+    else:
+        if not args.gate_evidence:
+            parser.error("--execute-r20 requires --gate-evidence.")
+        execute_r20(args.gate_evidence)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"R20 RUNNER FAILED CLOSED: {exc}", file=sys.stderr)
+        raise
+
+
+========== FILE: R:\SolarShield AI\scripts\run_v3_r20_production_runner_v3.py ==========
+SIZE: 16844
+SHA256: F4536A901D9B263214954A26125D0DE5FC9946D6B74244F3C9F6AF12F53525C6
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from src.v3.solarshield_v3_t2_engine_v4 import (
+    select_t2_configuration,
+)
+
+BUNDLE_MANIFEST_REL = Path("reports/model_development_v3/engineering_inputs/R20_PRODUCTION_BUNDLE_V3_20261112_001542_135988_UTC/SHA256_MANIFEST.json")
+ADDENDUM_FREEZE_REL = Path("reports/model_development_v3/protocols/freezes/V3_R20_ADDENDUM_1.0_FREEZE_20261112_001104_345552_UTC")
+
+MONTHLY_REL = Path("data/processed/sunspot_monthly_clean.csv")
+METADATA_REL = Path("data/metadata/SILSO_solar_cycle_min_max_native.csv")
+AUTH_REL = Path(
+    "reports/model_development_v3/executions/"
+    "R30_AUTHORIZED_20261111_220209_UTC/"
+    "R30_EXECUTION_AUTHORIZATION.json"
+)
+DRAFT_REL = Path(
+    "reports/model_development_v3/protocols/drafts/"
+    "V3_Technical_Validation_Protocol_Draft_1.7.md"
+)
+BASE_FREEZE_REL = Path(
+    "reports/model_development_v3/protocols/freezes/"
+    "V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC"
+)
+BASE_FREEZE_MANIFEST_SHA = (
+    "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3"
+)
+DRAFT_SHA = (
+    "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048"
+)
+MONTHLY_SHA = (
+    "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194"
+)
+METADATA_SHA = (
+    "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25"
+)
+R20_SCOPE_ID = "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+
+
+def utc_stamp():
+    return datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f_UTC")
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def project_path(relative):
+    return ROOT / relative
+
+
+def find_key_values(value, wanted):
+    found = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key == wanted:
+                found.append(item)
+            found.extend(find_key_values(item, wanted))
+    elif isinstance(value, list):
+        for item in value:
+            found.extend(find_key_values(item, wanted))
+    return found
+
+
+def verify_bundle_manifest():
+    manifest_path = project_path(BUNDLE_MANIFEST_REL)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    entries = manifest.get("files", {})
+    if not entries:
+        raise RuntimeError("Production bundle manifest is empty.")
+
+    for relative, expected in entries.items():
+        path = project_path(Path(relative))
+        if not path.is_file():
+            raise RuntimeError(f"Manifest file missing: {relative}")
+        actual = digest(path)
+        if actual != expected:
+            raise RuntimeError(f"Source hash mismatch: {relative}")
+
+    return digest(manifest_path), manifest
+
+
+def verify_addendum_freeze():
+    folder = project_path(ADDENDUM_FREEZE_REL)
+    manifest_path = folder / "SHA256_MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+
+    for name, expected in manifest["files"].items():
+        if digest(folder / name) != expected:
+            raise RuntimeError(f"Addendum freeze hash mismatch: {name}")
+
+    approval = json.loads(
+        (folder / "OWNER_APPROVAL.json").read_text(encoding="utf-8-sig")
+    )
+    if approval.get("approval_status") != "OWNER_APPROVED":
+        raise RuntimeError("R20 owner approval is not present.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "eligible_folds"
+    ) != 20:
+        raise RuntimeError("Addendum eligible fold count mismatch.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "not_evaluable_folds"
+    ) != 8:
+        raise RuntimeError("Addendum excluded fold count mismatch.")
+
+    return digest(manifest_path), approval
+
+
+def verify_base_protocol():
+    if digest(project_path(DRAFT_REL)) != DRAFT_SHA:
+        raise RuntimeError("Draft 1.7 hash mismatch.")
+
+    base_manifest = project_path(BASE_FREEZE_REL / "PROTOCOL_FREEZE_SHA256_MANIFEST.json")
+    if digest(base_manifest) != BASE_FREEZE_MANIFEST_SHA:
+        raise RuntimeError("Draft 1.7 freeze manifest hash mismatch.")
+
+
+def verify_authorization():
+    path = project_path(AUTH_REL)
+    auth = json.loads(path.read_text(encoding="utf-8-sig"))
+    serialized = json.dumps(auth, sort_keys=True).upper()
+
+    for required in (
+        R20_SCOPE_ID,
+        DRAFT_SHA,
+        MONTHLY_SHA,
+        METADATA_SHA,
+    ):
+        if required.upper() not in serialized:
+            raise RuntimeError(
+                f"R30 authorization does not contain required evidence: {required}"
+            )
+
+    bl_values = find_key_values(auth, "babcock_leighton_authorized")
+    if not bl_values or any(value is not False for value in bl_values):
+        raise RuntimeError("Babcock-Leighton authorization state is unsafe.")
+
+    acceptance_values = find_key_values(auth, "scientific_acceptance")
+    if not acceptance_values or any(
+        str(value).upper() != "NOT_GRANTED" for value in acceptance_values
+    ):
+        raise RuntimeError("Unexpected scientific acceptance state.")
+
+    return digest(path)
+
+
+def load_monthly_cycles():
+    path = project_path(MONTHLY_REL)
+    df = pd.read_csv(path, parse_dates=["month_start"])
+
+    required = {
+        "month_start", "ssn", "cycle_number",
+        "months_since_cycle_start", "is_provisional"
+    }
+    if not required.issubset(df.columns):
+        raise RuntimeError("Monthly dataset schema mismatch.")
+
+    df = df.sort_values("month_start").reset_index(drop=True)
+    if df["month_start"].duplicated().any():
+        raise RuntimeError("Duplicate monthly observations detected.")
+
+    cycles = {}
+    for cycle_id in range(1, 25):
+        part = df.loc[df["cycle_number"] == cycle_id].sort_values(
+            "month_start"
+        )
+        if part.empty:
+            raise RuntimeError(f"Cycle {cycle_id} is missing.")
+
+        values = part["ssn"].to_numpy(dtype=float)
+        offsets = part["months_since_cycle_start"].to_numpy(dtype=int)
+        periods = part["month_start"].dt.to_period("M")
+
+        if not pd.notna(values).all() or (values < 0).any():
+            raise RuntimeError(f"Invalid SSN values in cycle {cycle_id}.")
+
+        if not (offsets == range(len(offsets))).all():
+            raise RuntimeError(f"Invalid month offsets in cycle {cycle_id}.")
+
+        if len(periods) > 1 and not (
+            periods.diff().dropna().astype("int64") == 1
+        ).all():
+            raise RuntimeError(f"Non-contiguous months in cycle {cycle_id}.")
+
+        if int(part["is_provisional"].sum()) != 0:
+            raise RuntimeError(
+                f"Unexpected provisional records in completed cycle {cycle_id}."
+            )
+
+        cycles[cycle_id] = values
+
+    return cycles
+
+
+def run_coverage_audit(cycles):
+    from src.v3.solarshield_v3_t2_engine_v4 import (
+        selection_coverage_audit,
+    )
+
+    records = selection_coverage_audit(cycles)
+    eligible = [r for r in records if r["status"] == "ELIGIBLE"]
+    excluded = [r for r in records if r["status"] != "ELIGIBLE"]
+
+    if len(records) != 28 or len(eligible) != 20 or len(excluded) != 8:
+        raise RuntimeError("R20 coverage population differs from addendum.")
+
+    excluded_keys = {
+        (r["held_out_cycle"], r["observed_months"])
+        for r in excluded
+    }
+    expected_excluded = {
+        (cycle, k)
+        for cycle in (6, 9)
+        for k in (24, 36, 48, 60)
+    }
+    if excluded_keys != expected_excluded:
+        raise RuntimeError("Unexpected R20 excluded-fold population.")
+
+    if any(
+        r["status"] != "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+        for r in excluded
+    ):
+        raise RuntimeError("Unexpected exclusion reason.")
+
+    return records
+
+
+def run_regression_tests():
+    commands = [
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3/test_v3_t2_engine_v4.py"
+        ],
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3", "src/v3/test_v3_acceptance.py"
+        ],
+    ]
+
+    results = []
+    for command in commands:
+        completed = subprocess.run(
+            command, cwd=ROOT, capture_output=True, text=True
+        )
+        results.append({
+            "command": command,
+            "return_code": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+        })
+        if completed.returncode != 0:
+            raise RuntimeError(
+                "Regression tests failed:\n" + completed.stdout
+                + "\n" + completed.stderr
+            )
+    return results
+
+
+def preflight():
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, approval = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    monthly_path = project_path(MONTHLY_REL)
+    metadata_path = project_path(METADATA_REL)
+
+    if digest(monthly_path) != MONTHLY_SHA:
+        raise RuntimeError("Monthly SILSO source hash mismatch.")
+    if digest(metadata_path) != METADATA_SHA:
+        raise RuntimeError("Native cycle metadata hash mismatch.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+    regression = run_regression_tests()
+
+    gate_root = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_GATE_{utc_stamp()}")
+    )
+    gate_root.mkdir(parents=True, exist_ok=False)
+
+    evidence = {
+        "gate_status": "CLEARED",
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "scope_id": R20_SCOPE_ID,
+        "protocol": "Draft 1.7 + R20 Template-Support Addendum 1.0",
+        "base_protocol_sha256": DRAFT_SHA,
+        "base_freeze_manifest_sha256": BASE_FREEZE_MANIFEST_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "owner_approval_status": approval["approval_status"],
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "nominal_fold_count": len(coverage),
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+        "excluded_cycles": [6, 9],
+        "candidate_count": 12,
+        "candidate_fold_records_expected": 240,
+        "regression_tests": regression,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_authorized": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+
+    evidence_path = gate_root / "R20_GATE_EVIDENCE.json"
+    evidence_path.write_text(
+        json.dumps(evidence, indent=2) + "\n", encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "status": "R20_PREFLIGHT_PASS",
+        "gate_status": "CLEARED",
+        "gate_evidence": str(evidence_path.relative_to(ROOT)),
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidates": 12,
+        "expected_candidate_fold_records": 240,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+    }, indent=2))
+
+
+def execute_r20(gate_evidence_path):
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, _ = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    evidence_path = Path(gate_evidence_path)
+    if not evidence_path.is_absolute():
+        evidence_path = project_path(evidence_path)
+
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8-sig"))
+
+    required_matches = {
+        "gate_status": "CLEARED",
+        "scope_id": R20_SCOPE_ID,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+    }
+    for key, expected in required_matches.items():
+        if evidence.get(key) != expected:
+            raise RuntimeError(f"Gate evidence mismatch: {key}")
+
+    if evidence.get("historical_model_execution_performed") is not False:
+        raise RuntimeError("Gate evidence is not a pre-execution record.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+
+    result = select_t2_configuration(cycles)
+
+    if result["eligible_fold_count"] != 20:
+        raise RuntimeError("Execution fold count mismatch.")
+    if result["candidate_count"] != 12:
+        raise RuntimeError("Execution candidate count mismatch.")
+    if len(result["fold_records"]) != 240:
+        raise RuntimeError("Execution fold record count mismatch.")
+
+    output = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_EXECUTION_{utc_stamp()}")
+    )
+    output.mkdir(parents=True, exist_ok=False)
+
+    pd.DataFrame(result["candidates"]).to_csv(
+        output / "candidate_metrics.csv", index=False
+    )
+    pd.DataFrame(result["fold_records"]).to_csv(
+        output / "candidate_fold_metrics.csv", index=False
+    )
+    pd.DataFrame(coverage).to_csv(
+        output / "fold_coverage_audit.csv", index=False
+    )
+
+    summary = {
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "protocol": "Draft 1.7 + R20 Addendum 1.0",
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": result["candidate_count"],
+        "eligible_fold_count": result["eligible_fold_count"],
+        "not_evaluable_fold_count": result["not_evaluable_fold_count"],
+        "candidate_fold_record_count": len(result["fold_records"]),
+        "candidates": result["candidates"],
+        "coverage_records": coverage,
+    }
+    (output / "selection_summary.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+    )
+
+    execution_manifest = {
+        "execution_status": "COMPLETED",
+        "scope_id": R20_SCOPE_ID,
+        "protocol_sha256": DRAFT_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "historical_model_execution_performed": True,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_executed": False,
+        "other_r30_scopes_executed": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    (output / "execution_manifest.json").write_text(
+        json.dumps(execution_manifest, indent=2) + "\n",
+        encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "execution_status": "COMPLETED",
+        "output_directory": str(output.relative_to(ROOT)),
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "other_scopes_executed": False,
+    }, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--preflight", action="store_true")
+    parser.add_argument("--execute-r20", action="store_true")
+    parser.add_argument("--gate-evidence")
+    args = parser.parse_args()
+
+    if args.preflight == args.execute_r20:
+        parser.error("Choose exactly one of --preflight or --execute-r20.")
+
+    if args.preflight:
+        preflight()
+    else:
+        if not args.gate_evidence:
+            parser.error("--execute-r20 requires --gate-evidence.")
+        execute_r20(args.gate_evidence)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"R20 RUNNER FAILED CLOSED: {exc}", file=sys.stderr)
+        raise
+
+
+========== FILE: R:\SolarShield AI\scripts\run_v3_r20_production_runner_v4.py ==========
+SIZE: 16903
+SHA256: 30158B2F677DF32024A25091AE83FD089BEE52D4BCB51654E62F351B47003FC0
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+import subprocess
+import sys
+from datetime import datetime, timezone
+from pathlib import Path
+
+import pandas as pd
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+
+from src.v3.solarshield_v3_t2_engine_v4 import (
+    select_t2_configuration,
+)
+
+BUNDLE_MANIFEST_REL = Path("reports/model_development_v3/engineering_inputs/R20_PRODUCTION_BUNDLE_V4_20261112_001709_008453_UTC/SHA256_MANIFEST.json")
+ADDENDUM_FREEZE_REL = Path("reports/model_development_v3/protocols/freezes/V3_R20_ADDENDUM_1.0_FREEZE_20261112_001104_345552_UTC")
+
+MONTHLY_REL = Path("data/processed/sunspot_monthly_clean.csv")
+METADATA_REL = Path("data/metadata/SILSO_solar_cycle_min_max_native.csv")
+AUTH_REL = Path(
+    "reports/model_development_v3/executions/"
+    "R30_AUTHORIZED_20261111_220209_UTC/"
+    "R30_EXECUTION_AUTHORIZATION.json"
+)
+DRAFT_REL = Path(
+    "reports/model_development_v3/protocols/drafts/"
+    "V3_Technical_Validation_Protocol_Draft_1.7.md"
+)
+BASE_FREEZE_REL = Path(
+    "reports/model_development_v3/protocols/freezes/"
+    "V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC"
+)
+BASE_FREEZE_MANIFEST_SHA = (
+    "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3"
+)
+DRAFT_SHA = (
+    "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048"
+)
+MONTHLY_SHA = (
+    "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194"
+)
+METADATA_SHA = (
+    "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25"
+)
+R20_SCOPE_ID = "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+
+
+def utc_stamp():
+    return datetime.now(timezone.utc).strftime("%Y%m%d_%H%M%S_%f_UTC")
+
+
+def digest(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest().upper()
+
+
+def project_path(relative):
+    return ROOT / relative
+
+
+def find_key_values(value, wanted):
+    found = []
+    if isinstance(value, dict):
+        for key, item in value.items():
+            if key == wanted:
+                found.append(item)
+            found.extend(find_key_values(item, wanted))
+    elif isinstance(value, list):
+        for item in value:
+            found.extend(find_key_values(item, wanted))
+    return found
+
+
+def verify_bundle_manifest():
+    manifest_path = project_path(BUNDLE_MANIFEST_REL)
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+    entries = manifest.get("files", {})
+    if not entries:
+        raise RuntimeError("Production bundle manifest is empty.")
+
+    for relative, expected in entries.items():
+        path = project_path(Path(relative))
+        if not path.is_file():
+            raise RuntimeError(f"Manifest file missing: {relative}")
+        actual = digest(path)
+        if actual != expected:
+            raise RuntimeError(f"Source hash mismatch: {relative}")
+
+    return digest(manifest_path), manifest
+
+
+def verify_addendum_freeze():
+    folder = project_path(ADDENDUM_FREEZE_REL)
+    manifest_path = folder / "SHA256_MANIFEST.json"
+    manifest = json.loads(manifest_path.read_text(encoding="utf-8-sig"))
+
+    for name, expected in manifest["files"].items():
+        if digest(folder / name) != expected:
+            raise RuntimeError(f"Addendum freeze hash mismatch: {name}")
+
+    approval = json.loads(
+        (folder / "OWNER_APPROVAL.json").read_text(encoding="utf-8-sig")
+    )
+    if approval.get("approval_status") != "OWNER_APPROVED":
+        raise RuntimeError("R20 owner approval is not present.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "eligible_folds"
+    ) != 20:
+        raise RuntimeError("Addendum eligible fold count mismatch.")
+
+    if approval.get("approved_selection_population", {}).get(
+        "not_evaluable_folds"
+    ) != 8:
+        raise RuntimeError("Addendum excluded fold count mismatch.")
+
+    return digest(manifest_path), approval
+
+
+def verify_base_protocol():
+    if digest(project_path(DRAFT_REL)) != DRAFT_SHA:
+        raise RuntimeError("Draft 1.7 hash mismatch.")
+
+    base_manifest = project_path(BASE_FREEZE_REL / "PROTOCOL_FREEZE_SHA256_MANIFEST.json")
+    if digest(base_manifest) != BASE_FREEZE_MANIFEST_SHA:
+        raise RuntimeError("Draft 1.7 freeze manifest hash mismatch.")
+
+
+def verify_authorization():
+    path = project_path(AUTH_REL)
+    auth = json.loads(path.read_text(encoding="utf-8-sig"))
+    serialized = json.dumps(auth, sort_keys=True).upper()
+
+    for required in (
+        R20_SCOPE_ID,
+        DRAFT_SHA,
+        MONTHLY_SHA,
+        METADATA_SHA,
+    ):
+        if required.upper() not in serialized:
+            raise RuntimeError(
+                f"R30 authorization does not contain required evidence: {required}"
+            )
+
+    bl_values = find_key_values(auth, "babcock_leighton_authorized")
+    if not bl_values or any(value is not False for value in bl_values):
+        raise RuntimeError("Babcock-Leighton authorization state is unsafe.")
+
+    acceptance_values = find_key_values(auth, "scientific_acceptance")
+    if not acceptance_values or any(
+        str(value).upper() != "NOT_GRANTED" for value in acceptance_values
+    ):
+        raise RuntimeError("Unexpected scientific acceptance state.")
+
+    return digest(path)
+
+
+def load_monthly_cycles():
+    path = project_path(MONTHLY_REL)
+    df = pd.read_csv(path, parse_dates=["month_start"])
+
+    required = {
+        "month_start", "ssn", "cycle_number",
+        "months_since_cycle_start", "is_provisional"
+    }
+    if not required.issubset(df.columns):
+        raise RuntimeError("Monthly dataset schema mismatch.")
+
+    df = df.sort_values("month_start").reset_index(drop=True)
+    if df["month_start"].duplicated().any():
+        raise RuntimeError("Duplicate monthly observations detected.")
+
+    cycles = {}
+    for cycle_id in range(1, 25):
+        part = df.loc[df["cycle_number"] == cycle_id].sort_values(
+            "month_start"
+        )
+        if part.empty:
+            raise RuntimeError(f"Cycle {cycle_id} is missing.")
+
+        values = part["ssn"].to_numpy(dtype=float)
+        offsets = part["months_since_cycle_start"].to_numpy(dtype=int)
+        periods = part["month_start"].dt.to_period("M")
+
+        if not pd.notna(values).all() or (values < 0).any():
+            raise RuntimeError(f"Invalid SSN values in cycle {cycle_id}.")
+
+        if not (offsets == range(len(offsets))).all():
+            raise RuntimeError(f"Invalid month offsets in cycle {cycle_id}.")
+
+        period_ordinals = periods.array.asi8
+        if len(period_ordinals) > 1 and not (
+            (period_ordinals[1:] - period_ordinals[:-1]) == 1
+        ).all():
+            raise RuntimeError(f"Non-contiguous months in cycle {cycle_id}.")
+
+        if int(part["is_provisional"].sum()) != 0:
+            raise RuntimeError(
+                f"Unexpected provisional records in completed cycle {cycle_id}."
+            )
+
+        cycles[cycle_id] = values
+
+    return cycles
+
+
+def run_coverage_audit(cycles):
+    from src.v3.solarshield_v3_t2_engine_v4 import (
+        selection_coverage_audit,
+    )
+
+    records = selection_coverage_audit(cycles)
+    eligible = [r for r in records if r["status"] == "ELIGIBLE"]
+    excluded = [r for r in records if r["status"] != "ELIGIBLE"]
+
+    if len(records) != 28 or len(eligible) != 20 or len(excluded) != 8:
+        raise RuntimeError("R20 coverage population differs from addendum.")
+
+    excluded_keys = {
+        (r["held_out_cycle"], r["observed_months"])
+        for r in excluded
+    }
+    expected_excluded = {
+        (cycle, k)
+        for cycle in (6, 9)
+        for k in (24, 36, 48, 60)
+    }
+    if excluded_keys != expected_excluded:
+        raise RuntimeError("Unexpected R20 excluded-fold population.")
+
+    if any(
+        r["status"] != "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+        for r in excluded
+    ):
+        raise RuntimeError("Unexpected exclusion reason.")
+
+    return records
+
+
+def run_regression_tests():
+    commands = [
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3/test_v3_t2_engine_v4.py"
+        ],
+        [
+            sys.executable, "-m", "pytest", "-q",
+            "tests/v3", "src/v3/test_v3_acceptance.py"
+        ],
+    ]
+
+    results = []
+    for command in commands:
+        completed = subprocess.run(
+            command, cwd=ROOT, capture_output=True, text=True
+        )
+        results.append({
+            "command": command,
+            "return_code": completed.returncode,
+            "stdout": completed.stdout,
+            "stderr": completed.stderr,
+        })
+        if completed.returncode != 0:
+            raise RuntimeError(
+                "Regression tests failed:\n" + completed.stdout
+                + "\n" + completed.stderr
+            )
+    return results
+
+
+def preflight():
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, approval = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    monthly_path = project_path(MONTHLY_REL)
+    metadata_path = project_path(METADATA_REL)
+
+    if digest(monthly_path) != MONTHLY_SHA:
+        raise RuntimeError("Monthly SILSO source hash mismatch.")
+    if digest(metadata_path) != METADATA_SHA:
+        raise RuntimeError("Native cycle metadata hash mismatch.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+    regression = run_regression_tests()
+
+    gate_root = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_GATE_{utc_stamp()}")
+    )
+    gate_root.mkdir(parents=True, exist_ok=False)
+
+    evidence = {
+        "gate_status": "CLEARED",
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "scope_id": R20_SCOPE_ID,
+        "protocol": "Draft 1.7 + R20 Template-Support Addendum 1.0",
+        "base_protocol_sha256": DRAFT_SHA,
+        "base_freeze_manifest_sha256": BASE_FREEZE_MANIFEST_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "owner_approval_status": approval["approval_status"],
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "nominal_fold_count": len(coverage),
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+        "excluded_cycles": [6, 9],
+        "candidate_count": 12,
+        "candidate_fold_records_expected": 240,
+        "regression_tests": regression,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_authorized": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+
+    evidence_path = gate_root / "R20_GATE_EVIDENCE.json"
+    evidence_path.write_text(
+        json.dumps(evidence, indent=2) + "\n", encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "status": "R20_PREFLIGHT_PASS",
+        "gate_status": "CLEARED",
+        "gate_evidence": str(evidence_path.relative_to(ROOT)),
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidates": 12,
+        "expected_candidate_fold_records": 240,
+        "historical_model_execution_performed": False,
+        "candidate_selection_performed": False,
+    }, indent=2))
+
+
+def execute_r20(gate_evidence_path):
+    bundle_sha, _ = verify_bundle_manifest()
+    addendum_manifest_sha, _ = verify_addendum_freeze()
+    verify_base_protocol()
+    authorization_sha = verify_authorization()
+
+    evidence_path = Path(gate_evidence_path)
+    if not evidence_path.is_absolute():
+        evidence_path = project_path(evidence_path)
+
+    evidence = json.loads(evidence_path.read_text(encoding="utf-8-sig"))
+
+    required_matches = {
+        "gate_status": "CLEARED",
+        "scope_id": R20_SCOPE_ID,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "eligible_fold_count": 20,
+        "not_evaluable_fold_count": 8,
+    }
+    for key, expected in required_matches.items():
+        if evidence.get(key) != expected:
+            raise RuntimeError(f"Gate evidence mismatch: {key}")
+
+    if evidence.get("historical_model_execution_performed") is not False:
+        raise RuntimeError("Gate evidence is not a pre-execution record.")
+
+    cycles = load_monthly_cycles()
+    coverage = run_coverage_audit(cycles)
+
+    result = select_t2_configuration(cycles)
+
+    if result["eligible_fold_count"] != 20:
+        raise RuntimeError("Execution fold count mismatch.")
+    if result["candidate_count"] != 12:
+        raise RuntimeError("Execution candidate count mismatch.")
+    if len(result["fold_records"]) != 240:
+        raise RuntimeError("Execution fold record count mismatch.")
+
+    output = project_path(
+        Path("reports/model_development_v3/executions/"
+             f"R20_PRODUCTION_EXECUTION_{utc_stamp()}")
+    )
+    output.mkdir(parents=True, exist_ok=False)
+
+    pd.DataFrame(result["candidates"]).to_csv(
+        output / "candidate_metrics.csv", index=False
+    )
+    pd.DataFrame(result["fold_records"]).to_csv(
+        output / "candidate_fold_metrics.csv", index=False
+    )
+    pd.DataFrame(coverage).to_csv(
+        output / "fold_coverage_audit.csv", index=False
+    )
+
+    summary = {
+        "scope": "R20_CONFIGURATION_SELECTION_ONLY",
+        "protocol": "Draft 1.7 + R20 Addendum 1.0",
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": result["candidate_count"],
+        "eligible_fold_count": result["eligible_fold_count"],
+        "not_evaluable_fold_count": result["not_evaluable_fold_count"],
+        "candidate_fold_record_count": len(result["fold_records"]),
+        "candidates": result["candidates"],
+        "coverage_records": coverage,
+    }
+    (output / "selection_summary.json").write_text(
+        json.dumps(summary, indent=2) + "\n", encoding="utf-8"
+    )
+
+    execution_manifest = {
+        "execution_status": "COMPLETED",
+        "scope_id": R20_SCOPE_ID,
+        "protocol_sha256": DRAFT_SHA,
+        "addendum_freeze_manifest_sha256": addendum_manifest_sha,
+        "production_bundle_manifest_sha256": bundle_sha,
+        "authorization_record_sha256": authorization_sha,
+        "monthly_source_sha256": MONTHLY_SHA,
+        "native_metadata_sha256": METADATA_SHA,
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "historical_model_execution_performed": True,
+        "scientific_acceptance": "NOT_GRANTED",
+        "r21_identifiability": "NOT_ESTABLISHED",
+        "r26_calibration": "EVIDENCE_LIMITED_NOT_VALIDATED",
+        "babcock_leighton_executed": False,
+        "other_r30_scopes_executed": False,
+        "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+    }
+    (output / "execution_manifest.json").write_text(
+        json.dumps(execution_manifest, indent=2) + "\n",
+        encoding="utf-8"
+    )
+
+    print(json.dumps({
+        "execution_status": "COMPLETED",
+        "output_directory": str(output.relative_to(ROOT)),
+        "selected_configuration": result["selected_configuration"],
+        "candidate_count": 12,
+        "eligible_folds": 20,
+        "not_evaluable_folds": 8,
+        "candidate_fold_records": 240,
+        "other_scopes_executed": False,
+    }, indent=2))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--preflight", action="store_true")
+    parser.add_argument("--execute-r20", action="store_true")
+    parser.add_argument("--gate-evidence")
+    args = parser.parse_args()
+
+    if args.preflight == args.execute_r20:
+        parser.error("Choose exactly one of --preflight or --execute-r20.")
+
+    if args.preflight:
+        preflight()
+    else:
+        if not args.gate_evidence:
+            parser.error("--execute-r20 requires --gate-evidence.")
+        execute_r20(args.gate_evidence)
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except Exception as exc:
+        print(f"R20 RUNNER FAILED CLOSED: {exc}", file=sys.stderr)
+        raise
+
+
+========== FILE: R:\SolarShield AI\src\v3\solarshield_v3_t2_engine.py ==========
+SIZE: 8456
+SHA256: DDB30C5B2BB013296AA926BEA79F7DFF3B43F47D69DD3BCC81A0E283912B94C9
+from __future__ import annotations
+
+from itertools import product
+from typing import Mapping, Sequence
+
+import numpy as np
+
+
+W_GRID = (0.50, 0.75, 1.00)
+TAU_GRID = (3, 6, 12, 24)
+K_GRID = (24, 36, 48, 60)
+SELECTION_CYCLES = tuple(range(6, 13))
+MIN_REMAINING = 12
+MAXLEN = 200
+
+
+class T2EngineError(ValueError):
+    pass
+
+
+def _validate_curve(values, name: str) -> np.ndarray:
+    curve = np.asarray(values, dtype=float)
+    if curve.ndim != 1 or len(curve) == 0:
+        raise T2EngineError(f"{name} must be a non-empty 1D curve.")
+    if not np.isfinite(curve).all():
+        raise T2EngineError(f"{name} contains non-finite values.")
+    if (curve < 0).any():
+        raise T2EngineError(f"{name} contains negative SSN values.")
+    return curve
+
+
+def validate_cycle_collection(cycles: Mapping[int, Sequence[float]]) -> dict[int, np.ndarray]:
+    required = set(range(1, 25))
+    if set(cycles) != required:
+        raise T2EngineError("Expected exactly completed cycles 1-24.")
+
+    result = {}
+    for cycle_id in range(1, 25):
+        result[cycle_id] = _validate_curve(
+            cycles[cycle_id], f"cycle_{cycle_id}"
+        )
+    return result
+
+
+def median_template(
+    training_curves: Sequence[np.ndarray],
+    min_cycles: int = 3,
+) -> np.ndarray:
+    if len(training_curves) < min_cycles:
+        raise T2EngineError("Insufficient prior cycles for median template.")
+
+    template = np.full(MAXLEN, np.nan, dtype=float)
+
+    for month_index in range(MAXLEN):
+        values = [
+            curve[month_index]
+            for curve in training_curves
+            if len(curve) > month_index
+        ]
+        if len(values) >= min_cycles:
+            template[month_index] = float(np.median(values))
+
+    return template
+
+
+def forecast_t2(
+    observed_prefix: Sequence[float],
+    training_curves: Sequence[Sequence[float]],
+    w: float,
+    tau: int,
+) -> np.ndarray:
+    obs = _validate_curve(observed_prefix, "observed_prefix")
+
+    if len(obs) not in K_GRID:
+        raise T2EngineError("Observed prefix length must be 24, 36, 48, or 60.")
+    if not np.isfinite(w) or w not in W_GRID:
+        raise T2EngineError("w is outside the pre-declared R20 grid.")
+    if tau not in TAU_GRID:
+        raise T2EngineError("tau is outside the pre-declared R20 grid.")
+
+    train = [
+        _validate_curve(curve, "training_curve")
+        for curve in training_curves
+    ]
+    template = median_template(train)
+
+    k = len(obs)
+    tail = template[k:].copy()
+
+    if len(tail) == 0 or not np.isfinite(tail).any():
+        raise T2EngineError("Template has no usable forecast tail.")
+
+    if not np.isfinite(template[:k]).all():
+        raise T2EngineError("Template is incomplete over the observed prefix.")
+
+    ratio = float(
+        obs.mean() / max(float(template[:k].mean()), 1e-9)
+    )
+    scaled_ratio = float(np.clip(1.0 + w * (ratio - 1.0), 0.3, 3.0))
+
+    observed_level = float(obs[-6:].mean())
+    template_level = float((template[k - 6:k] * scaled_ratio).mean())
+
+    horizons = np.arange(1, len(tail) + 1, dtype=float)
+    correction = (
+        observed_level - template_level
+    ) * np.exp(-horizons / float(tau))
+
+    prediction = tail * scaled_ratio + correction
+    prediction = np.clip(prediction, 0.0, None)
+
+    valid = np.isfinite(prediction)
+    if not valid.any():
+        raise T2EngineError("T2 produced no finite forecast values.")
+
+    return prediction
+
+
+def _peak_diagnostics(observed, prediction, truth):
+    observed = np.asarray(observed, dtype=float)
+    prediction = np.asarray(prediction, dtype=float)
+    truth = np.asarray(truth, dtype=float)
+
+    predicted_full = np.concatenate([observed, prediction])
+    truth_full = np.concatenate([observed, truth])
+
+    predicted_peak_index = int(np.argmax(predicted_full))
+    truth_peak_index = int(np.argmax(truth_full))
+
+    return {
+        "raw_peak_amplitude_error": float(
+            abs(predicted_full[predicted_peak_index] -
+                truth_full[truth_peak_index])
+        ),
+        "raw_peak_timing_error_months": abs(
+            predicted_peak_index - truth_peak_index
+        ),
+    }
+
+
+def evaluate_t2_fold(
+    cycles: Mapping[int, Sequence[float]],
+    held_out_cycle: int,
+    k: int,
+    w: float,
+    tau: int,
+) -> dict:
+    if held_out_cycle not in range(6, 25):
+        raise T2EngineError("Held-out cycle must be between 6 and 24.")
+    if k not in K_GRID:
+        raise T2EngineError("Invalid observed-prefix length.")
+
+    target = _validate_curve(
+        cycles[held_out_cycle], f"cycle_{held_out_cycle}"
+    )
+    if len(target) <= k:
+        raise T2EngineError("Observed prefix exceeds target cycle length.")
+
+    remaining = len(target) - k
+    if remaining < MIN_REMAINING:
+        raise T2EngineError("Insufficient remaining months for scoring.")
+
+    # Strictly earlier completed cycles only.
+    training = [
+        _validate_curve(cycles[c], f"cycle_{c}")
+        for c in range(1, held_out_cycle)
+    ]
+
+    observed = target[:k].copy()
+    truth = target[k:].copy()
+
+    prediction = forecast_t2(observed, training, w, tau)
+    prediction = prediction[:remaining]
+
+    if len(prediction) != len(truth):
+        raise T2EngineError("Prediction and truth lengths do not match.")
+    if not np.isfinite(prediction).all():
+        raise T2EngineError("Prediction contains non-finite values.")
+
+    errors = truth - prediction
+    peak = _peak_diagnostics(observed, prediction, truth)
+
+    return {
+        "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+        "held_out_cycle": held_out_cycle,
+        "training_first_cycle": 1,
+        "training_last_cycle": held_out_cycle - 1,
+        "training_cycle_count": held_out_cycle - 1,
+        "observed_months": k,
+        "scored_months": len(truth),
+        "w": float(w),
+        "tau": int(tau),
+        "mae": float(np.mean(np.abs(errors))),
+        "rmse": float(np.sqrt(np.mean(errors ** 2))),
+        **peak,
+    }
+
+
+def select_t2_configuration(
+    cycles: Mapping[int, Sequence[float]],
+) -> dict:
+    validated = validate_cycle_collection(cycles)
+
+    fold_records = []
+    candidate_records = []
+
+    for w, tau in product(W_GRID, TAU_GRID):
+        candidate_folds = []
+
+        for cycle_id in SELECTION_CYCLES:
+            for k in K_GRID:
+                try:
+                    record = evaluate_t2_fold(
+                        validated, cycle_id, k, w, tau
+                    )
+                except T2EngineError as exc:
+                    if "Insufficient remaining months" in str(exc):
+                        continue
+                    raise
+
+                candidate_folds.append(record)
+                fold_records.append(record)
+
+        if not candidate_folds:
+            raise T2EngineError(
+                f"No eligible selection folds for w={w}, tau={tau}."
+            )
+
+        candidate_records.append({
+            "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+            "w": float(w),
+            "tau": int(tau),
+            "fold_count": len(candidate_folds),
+            "mean_fold_mae": float(np.mean(
+                [r["mae"] for r in candidate_folds]
+            )),
+            "mean_fold_rmse": float(np.mean(
+                [r["rmse"] for r in candidate_folds]
+            )),
+            "mean_peak_amplitude_error": float(np.mean(
+                [r["raw_peak_amplitude_error"] for r in candidate_folds]
+            )),
+            "mean_peak_timing_error_months": float(np.mean(
+                [r["raw_peak_timing_error_months"] for r in candidate_folds]
+            )),
+        })
+
+    # Deterministic tie-break: MAE, RMSE, w, tau.
+    ranked = sorted(
+        candidate_records,
+        key=lambda row: (
+            row["mean_fold_mae"],
+            row["mean_fold_rmse"],
+            row["w"],
+            row["tau"],
+        ),
+    )
+
+    return {
+        "selection_cycles": list(SELECTION_CYCLES),
+        "observed_month_grid": list(K_GRID),
+        "candidate_count": len(candidate_records),
+        "candidates": candidate_records,
+        "fold_records": fold_records,
+        "selected_configuration": {
+            "method": "T2_anchored_template",
+            "w": ranked[0]["w"],
+            "tau": ranked[0]["tau"],
+            "selection_mean_fold_mae": ranked[0]["mean_fold_mae"],
+            "selection_mean_fold_rmse": ranked[0]["mean_fold_rmse"],
+            "tie_break": ["mean_fold_mae", "mean_fold_rmse", "w", "tau"],
+        },
+        "historical_model_execution_performed": True,
+    }
+
+
+========== FILE: R:\SolarShield AI\src\v3\solarshield_v3_t2_engine_v2.py ==========
+SIZE: 9041
+SHA256: 640726B7ABBBF2522D3BD64336C8CC6F1C9AD09D8E3F5638880DAE6070BDDC5E
+from __future__ import annotations
+
+from itertools import product
+from typing import Mapping, Sequence
+
+import numpy as np
+
+
+W_GRID = (0.50, 0.75, 1.00)
+TAU_GRID = (3, 6, 12, 24)
+K_GRID = (24, 36, 48, 60)
+SELECTION_CYCLES = tuple(range(6, 13))
+MIN_REMAINING = 12
+MAXLEN = 200
+
+
+class T2EngineError(ValueError):
+    pass
+
+
+def _validate_curve(values, name: str) -> np.ndarray:
+    curve = np.asarray(values, dtype=float)
+    if curve.ndim != 1 or len(curve) == 0:
+        raise T2EngineError(f"{name} must be a non-empty 1D curve.")
+    if not np.isfinite(curve).all():
+        raise T2EngineError(f"{name} contains non-finite values.")
+    if (curve < 0).any():
+        raise T2EngineError(f"{name} contains negative SSN values.")
+    return curve
+
+
+def validate_cycle_collection(cycles: Mapping[int, Sequence[float]]) -> dict[int, np.ndarray]:
+    required = set(range(1, 25))
+    if set(cycles) != required:
+        raise T2EngineError("Expected exactly completed cycles 1-24.")
+
+    result = {}
+    for cycle_id in range(1, 25):
+        result[cycle_id] = _validate_curve(
+            cycles[cycle_id], f"cycle_{cycle_id}"
+        )
+    return result
+
+
+def median_template(
+    training_curves: Sequence[np.ndarray],
+    min_cycles: int = 3,
+) -> np.ndarray:
+    if len(training_curves) < min_cycles:
+        raise T2EngineError("Insufficient prior cycles for median template.")
+
+    template = np.full(MAXLEN, np.nan, dtype=float)
+
+    for month_index in range(MAXLEN):
+        values = [
+            curve[month_index]
+            for curve in training_curves
+            if len(curve) > month_index
+        ]
+        if len(values) >= min_cycles:
+            template[month_index] = float(np.median(values))
+
+    return template
+
+
+def forecast_t2(
+    observed_prefix: Sequence[float],
+    training_curves: Sequence[Sequence[float]],
+    w: float,
+    tau: int,
+    forecast_months: int | None = None,
+) -> np.ndarray:
+    obs = _validate_curve(observed_prefix, "observed_prefix")
+
+    if len(obs) not in K_GRID:
+        raise T2EngineError("Observed prefix length must be 24, 36, 48, or 60.")
+    if not np.isfinite(w) or w not in W_GRID:
+        raise T2EngineError("w is outside the pre-declared R20 grid.")
+    if tau not in TAU_GRID:
+        raise T2EngineError("tau is outside the pre-declared R20 grid.")
+
+    train = [
+        _validate_curve(curve, "training_curve")
+        for curve in training_curves
+    ]
+    template = median_template(train)
+
+    k = len(obs)
+    tail = template[k:].copy()
+
+    if forecast_months is not None:
+        if not isinstance(forecast_months, int) or forecast_months <= 0:
+            raise T2EngineError("forecast_months must be a positive integer.")
+        tail = tail[:forecast_months]
+
+    if len(tail) == 0 or not np.isfinite(tail).any():
+        raise T2EngineError("Template has no usable forecast tail.")
+
+    if not np.isfinite(template[:k]).all():
+        raise T2EngineError("Template is incomplete over the observed prefix.")
+
+    ratio = float(
+        obs.mean() / max(float(template[:k].mean()), 1e-9)
+    )
+    scaled_ratio = float(np.clip(1.0 + w * (ratio - 1.0), 0.3, 3.0))
+
+    observed_level = float(obs[-6:].mean())
+    template_level = float((template[k - 6:k] * scaled_ratio).mean())
+
+    horizons = np.arange(1, len(tail) + 1, dtype=float)
+    correction = (
+        observed_level - template_level
+    ) * np.exp(-horizons / float(tau))
+
+    prediction = tail * scaled_ratio + correction
+    prediction = np.clip(prediction, 0.0, None)
+
+    valid = np.isfinite(prediction)
+    if not valid.any():
+        raise T2EngineError("T2 produced no finite forecast values.")
+
+    return prediction
+
+
+def _peak_diagnostics(observed, prediction, truth):
+    observed = np.asarray(observed, dtype=float)
+    prediction = np.asarray(prediction, dtype=float)
+    truth = np.asarray(truth, dtype=float)
+
+    predicted_full = np.concatenate([observed, prediction])
+    truth_full = np.concatenate([observed, truth])
+
+    predicted_peak_index = int(np.argmax(predicted_full))
+    truth_peak_index = int(np.argmax(truth_full))
+
+    return {
+        "raw_peak_amplitude_error": float(
+            abs(predicted_full[predicted_peak_index] -
+                truth_full[truth_peak_index])
+        ),
+        "raw_peak_timing_error_months": abs(
+            predicted_peak_index - truth_peak_index
+        ),
+    }
+
+
+def evaluate_t2_fold(
+    cycles: Mapping[int, Sequence[float]],
+    held_out_cycle: int,
+    k: int,
+    w: float,
+    tau: int,
+) -> dict:
+    if held_out_cycle not in range(6, 25):
+        raise T2EngineError("Held-out cycle must be between 6 and 24.")
+    if k not in K_GRID:
+        raise T2EngineError("Invalid observed-prefix length.")
+
+    target = _validate_curve(
+        cycles[held_out_cycle], f"cycle_{held_out_cycle}"
+    )
+    if len(target) <= k:
+        raise T2EngineError("Observed prefix exceeds target cycle length.")
+
+    remaining = len(target) - k
+    if remaining < MIN_REMAINING:
+        raise T2EngineError("Insufficient remaining months for scoring.")
+
+    # Strictly earlier completed cycles only.
+    training = [
+        _validate_curve(cycles[c], f"cycle_{c}")
+        for c in range(1, held_out_cycle)
+    ]
+
+    observed = target[:k].copy()
+    truth = target[k:].copy()
+
+    prediction = forecast_t2(
+        observed,
+        training,
+        w,
+        tau,
+        forecast_months=remaining,
+    )
+
+    if len(prediction) != len(truth):
+        raise T2EngineError("Prediction and truth lengths do not match.")
+    if not np.isfinite(prediction).all():
+        raise T2EngineError("Prediction contains non-finite values.")
+
+    errors = truth - prediction
+    peak = _peak_diagnostics(observed, prediction, truth)
+
+    return {
+        "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+        "held_out_cycle": held_out_cycle,
+        "training_first_cycle": 1,
+        "training_last_cycle": held_out_cycle - 1,
+        "training_cycle_count": held_out_cycle - 1,
+        "observed_months": k,
+        "scored_months": len(truth),
+        "w": float(w),
+        "tau": int(tau),
+        "mae": float(np.mean(np.abs(errors))),
+        "rmse": float(np.sqrt(np.mean(errors ** 2))),
+        **peak,
+    }
+
+
+def select_t2_configuration(
+    cycles: Mapping[int, Sequence[float]],
+) -> dict:
+    validated = validate_cycle_collection(cycles)
+
+    fold_records = []
+    candidate_records = []
+
+    for w, tau in product(W_GRID, TAU_GRID):
+        candidate_folds = []
+
+        for cycle_id in SELECTION_CYCLES:
+            for k in K_GRID:
+                try:
+                    record = evaluate_t2_fold(
+                        validated, cycle_id, k, w, tau
+                    )
+                except T2EngineError as exc:
+                    if "Insufficient remaining months" in str(exc):
+                        continue
+                    raise
+
+                candidate_folds.append(record)
+                fold_records.append(record)
+
+        if not candidate_folds:
+            raise T2EngineError(
+                f"No eligible selection folds for w={w}, tau={tau}."
+            )
+
+        candidate_records.append({
+            "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+            "w": float(w),
+            "tau": int(tau),
+            "fold_count": len(candidate_folds),
+            "mean_fold_mae": float(np.mean(
+                [r["mae"] for r in candidate_folds]
+            )),
+            "mean_fold_rmse": float(np.mean(
+                [r["rmse"] for r in candidate_folds]
+            )),
+            "mean_peak_amplitude_error": float(np.mean(
+                [r["raw_peak_amplitude_error"] for r in candidate_folds]
+            )),
+            "mean_peak_timing_error_months": float(np.mean(
+                [r["raw_peak_timing_error_months"] for r in candidate_folds]
+            )),
+        })
+
+    # Deterministic tie-break: MAE, RMSE, w, tau.
+    ranked = sorted(
+        candidate_records,
+        key=lambda row: (
+            row["mean_fold_mae"],
+            row["mean_fold_rmse"],
+            row["w"],
+            row["tau"],
+        ),
+    )
+
+    return {
+        "selection_cycles": list(SELECTION_CYCLES),
+        "observed_month_grid": list(K_GRID),
+        "candidate_count": len(candidate_records),
+        "candidates": candidate_records,
+        "fold_records": fold_records,
+        "selected_configuration": {
+            "method": "T2_anchored_template",
+            "w": ranked[0]["w"],
+            "tau": ranked[0]["tau"],
+            "selection_mean_fold_mae": ranked[0]["mean_fold_mae"],
+            "selection_mean_fold_rmse": ranked[0]["mean_fold_rmse"],
+            "tie_break": ["mean_fold_mae", "mean_fold_rmse", "w", "tau"],
+        },
+        "historical_model_execution_performed": True,
+    }
+
+
+========== FILE: R:\SolarShield AI\src\v3\solarshield_v3_t2_engine_v3.py ==========
+SIZE: 9038
+SHA256: C91E375F97ED67A34A2A50D91457924CFC33B47EEAEF812719C4ADAC8B4F0C44
+from __future__ import annotations
+
+from itertools import product
+from typing import Mapping, Sequence
+
+import numpy as np
+
+
+W_GRID = (0.50, 0.75, 1.00)
+TAU_GRID = (3, 6, 12, 24)
+K_GRID = (24, 36, 48, 60)
+SELECTION_CYCLES = tuple(range(6, 13))
+MIN_REMAINING = 12
+MAXLEN = 200
+
+
+class T2EngineError(ValueError):
+    pass
+
+
+def _validate_curve(values, name: str) -> np.ndarray:
+    curve = np.asarray(values, dtype=float)
+    if curve.ndim != 1 or len(curve) == 0:
+        raise T2EngineError(f"{name} must be a non-empty 1D curve.")
+    if not np.isfinite(curve).all():
+        raise T2EngineError(f"{name} contains non-finite values.")
+    if (curve < 0).any():
+        raise T2EngineError(f"{name} contains negative SSN values.")
+    return curve
+
+
+def validate_cycle_collection(cycles: Mapping[int, Sequence[float]]) -> dict[int, np.ndarray]:
+    required = set(range(1, 25))
+    if set(cycles) != required:
+        raise T2EngineError("Expected exactly completed cycles 1-24.")
+
+    result = {}
+    for cycle_id in range(1, 25):
+        result[cycle_id] = _validate_curve(
+            cycles[cycle_id], f"cycle_{cycle_id}"
+        )
+    return result
+
+
+def median_template(
+    training_curves: Sequence[np.ndarray],
+    min_cycles: int = 3,
+) -> np.ndarray:
+    if len(training_curves) < min_cycles:
+        raise T2EngineError("Insufficient prior cycles for median template.")
+
+    template = np.full(MAXLEN, np.nan, dtype=float)
+
+    for month_index in range(MAXLEN):
+        values = [
+            curve[month_index]
+            for curve in training_curves
+            if len(curve) > month_index
+        ]
+        if len(values) >= min_cycles:
+            template[month_index] = float(np.median(values))
+
+    return template
+
+
+def forecast_t2(
+    observed_prefix: Sequence[float],
+    training_curves: Sequence[Sequence[float]],
+    w: float,
+    tau: int,
+    forecast_months: int | None = None,
+) -> np.ndarray:
+    obs = _validate_curve(observed_prefix, "observed_prefix")
+
+    if len(obs) not in K_GRID:
+        raise T2EngineError("Observed prefix length must be 24, 36, 48, or 60.")
+    if not np.isfinite(w) or w not in W_GRID:
+        raise T2EngineError("w is outside the pre-declared R20 grid.")
+    if tau not in TAU_GRID:
+        raise T2EngineError("tau is outside the pre-declared R20 grid.")
+
+    train = [
+        _validate_curve(curve, "training_curve")
+        for curve in training_curves
+    ]
+    template = median_template(train)
+
+    k = len(obs)
+    tail = template[k:].copy()
+
+    if forecast_months is not None:
+        if not isinstance(forecast_months, int) or forecast_months <= 0:
+            raise T2EngineError("forecast_months must be a positive integer.")
+        tail = tail[:forecast_months]
+
+    if len(tail) == 0 or not np.isfinite(tail).any():
+        raise T2EngineError("Template has no usable forecast tail.")
+
+    if not np.isfinite(template[:k]).all():
+        raise T2EngineError("Template is incomplete over the observed prefix.")
+
+    ratio = float(
+        obs.mean() / max(float(template[:k].mean()), 1e-9)
+    )
+    scaled_ratio = float(np.clip(1.0 + w * (ratio - 1.0), 0.3, 3.0))
+
+    observed_level = float(obs[-6:].mean())
+    template_level = float((template[k - 6:k] * scaled_ratio).mean())
+
+    horizons = np.arange(1, len(tail) + 1, dtype=float)
+    correction = (
+        observed_level - template_level
+    ) * np.exp(-horizons / float(tau))
+
+    prediction = tail * scaled_ratio + correction
+    prediction = np.clip(prediction, 0.0, None)
+
+    valid = np.isfinite(prediction)
+    if not valid.any():
+        raise T2EngineError("T2 produced no finite forecast values.")
+
+    return prediction
+
+
+def _peak_diagnostics(observed, prediction, truth):
+    observed = np.asarray(observed, dtype=float)
+    prediction = np.asarray(prediction, dtype=float)
+    truth = np.asarray(truth, dtype=float)
+
+    predicted_full = np.concatenate([observed, prediction])
+    truth_full = np.concatenate([observed, truth])
+
+    predicted_peak_index = int(np.argmax(predicted_full))
+    truth_peak_index = int(np.argmax(truth_full))
+
+    return {
+        "raw_peak_amplitude_error": float(
+            abs(predicted_full[predicted_peak_index] -
+                truth_full[truth_peak_index])
+        ),
+        "raw_peak_timing_error_months": abs(
+            predicted_peak_index - truth_peak_index
+        ),
+    }
+
+
+def evaluate_t2_fold(
+    cycles: Mapping[int, Sequence[float]],
+    held_out_cycle: int,
+    k: int,
+    w: float,
+    tau: int,
+) -> dict:
+    if held_out_cycle not in range(6, 25):
+        raise T2EngineError("Held-out cycle must be between 6 and 24.")
+    if k not in K_GRID:
+        raise T2EngineError("Invalid observed-prefix length.")
+
+    target = _validate_curve(
+        cycles[held_out_cycle], f"cycle_{held_out_cycle}"
+    )
+    if len(target) <= k:
+        raise T2EngineError("Observed prefix exceeds target cycle length.")
+
+    remaining = len(target) - k
+    if remaining < MIN_REMAINING:
+        raise T2EngineError("Insufficient remaining months for scoring.")
+
+    # Strictly earlier completed cycles only.
+    training = [
+        _validate_curve(cycles[c], f"cycle_{c}")
+        for c in range(1, held_out_cycle)
+    ]
+
+    observed = target[:k].copy()
+    truth = target[k:].copy()
+
+    prediction = forecast_t2(
+        observed,
+        training,
+        w,
+        tau,
+        forecast_months=remaining,
+    )
+
+    if len(prediction) != len(truth):
+        raise T2EngineError("Prediction and truth lengths do not match.")
+    if not np.isfinite(prediction).all():
+        raise T2EngineError("Prediction contains non-finite values.")
+
+    errors = truth - prediction
+    peak = _peak_diagnostics(observed, prediction, truth)
+
+    return {
+        "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+        "held_out_cycle": held_out_cycle,
+        "training_first_cycle": 1,
+        "training_last_cycle": held_out_cycle - 1,
+        "training_cycle_count": held_out_cycle - 1,
+        "observed_months": k,
+        "scored_months": len(truth),
+        "w": float(w),
+        "tau": int(tau),
+        "mae": float(np.mean(np.abs(errors))),
+        "rmse": float(np.sqrt(np.mean(errors ** 2))),
+        **peak,
+    }
+
+
+def select_t2_configuration(
+    cycles: Mapping[int, Sequence[float]],
+) -> dict:
+    validated = validate_cycle_collection(cycles)
+
+    fold_records = []
+    candidate_records = []
+
+    for w, tau in product(W_GRID, TAU_GRID):
+        candidate_folds = []
+
+        for cycle_id in SELECTION_CYCLES:
+            for k in K_GRID:
+                try:
+                    record = evaluate_t2_fold(
+                        validated, cycle_id, k, w, tau
+                    )
+                except T2EngineError as exc:
+                    if "Insufficient remaining months" in str(exc):
+                        continue
+                    raise
+
+                candidate_folds.append(record)
+                fold_records.append(record)
+
+        if not candidate_folds:
+            raise T2EngineError(
+                f"No eligible selection folds for w={w}, tau={tau}."
+            )
+
+        candidate_records.append({
+            "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+            "w": float(w),
+            "tau": int(tau),
+            "fold_count": len(candidate_folds),
+            "mean_fold_mae": float(np.mean(
+                [r["mae"] for r in candidate_folds]
+            )),
+            "mean_fold_rmse": float(np.mean(
+                [r["rmse"] for r in candidate_folds]
+            )),
+            "mean_peak_amplitude_error": float(np.mean(
+                [r["raw_peak_amplitude_error"] for r in candidate_folds]
+            )),
+            "mean_peak_timing_error_months": float(np.mean(
+                [r["raw_peak_timing_error_months"] for r in candidate_folds]
+            )),
+        })
+
+    # Deterministic tie-break: MAE, RMSE, w, tau.
+    ranked = sorted(
+        candidate_records,
+        key=lambda row: (
+            row["mean_fold_mae"],
+            row["mean_fold_rmse"],
+            row["w"],
+            row["tau"],
+        ),
+    )
+
+    return {
+        "selection_cycles": list(SELECTION_CYCLES),
+        "observed_month_grid": list(K_GRID),
+        "candidate_count": len(candidate_records),
+        "candidates": candidate_records,
+        "fold_records": fold_records,
+        "selected_configuration": {
+            "method": "T2_anchored_template",
+            "w": ranked[0]["w"],
+            "tau": ranked[0]["tau"],
+            "selection_mean_fold_mae": ranked[0]["mean_fold_mae"],
+            "selection_mean_fold_rmse": ranked[0]["mean_fold_rmse"],
+            "tie_break": ["mean_fold_mae", "mean_fold_rmse", "w", "tau"],
+        },
+        "selection_computation_performed": True,
+    }
+
+
+
+========== FILE: R:\SolarShield AI\src\v3\solarshield_v3_t2_engine_v4.py ==========
+SIZE: 11026
+SHA256: 1E9123A563888A68A5B0E3E3D2C7C735826969DE8D621315215A1823297451EE
+from __future__ import annotations
+
+from itertools import product
+from typing import Mapping, Sequence
+
+import numpy as np
+
+
+W_GRID = (0.50, 0.75, 1.00)
+TAU_GRID = (3, 6, 12, 24)
+K_GRID = (24, 36, 48, 60)
+SELECTION_CYCLES = tuple(range(6, 13))
+MIN_REMAINING = 12
+MAXLEN = 200
+
+
+class T2EngineError(ValueError):
+    pass
+
+
+def _validate_curve(values, name: str) -> np.ndarray:
+    curve = np.asarray(values, dtype=float)
+    if curve.ndim != 1 or len(curve) == 0:
+        raise T2EngineError(f"{name} must be a non-empty 1D curve.")
+    if not np.isfinite(curve).all():
+        raise T2EngineError(f"{name} contains non-finite values.")
+    if (curve < 0).any():
+        raise T2EngineError(f"{name} contains negative SSN values.")
+    return curve
+
+
+def validate_cycle_collection(cycles: Mapping[int, Sequence[float]]) -> dict[int, np.ndarray]:
+    required = set(range(1, 25))
+    if set(cycles) != required:
+        raise T2EngineError("Expected exactly completed cycles 1-24.")
+
+    result = {}
+    for cycle_id in range(1, 25):
+        result[cycle_id] = _validate_curve(
+            cycles[cycle_id], f"cycle_{cycle_id}"
+        )
+    return result
+
+
+def median_template(
+    training_curves: Sequence[np.ndarray],
+    min_cycles: int = 3,
+) -> np.ndarray:
+    if len(training_curves) < min_cycles:
+        raise T2EngineError("Insufficient prior cycles for median template.")
+
+    template = np.full(MAXLEN, np.nan, dtype=float)
+
+    for month_index in range(MAXLEN):
+        values = [
+            curve[month_index]
+            for curve in training_curves
+            if len(curve) > month_index
+        ]
+        if len(values) >= min_cycles:
+            template[month_index] = float(np.median(values))
+
+    return template
+
+
+def forecast_t2(
+    observed_prefix: Sequence[float],
+    training_curves: Sequence[Sequence[float]],
+    w: float,
+    tau: int,
+    forecast_months: int | None = None,
+) -> np.ndarray:
+    obs = _validate_curve(observed_prefix, "observed_prefix")
+
+    if len(obs) not in K_GRID:
+        raise T2EngineError("Observed prefix length must be 24, 36, 48, or 60.")
+    if not np.isfinite(w) or w not in W_GRID:
+        raise T2EngineError("w is outside the pre-declared R20 grid.")
+    if tau not in TAU_GRID:
+        raise T2EngineError("tau is outside the pre-declared R20 grid.")
+
+    train = [
+        _validate_curve(curve, "training_curve")
+        for curve in training_curves
+    ]
+    template = median_template(train)
+
+    k = len(obs)
+    tail = template[k:].copy()
+
+    if forecast_months is not None:
+        if not isinstance(forecast_months, int) or forecast_months <= 0:
+            raise T2EngineError("forecast_months must be a positive integer.")
+        tail = tail[:forecast_months]
+
+    if len(tail) == 0 or not np.isfinite(tail).any():
+        raise T2EngineError("Template has no usable forecast tail.")
+
+    if not np.isfinite(template[:k]).all():
+        raise T2EngineError("Template is incomplete over the observed prefix.")
+
+    ratio = float(
+        obs.mean() / max(float(template[:k].mean()), 1e-9)
+    )
+    scaled_ratio = float(np.clip(1.0 + w * (ratio - 1.0), 0.3, 3.0))
+
+    observed_level = float(obs[-6:].mean())
+    template_level = float((template[k - 6:k] * scaled_ratio).mean())
+
+    horizons = np.arange(1, len(tail) + 1, dtype=float)
+    correction = (
+        observed_level - template_level
+    ) * np.exp(-horizons / float(tau))
+
+    prediction = tail * scaled_ratio + correction
+    prediction = np.clip(prediction, 0.0, None)
+
+    valid = np.isfinite(prediction)
+    if not valid.any():
+        raise T2EngineError("T2 produced no finite forecast values.")
+
+    return prediction
+
+
+def _peak_diagnostics(observed, prediction, truth):
+    observed = np.asarray(observed, dtype=float)
+    prediction = np.asarray(prediction, dtype=float)
+    truth = np.asarray(truth, dtype=float)
+
+    predicted_full = np.concatenate([observed, prediction])
+    truth_full = np.concatenate([observed, truth])
+
+    predicted_peak_index = int(np.argmax(predicted_full))
+    truth_peak_index = int(np.argmax(truth_full))
+
+    return {
+        "raw_peak_amplitude_error": float(
+            abs(predicted_full[predicted_peak_index] -
+                truth_full[truth_peak_index])
+        ),
+        "raw_peak_timing_error_months": abs(
+            predicted_peak_index - truth_peak_index
+        ),
+    }
+
+
+def evaluate_t2_fold(
+    cycles: Mapping[int, Sequence[float]],
+    held_out_cycle: int,
+    k: int,
+    w: float,
+    tau: int,
+) -> dict:
+    if held_out_cycle not in range(6, 25):
+        raise T2EngineError("Held-out cycle must be between 6 and 24.")
+    if k not in K_GRID:
+        raise T2EngineError("Invalid observed-prefix length.")
+
+    target = _validate_curve(
+        cycles[held_out_cycle], f"cycle_{held_out_cycle}"
+    )
+    if len(target) <= k:
+        raise T2EngineError("Observed prefix exceeds target cycle length.")
+
+    remaining = len(target) - k
+    if remaining < MIN_REMAINING:
+        raise T2EngineError("Insufficient remaining months for scoring.")
+
+    # Strictly earlier completed cycles only.
+    training = [
+        _validate_curve(cycles[c], f"cycle_{c}")
+        for c in range(1, held_out_cycle)
+    ]
+
+    observed = target[:k].copy()
+    truth = target[k:].copy()
+
+    prediction = forecast_t2(
+        observed,
+        training,
+        w,
+        tau,
+        forecast_months=remaining,
+    )
+
+    if len(prediction) != len(truth):
+        raise T2EngineError("Prediction and truth lengths do not match.")
+    if not np.isfinite(prediction).all():
+        raise T2EngineError("Prediction contains non-finite values.")
+
+    errors = truth - prediction
+    peak = _peak_diagnostics(observed, prediction, truth)
+
+    return {
+        "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+        "held_out_cycle": held_out_cycle,
+        "training_first_cycle": 1,
+        "training_last_cycle": held_out_cycle - 1,
+        "training_cycle_count": held_out_cycle - 1,
+        "observed_months": k,
+        "scored_months": len(truth),
+        "w": float(w),
+        "tau": int(tau),
+        "mae": float(np.mean(np.abs(errors))),
+        "rmse": float(np.sqrt(np.mean(errors ** 2))),
+        **peak,
+    }
+
+
+
+def selection_coverage_audit(cycles):
+    validated = validate_cycle_collection(cycles)
+    records = []
+
+    for cycle_id in SELECTION_CYCLES:
+        target = validated[cycle_id]
+        training = [validated[c] for c in range(1, cycle_id)]
+
+        for k in K_GRID:
+            remaining = len(target) - k
+
+            if remaining < MIN_REMAINING:
+                records.append({
+                    "held_out_cycle": cycle_id,
+                    "observed_months": k,
+                    "remaining_months": remaining,
+                    "minimum_template_support": 0,
+                    "unsupported_month_count": remaining,
+                    "status": "NOT_EVALUABLE_MIN_REMAINING",
+                })
+                continue
+
+            support = [
+                sum(len(curve) > month_index for curve in training)
+                for month_index in range(k, len(target))
+            ]
+
+            minimum_support = min(support) if support else 0
+            unsupported = sum(value < 3 for value in support)
+
+            if unsupported:
+                status = "NOT_EVALUABLE_TEMPLATE_SUPPORT"
+            else:
+                status = "ELIGIBLE"
+
+            records.append({
+                "held_out_cycle": cycle_id,
+                "observed_months": k,
+                "remaining_months": remaining,
+                "minimum_template_support": int(minimum_support),
+                "unsupported_month_count": int(unsupported),
+                "status": status,
+            })
+
+    return records
+
+
+def select_t2_configuration(cycles):
+    validated = validate_cycle_collection(cycles)
+    coverage = selection_coverage_audit(validated)
+
+    eligible = [
+        (row["held_out_cycle"], row["observed_months"])
+        for row in coverage
+        if row["status"] == "ELIGIBLE"
+    ]
+
+    excluded = [
+        row for row in coverage if row["status"] != "ELIGIBLE"
+    ]
+
+    if not eligible:
+        raise T2EngineError("No eligible R20 folds.")
+
+    fold_records = []
+    candidate_records = []
+
+    for w, tau in product(W_GRID, TAU_GRID):
+        candidate_folds = []
+
+        for cycle_id, k in eligible:
+            record = evaluate_t2_fold(
+                validated, cycle_id, k, w, tau
+            )
+            candidate_folds.append(record)
+            fold_records.append(record)
+
+        if len(candidate_folds) != len(eligible):
+            raise T2EngineError(
+                "Candidate fold population is incomplete."
+            )
+
+        candidate_records.append({
+            "candidate_id": f"T2_W{w:.2f}_TAU{tau}",
+            "w": float(w),
+            "tau": int(tau),
+            "fold_count": len(candidate_folds),
+            "mean_fold_mae": float(np.mean(
+                [r["mae"] for r in candidate_folds]
+            )),
+            "mean_fold_rmse": float(np.mean(
+                [r["rmse"] for r in candidate_folds]
+            )),
+            "mean_peak_amplitude_error": float(np.mean(
+                [r["raw_peak_amplitude_error"] for r in candidate_folds]
+            )),
+            "mean_peak_timing_error_months": float(np.mean(
+                [r["raw_peak_timing_error_months"] for r in candidate_folds]
+            )),
+        })
+
+    expected_records = len(candidate_records) * len(eligible)
+    if len(fold_records) != expected_records:
+        raise T2EngineError("Candidate-fold record count mismatch.")
+
+    ranked = sorted(
+        candidate_records,
+        key=lambda row: (
+            row["mean_fold_mae"],
+            row["mean_fold_rmse"],
+            row["w"],
+            row["tau"],
+        ),
+    )
+
+    return {
+        "selection_cycles": list(SELECTION_CYCLES),
+        "observed_month_grid": list(K_GRID),
+        "nominal_fold_count": len(coverage),
+        "eligible_fold_count": len(eligible),
+        "not_evaluable_fold_count": len(excluded),
+        "candidate_count": len(candidate_records),
+        "candidates": candidate_records,
+        "fold_records": fold_records,
+        "coverage_records": coverage,
+        "selected_configuration": {
+            "method": "T2_anchored_template",
+            "w": ranked[0]["w"],
+            "tau": ranked[0]["tau"],
+            "selection_mean_fold_mae": ranked[0]["mean_fold_mae"],
+            "selection_mean_fold_rmse": ranked[0]["mean_fold_rmse"],
+            "tie_break": [
+                "mean_fold_mae", "mean_fold_rmse", "w", "tau"
+            ],
+        },
+        "selection_computation_performed": True,
+    }
+
+
+========== MATCH COUNT ==========
+9
+
+========== R20 FROZEN CONFIGURATION CHECK ==========
+{
+    "method":  "T2_anchored_template",
+    "w":  0.5,
+    "tau":  12,
+    "selection_mean_fold_mae":  36.35724549274487,
+    "selection_mean_fold_rmse":  44.52158937017872,
+    "tie_break":  [
+                      "mean_fold_mae",
+                      "mean_fold_rmse",
+                      "w",
+                      "tau"
+                  ]
+}

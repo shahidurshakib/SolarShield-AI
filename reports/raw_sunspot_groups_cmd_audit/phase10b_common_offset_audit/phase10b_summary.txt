@@ -1,0 +1,51 @@
+PHASE 10B — COMMON TIMESTAMP OFFSET AUDIT
+=================================================================
+Input rows: 6305
+Unique records: 65
+Unique offsets: 97
+
+GLOBAL COMMON OFFSET
+--------------------------------------------------
+Zero offset mean absolute residual: 1.842089
+Best mean-based common offset: +1.5 h
+Mean absolute residual at best offset: 1.661282
+Median absolute residual at best offset: 0.633314
+Maximum absolute residual at best offset: 11.982292
+Best median-based common offset: +1.5 h
+Median absolute residual at median-optimal offset: 0.633314
+
+ROLE-SPECIFIC COMMON OFFSETS
+--------------------------------------------------
+
+ROLE: NEIGHBOUR
+Best common offset: +1.5 h
+Mean absolute residual at best: 0.884632
+Median absolute residual at best: 0.566193
+Zero-offset mean absolute residual: 1.094825
+
+ROLE: TARGET_ANOMALY
+Best common offset: +4.0 h
+Mean absolute residual at best: 4.665204
+Median absolute residual at best: 5.788460
+Zero-offset mean absolute residual: 4.831149
+
+CROSS-VALIDATION
+--------------------------------------------------
+Offset selected from NEIGHBOUR -> evaluated on NEIGHBOUR: offset=+1.5h, mean=0.884632, median=0.566193, max=8.326832
+Offset selected from NEIGHBOUR -> evaluated on TARGET_ANOMALY: offset=+1.5h, mean=4.767884, median=4.411763, max=11.982292
+Offset selected from TARGET_ANOMALY -> evaluated on NEIGHBOUR: offset=+4.0h, mean=1.744873, median=1.506309, max=9.698929
+Offset selected from TARGET_ANOMALY -> evaluated on TARGET_ANOMALY: offset=+4.0h, mean=4.665204, median=5.788460, max=13.357061
+Offset selected from GLOBAL_ALL_RECORDS -> evaluated on NEIGHBOUR: offset=+1.5h, mean=0.884632, median=0.566193, max=8.326832
+Offset selected from GLOBAL_ALL_RECORDS -> evaluated on TARGET_ANOMALY: offset=+1.5h, mean=4.767884, median=4.411763, max=11.982292
+
+DAILY OPTIMUM OFFSET DISTRIBUTION
+--------------------------------------------------
+Dates evaluated: 24
+Median daily best offset: +1.0 h
+Mean daily best offset: +0.85 h
+Daily best offsets at scan boundary: 0
+
+INTERPRETATION LIMIT
+--------------------------------------------------
+A common offset that improves both roles is evidence for a shared timing/reference hypothesis, not proof of the actual observation timestamp.
+Role-specific offsets that fail cross-validation do not support a single archive-wide timestamp correction.

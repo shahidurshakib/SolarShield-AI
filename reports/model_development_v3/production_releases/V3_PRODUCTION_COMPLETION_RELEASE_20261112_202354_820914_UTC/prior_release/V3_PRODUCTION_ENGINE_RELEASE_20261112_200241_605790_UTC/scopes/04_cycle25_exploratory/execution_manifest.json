@@ -1,0 +1,17 @@
+{
+  "babcock_leighton_authorized": false,
+  "blocking_report": "blocking_report.json",
+  "cycle_metadata_sha256": "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25",
+  "execution_status": "BLOCKED",
+  "execution_timestamp_utc": "2026-11-12T20:02:41.605830+00:00",
+  "model_execution_performed": false,
+  "monthly_input_sha256": "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194",
+  "protocol_sha256": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+  "r21_identifiability": "NOT_ESTABLISHED",
+  "r26_status": "EVIDENCE_LIMITED_NOT_VALIDATED",
+  "release_id": "V3_PRODUCTION_ENGINE_RELEASE_20261112_200241_605790_UTC",
+  "scientific_acceptance": "NOT_EVALUATED",
+  "scope": "Cycle 25 exploratory forecast",
+  "scope_id": "V3_R30_C25_EXPLORATORY_20261111_220209_UTC",
+  "source_manifest": "../../source_sha256_manifest.json"
+}

@@ -1,0 +1,41 @@
+{
+  "audit_status": "PASS",
+  "source_execution_directory": "reports\\model_development_v3\\executions\\R20_PRODUCTION_EXECUTION_20261112_001851_264721_UTC",
+  "source_hashes_verified": {
+    "candidate_metrics.csv": "F8DCE47343C4F1BC1C22F8598541334A470FAB4BEC029010E371FDC91321515E",
+    "candidate_fold_metrics.csv": "76604D53172E11FC7134D4ED2F79F1E37782E86362C10F7CE669BF8C0C48AA2D",
+    "fold_coverage_audit.csv": "36A24BD1C0246B7C8AC15F577EA39144758700AC8E176E13D8B74929F130672C",
+    "selection_summary.json": "0E5387CCED8611429A0ED6FABA432799FF5802DABCA7BB030741605DC00E4564",
+    "execution_manifest.json": "25E71301B17B301B98DB2A22ECC4059C7B2B4EEBE841A5EBBFE589649D444F2E"
+  },
+  "candidate_count": 12,
+  "eligible_folds": 20,
+  "not_evaluable_folds": 8,
+  "candidate_fold_records": 240,
+  "duplicate_candidate_fold_keys": 0,
+  "excluded_cycles": [
+    6,
+    9
+  ],
+  "selected_candidate": "T2_W0.50_TAU12",
+  "selected_w": 0.5,
+  "selected_tau": 12,
+  "selected_mean_fold_mae": 36.35724549274487,
+  "selected_mean_fold_rmse": 44.52158937017872,
+  "checks": {
+    "candidate_count_12": true,
+    "candidate_fold_records_240": true,
+    "unique_candidate_fold_keys": true,
+    "20_folds_per_candidate": true,
+    "coverage_records_28": true,
+    "eligible_folds_20": true,
+    "not_evaluable_folds_8": true,
+    "excluded_cycles_6_and_9": true,
+    "selected_candidate_correct": true,
+    "execution_completed": true,
+    "only_r20_scope": true,
+    "other_scopes_not_executed": true,
+    "babcock_leighton_not_executed": true,
+    "scientific_acceptance_not_granted": true
+  }
+}

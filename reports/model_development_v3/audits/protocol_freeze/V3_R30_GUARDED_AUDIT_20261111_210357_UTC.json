@@ -1,0 +1,45 @@
+﻿{
+    "audit_type":  "SOLARSHIELD_V3_R30_GUARDED_PROTOCOL_FREEZE",
+    "timestamp_utc":  "2026-11-11T21:03:57.2257791Z",
+    "overall_status":  "BLOCKED",
+    "freeze_performed":  false,
+    "execution_authorized":  false,
+    "checks":  [
+                   {
+                       "gate":  "Draft 1.6 integrity",
+                       "status":  "BLOCKED",
+                       "detail":  "Expected=D2A6B43215EBAE29C79F86ECB2DA9194F2DC64DAEEA0229D15E0692513DF417E; Actual="
+                   },
+                   {
+                       "gate":  "R21 owner decision",
+                       "status":  "PASS",
+                       "detail":  "SHA256=19A386202A73EFBB7B6EAA7D791AAD8904C7BCD6EC42165A9DA32EA06620A537"
+                   },
+                   {
+                       "gate":  "SILSO monthly input hash",
+                       "status":  "BLOCKED",
+                       "detail":  "Path=; SHA256="
+                   },
+                   {
+                       "gate":  "Implementation snapshot manifest",
+                       "status":  "PASS",
+                       "detail":  "SHA256=D2F06391E0F71398C3D0BBF9F4D3785851A610725559A84674B5D53E82300BB3"
+                   },
+                   {
+                       "gate":  "Partition and preservation diagnostic",
+                       "status":  "PASS",
+                       "detail":  "SHA256=8928FE7B26BC5280B40B26F12794FC37B50211686F1C5F6EDC727041EEB22F0B"
+                   },
+                   {
+                       "gate":  "R19-R33 evidence review ledger",
+                       "status":  "BLOCKED",
+                       "detail":  "SHA256=02FC39B8A618948B7A0C52150B47D77FCC707B55AFF4CA5A356AEA3F082279D4; statuses=,PENDING"
+                   },
+                   {
+                       "gate":  "R30 final gate certification",
+                       "status":  "BLOCKED",
+                       "detail":  "Final certification missing. No protocol freeze permitted."
+                   }
+               ],
+    "blocked_gate_count":  4
+}

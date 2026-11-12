@@ -1,0 +1,16 @@
+PHASE 11A.3 — OFFICIAL MISSING-DAY RECONCILIATION
+============================================================================
+Official missing-day dates parsed: 0
+Official list unparsed lines: 106
+Phase 11A failed records: 131
+
+RECONCILIATION CLASSIFICATIONS
+----------------------------------------------------------------------------
+ZERO_FILLED_NOT_IN_OFFICIAL_LIST: 131
+
+Unique failed-record dates: 131
+Official missing dates not found among failed records: 0
+Carrington field flags rechecked: 6
+
+OUTPUT DIRECTORY
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a3_missing_day_reconciliation

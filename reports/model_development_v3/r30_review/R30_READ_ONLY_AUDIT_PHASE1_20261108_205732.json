@@ -1,0 +1,130 @@
+﻿{
+    "audit_id":  "R30_READ_ONLY_PHASE1",
+    "audit_timestamp_utc":  "2026-11-08T20:57:32.3536291Z",
+    "audit_mode":  "READ_ONLY_EXISTING_ARTIFACTS",
+    "protocol_freeze_performed":  false,
+    "historical_execution_performed":  false,
+    "checks":  [
+                   {
+                       "check":  "Draft 1.3 immutability",
+                       "status":  "PASS",
+                       "detail":  "1D4398E9E51DD96CC2FF7614A0DB312769D1332D0E81787DD4BBE58D0386EE14"
+                   },
+                   {
+                       "check":  "Draft 1.4 integrity",
+                       "status":  "PASS",
+                       "detail":  "CCD4C0DD08B5669FA304C2FC9A3D4ED9A0C9AA6FEDB94EE9EDE3E830C73CFD25"
+                   },
+                   {
+                       "check":  "R21 Option A correction integrity",
+                       "status":  "PASS",
+                       "detail":  "5CBC56516B49A6A2E731D352006B69404C989FEDC6097C856613FCC3F9F68B4F"
+                   },
+                   {
+                       "check":  "R21 scientific validation integrity",
+                       "status":  "PASS",
+                       "detail":  "17403BF56C53C4AF0BA575E6D8C19FF4541055AEFF75F11190F880399D30288C"
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: R21 Option A",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: NOT_ESTABLISHED",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: R29",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: R30",
+                       "status":  "PASS",
+                       "detail":  "Text found."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: Babcock–Leighton",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: cycles 1–12",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: cycles 13–15",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "Draft 1.4 required text: cycles 16–24",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Text not found; review wording and encoding."
+                   },
+                   {
+                       "check":  "V3 implementation snapshot manifest",
+                       "status":  "PASS",
+                       "detail":  "1BD256B5F5B1256AA716E2072BD40B8BC754E1304FD85F27AADC89193D14ADE7"
+                   },
+                   {
+                       "check":  "V3 implementation snapshot entries",
+                       "status":  "PASS",
+                       "detail":  "All 18 manifest entries verified."
+                   },
+                   {
+                       "check":  "R21 Option A snapshot entries",
+                       "status":  "PASS",
+                       "detail":  "All 4 manifest entries verified."
+                   },
+                   {
+                       "check":  "V2-007 freeze manifest identity",
+                       "status":  "PASS",
+                       "detail":  "6FC6EC3EC99797C8D0809860123ADCC82059F173F63479797671D0A8EAE7E6CA"
+                   },
+                   {
+                       "check":  "V3 REV1 output manifest entries",
+                       "status":  "UNVERIFIED",
+                       "detail":  "No recognizable path/SHA256 entries found in manifest."
+                   },
+                   {
+                       "check":  "R29 authorization document review",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Owner authorization scope must be checked against the controlling protocol and execution records."
+                   },
+                   {
+                       "check":  "R30 final synthetic regression",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Final regression suite not executed in this read-only phase."
+                   },
+                   {
+                       "check":  "SILSO input hash and lineage",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Input hashes and raw-to-processed lineage require a dedicated data audit."
+                   },
+                   {
+                       "check":  "Cycle partitions and provisional boundaries",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Partition manifests and Cycle 25 provisional boundary require direct verification."
+                   },
+                   {
+                       "check":  "V2-007 and V3 REV1 preservation baseline",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Current manifest verification is not a substitute for comparison against every original preservation baseline."
+                   },
+                   {
+                       "check":  "Babcock-Leighton exclusion",
+                       "status":  "UNVERIFIED",
+                       "detail":  "Must be checked against the actual execution configuration before freeze."
+                   }
+               ],
+    "summary":  {
+                    "pass":  12,
+                    "fail":  0,
+                    "missing":  0,
+                    "unverified":  11
+                }
+}

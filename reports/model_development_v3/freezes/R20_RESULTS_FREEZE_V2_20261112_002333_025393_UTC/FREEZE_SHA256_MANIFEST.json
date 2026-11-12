@@ -1,0 +1,35 @@
+{
+  "freeze_id": "R20_RESULTS_FREEZE_V2_20261112_002333_025393_UTC",
+  "algorithm": "SHA256",
+  "file_count": 7,
+  "files": {
+    "candidate_fold_metrics.csv": {
+      "sha256": "76604D53172E11FC7134D4ED2F79F1E37782E86362C10F7CE669BF8C0C48AA2D",
+      "size_bytes": 22086
+    },
+    "candidate_metrics.csv": {
+      "sha256": "F8DCE47343C4F1BC1C22F8598541334A470FAB4BEC029010E371FDC91321515E",
+      "size_bytes": 1146
+    },
+    "execution_manifest.json": {
+      "sha256": "25E71301B17B301B98DB2A22ECC4059C7B2B4EEBE841A5EBBFE589649D444F2E",
+      "size_bytes": 1142
+    },
+    "FINAL_AUDIT.json": {
+      "sha256": "D3B28BEC7333FAA795D3D699F07CFD800B218C13CD978F6EBC5CEB82E959BA9D",
+      "size_bytes": 1630
+    },
+    "fold_coverage_audit.csv": {
+      "sha256": "36A24BD1C0246B7C8AC15F577EA39144758700AC8E176E13D8B74929F130672C",
+      "size_bytes": 924
+    },
+    "FREEZE_RECORD.json": {
+      "sha256": "E16A418B2A157073EB820725AD45493EDF4EDE33B199FFCD3241D37369F37088",
+      "size_bytes": 1063
+    },
+    "selection_summary.json": {
+      "sha256": "0E5387CCED8611429A0ED6FABA432799FF5802DABCA7BB030741605DC00E4564",
+      "size_bytes": 10239
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "blockers": [
+    {
+      "approval_needed": "Owner-approved selection ordering/tie-breaks, or a separately frozen selection record.",
+      "missing_evidence": "The frozen protocol lists candidates and diagnostic metrics but does not define a deterministic selection objective/tie-break for R22-R25. No winner is inferred.",
+      "protocol_reference": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+      "scope": "R22/R23/R24/R25 selection",
+      "status": "BLOCKED_SELECTION_NOT_FROZEN"
+    },
+    {
+      "approval_needed": "A frozen training-only rule mapping approved residual scales to each held-out filter cycle.",
+      "missing_evidence": "R21 fixes normalized P0 and estimates shared physical q/r on training sequences, but does not map a training-only sequence scale to a held-out cycle. Using cycles 13-24 residuals to fit P0 scales is explicitly prohibited.",
+      "protocol_reference": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+      "scope": "A1/A2 filter application and R27 comparison",
+      "status": "BLOCKED_HELDOUT_SCALE_MAPPING"
+    },
+    {
+      "approval_needed": "An authorized Cycle 25 forecast origin and horizon, with a provisional-data policy.",
+      "missing_evidence": "R29 authorizes Cycle 25 exploration but Draft 1.7 does not specify the forecast origin or target horizon. Latest 79 records are non-provisional; the latest 3 are provisional and are excluded from verified-observation claims.",
+      "protocol_reference": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+      "scope": "Cycle 25 exploratory forecast",
+      "status": "BLOCKED_ORIGIN_AND_HORIZON_UNSPECIFIED"
+    },
+    {
+      "approval_needed": "None; evaluate only after both candidate forecast sets are valid.",
+      "missing_evidence": "A1 and A2 do not have frozen, protocol-compliant forecasts on the A0 common origins/targets.",
+      "protocol_reference": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+      "scope": "R32 scientific acceptance",
+      "status": "NOT_EVALUATED"
+    }
+  ],
+  "prior_release_blockers_reassessed": true,
+  "r20_rerun": false,
+  "r21_covariance_fit_performed_on_cycles": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "r21_owner_approved_option_a_found": true
+}

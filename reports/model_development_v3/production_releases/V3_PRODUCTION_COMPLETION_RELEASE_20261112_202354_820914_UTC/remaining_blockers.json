@@ -1,0 +1,62 @@
+{
+  "babcock_leighton_authorized": false,
+  "blockers": [
+    {
+      "evidence": {
+        "all_nine_starts_at_upper_bound": true,
+        "fit_file": "execution/V3_PRODUCTION_EXECUTION_20261112_202059_644437_UTC/R21_training_covariance_fit.json",
+        "local_curvature": {
+          "condition_number": 3.137231102537658,
+          "eigenvalues": [
+            -364.7068340636763,
+            1144.1696231326061
+          ],
+          "status": "NON_POSITIVE_LOCAL_CURVATURE"
+        }
+      },
+      "required_resolution": "Owner-approved boundary handling or a revised frozen estimation specification; do not extend bounds or substitute values without approval.",
+      "scope": "R21 production covariance acceptance",
+      "status": "BLOCKED_BOUNDARY_AND_CURVATURE"
+    },
+    {
+      "evidence": "Draft 1.7 provides candidate grids and diagnostics but no complete deterministic selection/tie-break record yielding a selected production configuration. R22 sizes/seeds are candidates, not a selection.",
+      "required_resolution": "Freeze approved selection objectives and deterministic tie-breaks for EnKF size/seeds, detector, DTW, and local-peak settings; then use cycles 6-12 only.",
+      "scope": "R22-R25 selected configuration",
+      "status": "BLOCKED_SELECTION_NOT_FROZEN"
+    },
+    {
+      "evidence": "R21 Option A defines sequence-specific training-only scales and normalized P0, but no frozen mapping from cycles 1-12 scales to held-out cycle P0. Cycles 13-24 may not estimate Q/R/P0.",
+      "required_resolution": "Provide a frozen, training-only scale application rule. Do not derive it from calibration or final-evaluation observations.",
+      "scope": "A1/A2 held-out initialization",
+      "status": "BLOCKED_HELDOUT_SCALE_MAPPING"
+    },
+    {
+      "evidence": "A0 Type-8 absolute-error quantiles were fitted on 3 cycles. Symmetric lower/upper bounds were used as an explicit implementation interpretation; Draft 1.7 does not expressly specify bound construction.",
+      "required_resolution": "Confirm/freeze interval bound construction before calling the outputs protocol-certified intervals. No coverage guarantee is claimed.",
+      "scope": "R26 interval certification",
+      "status": "EVIDENCE_LIMITED_AND_INTERVAL_RULE_INTERPRETATION"
+    },
+    {
+      "evidence": "R29 authorizes the scope but Draft 1.7 does not set a Cycle 25 forecast origin or target horizon. The 82 records include 79 non-provisional and 3 provisional months.",
+      "required_resolution": "Specify authorized origin/horizon and the handling of the provisional suffix.",
+      "scope": "Cycle 25 exploratory forecast",
+      "status": "BLOCKED_ORIGIN_AND_HORIZON_UNSPECIFIED"
+    },
+    {
+      "evidence": "No accepted R21 covariance fit/application and no selected R22 configuration; no common-origin A1/A2 forecasts were generated.",
+      "required_resolution": "Resolve R21 and R22-R25 blockers, then execute A1/A2 on the same origin/target set as A0.",
+      "scope": "R27 KF/EnKF comparison",
+      "status": "NOT_EXECUTED"
+    },
+    {
+      "evidence": "No valid A1/A2 forecast records exist for comparison against A0.",
+      "required_resolution": "Evaluate only after protocol-compliant A1/A2 forecasts and matched records exist.",
+      "scope": "R32 scientific acceptance",
+      "status": "NOT_EVALUATED_NOT_GRANTED"
+    }
+  ],
+  "historical_execution_status": "PARTIAL_A0_ONLY",
+  "r20_rerun": false,
+  "release_id": "V3_PRODUCTION_COMPLETION_RELEASE_20261112_202354_820914_UTC",
+  "scientific_acceptance": "NOT_GRANTED"
+}

@@ -1,0 +1,107 @@
+{
+  "protocol_revision": "1.8",
+  "protocol_status": "PENDING_FREEZE",
+  "execution_authorization": "NOT_GRANTED_FOR_DRAFT_1.8",
+  "base_protocol": {
+    "revision": "1.7",
+    "sha256": "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048"
+  },
+  "approved_values": {
+    "a0": {
+      "configuration": "T2_W0.50_TAU12",
+      "w": 0.5,
+      "tau_months": 12,
+      "evidence": "Preserved R20 selection result; no rerun."
+    },
+    "state_transition": {
+      "F": [
+        [
+          1.0,
+          1.0
+        ],
+        [
+          0.0,
+          1.0
+        ]
+      ],
+      "evidence": "Draft 1.7 state-transition specification."
+    },
+    "observation_matrix": {
+      "H": [
+        [
+          1.0,
+          0.0
+        ]
+      ],
+      "evidence": "Draft 1.7 observation specification."
+    },
+    "q_shape": {
+      "matrix": [
+        [
+          1.0,
+          0.5
+        ],
+        [
+          0.5,
+          1.0
+        ]
+      ],
+      "evidence": "Owner-approved R21 Option A."
+    },
+    "r_shape": {
+      "matrix": [
+        [
+          1.0
+        ]
+      ],
+      "evidence": "Owner-approved R21 Option A."
+    },
+    "normalized_p0": {
+      "matrix": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "evidence": "Owner-approved R21 Option A."
+    },
+    "warmup_months": 6,
+    "first_eligible_residual_initialization_only": true,
+    "cycle_state_reset": true,
+    "r32_conditions": [
+      "MAE strictly lower than A0",
+      "RMSE equal to or lower than A0",
+      "Peak-amplitude error equal to or lower than A0",
+      "Peak-timing error equal to or lower than A0"
+    ]
+  },
+  "pending_values": {
+    "q_physical": null,
+    "r_physical": null,
+    "q_r_acceptance_status": "NOT_ACCEPTED_BOUNDARY_SEEKING",
+    "heldout_cycle_scale_mapping": null,
+    "physical_p0_by_cycle": null,
+    "enkf_ensemble_size": null,
+    "enkf_seed_policy": null,
+    "r23_selected_detector": null,
+    "r24_selected_dtw_window": null,
+    "r25_selected_peak_settings": null,
+    "r26_interval_bound_construction": null,
+    "cycle25_origin": null,
+    "cycle25_target_horizon": null,
+    "cycle25_provisional_suffix_policy": null,
+    "owner_approved_tie_breaks": null,
+    "draft_1_8_exact_scope_authorization": null
+  },
+  "prohibited_substitutions": [
+    "Do not use the R21 boundary-fit q/r values as production covariance.",
+    "Do not widen the frozen optimizer bounds without owner-approved protocol change.",
+    "Do not infer held-out cycle scales from cycles 13-24.",
+    "Do not copy exploratory library defaults into production.",
+    "Do not infer R22-R25 winners from candidate grids."
+  ]
+}

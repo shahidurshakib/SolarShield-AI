@@ -1,0 +1,50 @@
+﻿{
+    "protocol":  "SolarShield-AI V3 Draft 1.7",
+    "protocol_sha256":  "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+    "freeze_manifest_sha256":  "896CB9891BFD0CDDE4A1310EA2C5BDC0461DB514CA165CC3C9B0EC97BF7B4FB3",
+    "gate_status":  "CLEARED",
+    "gate_timestamp_utc":  "20261111_220209_UTC",
+    "input_monthly_sha256":  "8920E24E6D0ED0C41E8AB91EB681C9EA13CDF07F93BF1D82E3C099F3D079D194",
+    "input_metadata_sha256":  "7DFB1E9DEBB427193528193A6C45C8505E9FB9662124F057B431B7D09DEA5F25",
+    "source_manifest_comparison":  "PASS",
+    "cycle_partition_verification":  "PASS",
+    "preservation_verification":  "PASS",
+    "synthetic_regression":  "PASS",
+    "model_execution_performed":  false,
+    "scientific_acceptance":  "NOT_GRANTED",
+    "r21_identifiability":  "NOT_ESTABLISHED",
+    "r26_calibration":  "EVIDENCE_LIMITED_NOT_VALIDATED",
+    "babcock_leighton_authorized":  false,
+    "authorized_scopes":  [
+                              {
+                                  "scope":  "Configuration selection cycles 6-12",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\01_configuration_selection",
+                                  "folder":  "01_configuration_selection",
+                                  "id":  "V3_R30_C6_C12_CONFIG_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "Calibration fitting cycles 13-15",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\02_calibration",
+                                  "folder":  "02_calibration",
+                                  "id":  "V3_R30_C13_C15_CALIBRATION_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "Historical backtesting cycles 16-24",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\03_historical_backtesting",
+                                  "folder":  "03_historical_backtesting",
+                                  "id":  "V3_R30_C16_C24_BACKTEST_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "Cycle 25 exploratory forecast",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\04_cycle25_exploratory",
+                                  "folder":  "04_cycle25_exploratory",
+                                  "id":  "V3_R30_C25_EXPLORATORY_20261111_220209_UTC"
+                              },
+                              {
+                                  "scope":  "KF versus EnKF comparison",
+                                  "path":  "reports\\model_development_v3\\executions\\R30_AUTHORIZED_20261111_220209_UTC\\05_kf_enkf_comparison",
+                                  "folder":  "05_kf_enkf_comparison",
+                                  "id":  "V3_R30_KF_ENKF_COMPARE_20261111_220209_UTC"
+                              }
+                          ]
+}

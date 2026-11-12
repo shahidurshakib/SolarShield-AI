@@ -1,0 +1,530 @@
+{
+  "P0_normalized": [
+    [
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.027777777777777776
+    ]
+  ],
+  "Q_physical": [
+    [
+      100.00298144563507,
+      50.001490722817536
+    ],
+    [
+      50.001490722817536,
+      100.00298144563507
+    ]
+  ],
+  "R_physical": [
+    [
+      100.00298144563507
+    ]
+  ],
+  "application_status": "NOT_APPLIED_TO_HELDOUT_CYCLES_PENDING_APPROVED_P0_SCALE_MAPPING",
+  "boundary_hit": true,
+  "boundary_hits_all_starts": 9,
+  "execution_timestamp_utc": "2026-11-12T20:21:11.637054+00:00",
+  "forecast_generated": false,
+  "historical_data_used": true,
+  "identifiability_status": "NOT_ESTABLISHED",
+  "initialization_count": 9,
+  "initialization_sensitive": false,
+  "local_curvature": {
+    "condition_number": 3.137231102537658,
+    "eigenvalues": [
+      -364.7068340636763,
+      1144.1696231326061
+    ],
+    "status": "NON_POSITIVE_LOCAL_CURVATURE"
+  },
+  "objective": 6551.19892165482,
+  "optimizer": "L-BFGS-B",
+  "parameter_interpretation": "SHARED_PHYSICAL_Q_AND_R",
+  "parameter_log_spread": {
+    "q": 0.0,
+    "r": 0.0
+  },
+  "protocol_reference": "R21_OPTION_A",
+  "q_physical": 100.00298144563507,
+  "r_physical": 100.00298144563507,
+  "residual_scales": [
+    42.72407226496919,
+    20.204098734140302,
+    18.759233993812185,
+    26.214258440246727,
+    34.98462628031902,
+    32.396912281801804,
+    26.621041612779667,
+    20.748958353005577,
+    24.806627753761276
+  ],
+  "scipy_version": "1.18.1",
+  "sequence_count": 9,
+  "sequence_covariances": [
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.05478575690372481,
+          0.027392878451862404
+        ],
+        [
+          0.027392878451862404,
+          0.05478575690372481
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.05478575690372481
+        ]
+      ],
+      "scale": 42.72407226496919
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.2449818916235092,
+          0.1224909458117546
+        ],
+        [
+          0.1224909458117546,
+          0.2449818916235092
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.2449818916235092
+        ]
+      ],
+      "scale": 20.204098734140302
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.28417295727025194,
+          0.14208647863512597
+        ],
+        [
+          0.14208647863512597,
+          0.28417295727025194
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.28417295727025194
+        ]
+      ],
+      "scale": 18.759233993812185
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.14552506254664502,
+          0.07276253127332251
+        ],
+        [
+          0.07276253127332251,
+          0.14552506254664502
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.14552506254664502
+        ]
+      ],
+      "scale": 26.214258440246727
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.08170685045646009,
+          0.040853425228230045
+        ],
+        [
+          0.040853425228230045,
+          0.08170685045646009
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.08170685045646009
+        ]
+      ],
+      "scale": 34.98462628031902
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.095280868701253,
+          0.0476404343506265
+        ],
+        [
+          0.0476404343506265,
+          0.095280868701253
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.095280868701253
+        ]
+      ],
+      "scale": 32.396912281801804
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.14111164656571792,
+          0.07055582328285896
+        ],
+        [
+          0.07055582328285896,
+          0.14111164656571792
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.14111164656571792
+        ]
+      ],
+      "scale": 26.621041612779667
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.23228456373251902,
+          0.11614228186625951
+        ],
+        [
+          0.11614228186625951,
+          0.23228456373251902
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.23228456373251902
+        ]
+      ],
+      "scale": 20.748958353005577
+    },
+    {
+      "P0_normalized": [
+        [
+          1.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.027777777777777776
+        ]
+      ],
+      "Q_normalized": [
+        [
+          0.16250902647702986,
+          0.08125451323851493
+        ],
+        [
+          0.08125451323851493,
+          0.16250902647702986
+        ]
+      ],
+      "R_normalized": [
+        [
+          0.16250902647702986
+        ]
+      ],
+      "scale": 24.806627753761276
+    }
+  ],
+  "sequence_valid_counts": [
+    102,
+    105,
+    130,
+    120,
+    110,
+    141,
+    129,
+    135,
+    129
+  ],
+  "start_diagnostics": [
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 0.0001,
+      "initial_r": 0.0001,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 0.0001,
+      "initial_r": 0.01,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 0.0001,
+      "initial_r": 1.0,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 0.01,
+      "initial_r": 0.0001,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 0.01,
+      "initial_r": 0.01,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 0.01,
+      "initial_r": 1.0,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 1.0,
+      "initial_r": 0.0001,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 1.0,
+      "initial_r": 0.01,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    },
+    {
+      "boundary_hit": true,
+      "gradient_norm": 1214.6852988383678,
+      "initial_q": 1.0,
+      "initial_r": 1.0,
+      "iterations": 1,
+      "message": "CONVERGENCE: NORM OF PROJECTED GRADIENT <= PGTOL",
+      "objective": 6551.19892165482,
+      "q_physical": 100.00298144563507,
+      "r_physical": 100.00298144563507,
+      "status": 0,
+      "success": true,
+      "valid": true
+    }
+  ],
+  "status": "ESTIMATION_COMPLETED_REQUIRES_REVIEW",
+  "successful_initializations": 9,
+  "total_valid_observations": 1101,
+  "training_cycle_ids": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "training_sequence_metadata": [
+    {
+      "cycle_id": 4,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 102
+    },
+    {
+      "cycle_id": 5,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 105
+    },
+    {
+      "cycle_id": 6,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 130
+    },
+    {
+      "cycle_id": 7,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 120
+    },
+    {
+      "cycle_id": 8,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 110
+    },
+    {
+      "cycle_id": 9,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 141
+    },
+    {
+      "cycle_id": 10,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 129
+    },
+    {
+      "cycle_id": 11,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 135
+    },
+    {
+      "cycle_id": 12,
+      "first_eligible_month": 7,
+      "initialization_residual_excluded_from_second_update": true,
+      "valid_post_warmup_residual_count": 129
+    }
+  ]
+}

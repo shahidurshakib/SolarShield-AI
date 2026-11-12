@@ -1,0 +1,23 @@
+PHASE 10H — EXACT PYMEЕUS API VALIDATION
+========================================================================
+Input records: 65
+Unique dates: 24
+Processed records: 65
+
+EXACT API VS MANUAL FORMULA
+------------------------------------------------------------------------
+exact_minus_manual: mean=-0.000000000, median=-0.000000000, max_abs=0.000000000
+exact_minus_SunPy: mean=-110.737805340, median=-179.959730699, max_abs=179.982193867
+
+UNIQUE DATE LEVEL
+------------------------------------------------------------------------
+Unique dates: 24
+exact_minus_manual: mean=-0.000000000, median=-0.000000000, max_abs=0.000000000
+exact_minus_SunPy: mean=-112.468039200, median=-179.959727828, max_abs=179.982193867
+
+LIMITATIONS
+------------------------------------------------------------------------
+This validates implementation equivalence only.
+It does not establish which ephemeris convention matches the archive.
+No raw data or timestamps were modified.
+No model execution was performed.

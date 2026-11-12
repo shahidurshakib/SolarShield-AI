@@ -1,0 +1,21 @@
+{
+  "experiment_id": "V2-005",
+  "candidate": "c3_constrained_cubic_bspline",
+  "required_fold_count": 19,
+  "successful_fold_count": 0,
+  "failed_fold_count": 19,
+  "all_required_folds_succeeded": false,
+  "fold_integrity": {
+    "expected_fold_count": 19,
+    "observed_record_count": 19,
+    "unique_fold_count": 19,
+    "missing_folds": [],
+    "unexpected_folds": [],
+    "duplicate_folds": [],
+    "passed": true
+  },
+  "equal_cycle_weighted_curve_MAE": null,
+  "equal_cycle_weighted_curve_RMSE": null,
+  "aggregation_note": "Arithmetic mean of per-cycle metrics; each heldout cycle has equal weight. Incomplete results are descriptive only.",
+  "acceptance_decision": "not_evaluated_requires_c2_comparison"
+}

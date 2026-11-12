@@ -1,0 +1,15 @@
+{
+  "ast_validation": "PASS",
+  "babcock_leighton_integration_performed": false,
+  "compile_validation": "PASS (user-reported)",
+  "copied_file_hash_validation": "PASS",
+  "forecasting_performed": false,
+  "historical_backtesting_performed": false,
+  "snapshot_manifest_sha256": "6b1e613b6617eeb186814fb7bb523851d7b8e24f5caaad42f5a0d0f23698c562",
+  "snapshot_name": "V3_A_C_numerical_safety_20261107_211447_UTC",
+  "source_files": 7,
+  "synthetic_test_result": "69 passed; 0 failed (user-reported)",
+  "test_files": 11,
+  "v2_modified": false,
+  "v3_rev1_modified": false
+}

@@ -1,0 +1,152 @@
+{
+  "registry_version": 1,
+  "assessment_cutoff_utc": "2026-11-12",
+  "repository_head_at_audit": "43157e02c90c425a1226fdf4c6332e770cbf81fb",
+  "source_worktree_clean": false,
+  "project_scientific_acceptance": "NOT_ACHIEVED",
+  "project_wide_accepted_model_freeze": "NONE",
+  "entries": [
+    {
+      "model_or_scope": "Persistence and seasonal-naive baselines",
+      "protocol_or_result_state": "Historical baseline evidence",
+      "execution_state": "Executed in baseline backtesting and V1.1",
+      "acceptance_state": "Reference only; not a selected production candidate",
+      "notes": "At a 12-month horizon, seasonal-naive equals persistence by definition."
+    },
+    {
+      "model_or_scope": "V1.1 ETS additive damped trend",
+      "protocol_or_result_state": "Historical exploratory candidate",
+      "execution_state": "Executed; 2,376 forecasts; zero recorded fit failures or warnings",
+      "acceptance_state": "Not formally accepted or frozen",
+      "notes": "Lower MAE than paired persistence at all four horizons, but historical revisions and dependent origins limit claims."
+    },
+    {
+      "model_or_scope": "V1.1 cycle and curve analogs",
+      "protocol_or_result_state": "Historical exploratory evidence",
+      "execution_state": "Executed on 12 held-out cycles",
+      "acceptance_state": "Not accepted; interval evidence is descriptive",
+      "notes": "Curve errors condition on held-out duration and are not calendar-time forecast evidence."
+    },
+    {
+      "model_or_scope": "ARIMA/SARIMA selection",
+      "protocol_or_result_state": "Selection protocol frozen",
+      "execution_state": "Selection stage completed",
+      "acceptance_state": "NO_CANDIDATE_SELECTED",
+      "notes": "Best aggregate MAE ratio 0.9663539769 exceeded the 0.95 threshold; confirmation was not run."
+    },
+    {
+      "model_or_scope": "V2-001 through V2-003",
+      "protocol_or_result_state": "Listed PLANNED in experiments.csv",
+      "execution_state": "No V2-specific output identified",
+      "acceptance_state": "NOT_EXECUTED_AS_V2_EXPERIMENTS",
+      "notes": "Similar baselines or cycle-median methods exist in separate historical workstreams."
+    },
+    {
+      "model_or_scope": "V2-004 C2 phase-median template",
+      "protocol_or_result_state": "Historical reference baseline; 19/19 folds",
+      "execution_state": "Completed",
+      "acceptance_state": "REFERENCE_ONLY",
+      "notes": "Equal-cycle curve MAE 32.2861822169; RMSE 43.0079457986."
+    },
+    {
+      "model_or_scope": "V2-005 C3 constrained cubic B-spline",
+      "protocol_or_result_state": "Historical run and failure report; authorization lineage inconsistent in current records",
+      "execution_state": "19/19 required folds failed",
+      "acceptance_state": "FAILED_NOT_ACCEPTED",
+      "notes": "Optimizer success did not pass dense-grid validation; no valid aggregate score."
+    },
+    {
+      "model_or_scope": "V2-006 derivative-constrained cubic B-spline",
+      "protocol_or_result_state": "Frozen protocol; execution record says run was authorized, while protocol header says not yet authorized",
+      "execution_state": "19/19 folds completed",
+      "acceptance_state": "NOT_ACCEPTED",
+      "notes": "MAE 32.8975830631 misses the 30.6718731061 limit; RMSE 43.2074532723 passes its guardrail."
+    },
+    {
+      "model_or_scope": "V2-007 amplitude-aware A1-S1",
+      "protocol_or_result_state": "Protocol and results frozen; execution summary records authorization YES",
+      "execution_state": "19/19 primary folds completed; 133/133 candidate-fold records",
+      "acceptance_state": "PRIMARY_ACCEPTANCE_NOT_MET",
+      "notes": "MAE 40.0610810802 and RMSE 51.2555158993 both exceed the registered C2-relative limits."
+    },
+    {
+      "model_or_scope": "V2-007 challenger candidates",
+      "protocol_or_result_state": "Frozen comparative set",
+      "execution_state": "Six challengers each completed 19/19 folds",
+      "acceptance_state": "COMPARATIVE_ONLY",
+      "notes": "A4-S1 had lowest challenger MAE but cannot replace the registered primary and remains worse than C2."
+    },
+    {
+      "model_or_scope": "V3 REV1 exploratory runs",
+      "protocol_or_result_state": "Historical exploratory runs with verified output manifests",
+      "execution_state": "Two runs preserved; Cycle 25 output exists in each",
+      "acceptance_state": "NOT_ACCEPTED",
+      "notes": "Different selection partition/configuration from frozen Draft 1.7; Cycle 25 output is not a substitute for the unexecuted Draft 1.7 scope."
+    },
+    {
+      "model_or_scope": "V3 R20 A0 configuration",
+      "protocol_or_result_state": "R20 cycles 6-12 selection preserved",
+      "execution_state": "Not rerun in the current production completion",
+      "acceptance_state": "BASELINE_CONFIGURATION_ONLY",
+      "notes": "Selected A0 configuration T2_W0.50_TAU12."
+    },
+    {
+      "model_or_scope": "V3 A0 calibration and historical backtest",
+      "protocol_or_result_state": "Draft 1.7 frozen; R29/R30 execution gate cleared",
+      "execution_state": "Calibration cycles 13-15 and A0 backtest cycles 16-24 executed",
+      "acceptance_state": "EXECUTION_COMPLETE_FOR_A0_ONLY",
+      "notes": "Calibration has only three cycles; no candidate comparison or scientific acceptance."
+    },
+    {
+      "model_or_scope": "V3 R21 covariance configuration",
+      "protocol_or_result_state": "Option A approach/shapes owner-approved; fitted q/r not accepted",
+      "execution_state": "Training-only fit attempted; all nine starts reached upper q/r bound",
+      "acceptance_state": "IDENTIFIABILITY_NOT_ESTABLISHED",
+      "notes": "Candidate q=r=100.002981 was not applied; local Hessian has a negative eigenvalue; held-out P0 scale mapping remains unfrozen."
+    },
+    {
+      "model_or_scope": "V3 A1 Kalman Filter",
+      "protocol_or_result_state": "Draft 1.7 frozen; selected R22-R25 settings and R21 prerequisites unresolved",
+      "execution_state": "NOT_EXECUTED",
+      "acceptance_state": "NOT_EVALUABLE"
+    },
+    {
+      "model_or_scope": "V3 A2 Ensemble Kalman Filter",
+      "protocol_or_result_state": "Draft 1.7 frozen; selected EnKF configuration and R21 prerequisites unresolved",
+      "execution_state": "NOT_EXECUTED",
+      "acceptance_state": "NOT_EVALUABLE"
+    },
+    {
+      "model_or_scope": "V3 R27 KF-versus-EnKF matched comparison",
+      "protocol_or_result_state": "Requires accepted configurations and common-origin records",
+      "execution_state": "NOT_EXECUTED",
+      "acceptance_state": "NOT_EVALUABLE"
+    },
+    {
+      "model_or_scope": "V3 Draft 1.7 Cycle 25 exploratory forecast",
+      "protocol_or_result_state": "Authorized scope, but origin/horizon/provisional policy unresolved in frozen protocol",
+      "execution_state": "NOT_EXECUTED",
+      "acceptance_state": "BLOCKED"
+    },
+    {
+      "model_or_scope": "V3 R32 scientific acceptance",
+      "protocol_or_result_state": "Owner-approved four-condition directional rule",
+      "execution_state": "Not evaluable without protocol-compliant A1/A2 forecasts",
+      "acceptance_state": "NOT_GRANTED",
+      "notes": "Conditions: MAE strictly lower than A0; RMSE no higher; peak-amplitude error no higher; peak-timing error no higher."
+    },
+    {
+      "model_or_scope": "Babcock-Leighton integration",
+      "protocol_or_result_state": "Not authorized",
+      "execution_state": "NOT_EXECUTED",
+      "acceptance_state": "OUT_OF_SCOPE"
+    },
+    {
+      "model_or_scope": "SDO/HMI and sunspot-group predictive models",
+      "protocol_or_result_state": "Data-quality/metadata evidence only",
+      "execution_state": "No protocol-compliant predictive model run identified",
+      "acceptance_state": "NOT_ESTABLISHED"
+    }
+  ]
+}
+

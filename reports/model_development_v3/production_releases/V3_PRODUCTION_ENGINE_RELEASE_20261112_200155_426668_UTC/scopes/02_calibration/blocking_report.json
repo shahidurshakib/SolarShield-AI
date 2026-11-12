@@ -1,0 +1,18 @@
+{
+  "authorization_present": true,
+  "blockers": [
+    "R21 training-only Q/R/P0 fit and target-cycle initialization covariance have not been generated and hash-verified.",
+    "R22-R25 required production configuration selections are absent; A1/A2 calibration cannot be completed without guessing those settings.",
+    "R26 may be generated with EVIDENCE_LIMITED_NOT_VALIDATED status, but no complete A0/A1/A2 forecast-record set is available."
+  ],
+  "execution_attempted": false,
+  "historical_model_execution_performed": false,
+  "no_scope_expansion": true,
+  "prior_r30_authorization_gate_status": "CLEARED",
+  "r20_c6_c12_rerun": false,
+  "release_id": "V3_PRODUCTION_ENGINE_RELEASE_20261112_200155_426668_UTC",
+  "scientific_acceptance": "NOT_EVALUATED",
+  "scope": "Calibration fitting cycles 13-15",
+  "scope_id": "V3_R30_C13_C15_CALIBRATION_20261111_220209_UTC",
+  "status": "BLOCKED"
+}

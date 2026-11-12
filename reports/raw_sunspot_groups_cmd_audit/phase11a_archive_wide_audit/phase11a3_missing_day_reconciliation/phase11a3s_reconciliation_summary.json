@@ -1,0 +1,21 @@
+{
+  "input_file": "R:\\SolarShield AI\\reports\\raw_sunspot_groups_cmd_audit\\phase11a_archive_wide_audit\\phase11a1_forensics\\phase11a1_failed_records.csv",
+  "output_file": "R:\\SolarShield AI\\reports\\raw_sunspot_groups_cmd_audit\\phase11a_archive_wide_audit\\phase11a3_missing_day_reconciliation\\phase11a3s_reconciled_failed_records.csv",
+  "input_record_count": 131,
+  "date_status_counts": {
+    "PARSED": 113,
+    "AMBIGUOUS": 10,
+    "UNPARSEABLE": 8
+  },
+  "classification_counts": {
+    "PARSED_ZERO_PLACEHOLDER": 113,
+    "AMBIGUOUS": 10,
+    "UNPARSEABLE": 8
+  },
+  "parsed_record_count": 113,
+  "unique_parsed_dates": 113,
+  "zero_placeholder_count": 113,
+  "duplicate_parsed_dates": {},
+  "official_missing_day_reconciliation": "NOT_PERFORMED",
+  "archive_modified": false
+}

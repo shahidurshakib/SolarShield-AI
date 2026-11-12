@@ -1,0 +1,1167 @@
+﻿SolarShield-AI C2 implementation review
+Generated: 2026-10-25 03:17:25
+Mode: READ-ONLY source inspection; no scripts executed.
+Python source files scanned: 11
+
+R:\SolarShield AI\scripts\run_backtesting.py:397: - Seasonal naive assumes an annual recurrence at the same calendar month; it is only a reference baseline and does not model solar-cycle phase or uncertainty. The 12-month seasonal-naive and persistence forecasts are identical by construction, so that horizon cannot distinguish the two.
+    PRE: - The prepared series is the latest available retrospective data, not a record of each value as first published. Historical revisions may mean this backtest cannot reconstruct the exact real-time information vintage at every origin.
+    PRE: - Forecast origins and horizons overlap, and monthly SSN is serially dependent. The number of scored target instances is not an independent-sample size; standard errors or significance claims are not inferred.
+    POST: - The final period begins in 2016 by design. It is not used to tune parameters because these fixed baselines have no tunable parameters. Adding or selecting future models requires a separate pre-final validation design.
+    POST: - Provisional values may be revised. Use `--exclude-provisional-targets` to exclude provisional targets from metrics while retaining them in predictions and reporting the counts.
+    POST: - Cycle-level forecasting is outside this experiment. In particular, cycle-summary durations and official future minima/maxima are not predictors.
+
+R:\SolarShield AI\scripts\run_eda.py:29: PHASE_POINTS = 101
+    PRE: MONTHLY_INPUT = Path("data") / "processed" / "sunspot_monthly_clean.csv"
+    PRE: SUMMARY_INPUT = Path("data") / "processed" / "solar_cycle_summary.csv"
+    POST: ACF_MAX_LAG = 24
+    POST: 
+    POST: 
+
+R:\SolarShield AI\scripts\run_eda.py:47: summary["official_smoothed_max_month"] = parse_month_column(summary["official_smoothed_max_month"])
+    PRE: summary["published_minimum_month"] = parse_month_column(summary["published_minimum_month"])
+    PRE: summary["end_month_derived"] = parse_month_column(summary["end_month_derived"])
+    POST: for col in ("cycle_number", "months_available", "months_expected_min_to_min",
+    POST: "provisional_months", "raw_peak_month_offset_vs_official_max"):
+    POST: summary[col] = pd.to_numeric(summary[col], errors="coerce")
+
+R:\SolarShield AI\scripts\run_eda.py:51: for col in ("raw_monthly_peak_ssn", "official_smoothed_max_sn"):
+    PRE: "provisional_months", "raw_peak_month_offset_vs_official_max"):
+    PRE: summary[col] = pd.to_numeric(summary[col], errors="coerce")
+    POST: summary[col] = pd.to_numeric(summary[col], errors="coerce")
+    POST: monthly["cycle_number"] = pd.to_numeric(monthly["cycle_number"], errors="coerce").astype("Int64")
+    POST: monthly["ssn"] = pd.to_numeric(monthly["ssn"], errors="coerce")
+
+R:\SolarShield AI\scripts\run_eda.py:100: "official_smoothed_max_sn_published": info.official_smoothed_max_sn,
+    PRE: "net_rise_ssn_per_month_start_to_raw_peak": rise_rate,
+    PRE: "net_change_ssn_per_month_raw_peak_to_cycle_end": decay_rate,
+    POST: "official_smoothed_max_month_published": (
+    POST: info.official_smoothed_max_month.strftime("%Y-%m")
+    POST: if pd.notna(info.official_smoothed_max_month) else ""
+
+R:\SolarShield AI\scripts\run_eda.py:101: "official_smoothed_max_month_published": (
+    PRE: "net_change_ssn_per_month_raw_peak_to_cycle_end": decay_rate,
+    PRE: "official_smoothed_max_sn_published": info.official_smoothed_max_sn,
+    POST: info.official_smoothed_max_month.strftime("%Y-%m")
+    POST: if pd.notna(info.official_smoothed_max_month) else ""
+    POST: ),
+
+R:\SolarShield AI\scripts\run_eda.py:102: info.official_smoothed_max_month.strftime("%Y-%m")
+    PRE: "official_smoothed_max_sn_published": info.official_smoothed_max_sn,
+    PRE: "official_smoothed_max_month_published": (
+    POST: if pd.notna(info.official_smoothed_max_month) else ""
+    POST: ),
+    POST: })
+
+R:\SolarShield AI\scripts\run_eda.py:103: if pd.notna(info.official_smoothed_max_month) else ""
+    PRE: "official_smoothed_max_month_published": (
+    PRE: info.official_smoothed_max_month.strftime("%Y-%m")
+    POST: ),
+    POST: })
+    POST: return pd.DataFrame(rows)
+
+R:\SolarShield AI\scripts\run_eda.py:109: def build_normalized_phase(monthly: pd.DataFrame, summary: pd.DataFrame) -> pd.DataFrame:
+    PRE: 
+    PRE: 
+    POST: phase_grid = np.linspace(0.0, 1.0, PHASE_POINTS)
+    POST: rows = []
+    POST: completed = summary[summary["status"] == "completed"].sort_values("cycle_number")
+
+R:\SolarShield AI\scripts\run_eda.py:110: phase_grid = np.linspace(0.0, 1.0, PHASE_POINTS)
+    PRE: 
+    PRE: def build_normalized_phase(monthly: pd.DataFrame, summary: pd.DataFrame) -> pd.DataFrame:
+    POST: rows = []
+    POST: completed = summary[summary["status"] == "completed"].sort_values("cycle_number")
+    POST: for item in completed.itertuples(index=False):
+
+R:\SolarShield AI\scripts\run_eda.py:115: observed_phase = np.linspace(0.0, 1.0, len(data))
+    PRE: for item in completed.itertuples(index=False):
+    PRE: data = monthly[monthly["cycle_number"] == int(item.cycle_number)].sort_values("month_start")
+    POST: interpolated = np.interp(phase_grid, observed_phase, data["ssn"].to_numpy(dtype=float))
+    POST: for phase, value in zip(phase_grid, interpolated):
+    POST: rows.append({
+
+R:\SolarShield AI\scripts\run_eda.py:116: interpolated = np.interp(phase_grid, observed_phase, data["ssn"].to_numpy(dtype=float))
+    PRE: data = monthly[monthly["cycle_number"] == int(item.cycle_number)].sort_values("month_start")
+    PRE: observed_phase = np.linspace(0.0, 1.0, len(data))
+    POST: for phase, value in zip(phase_grid, interpolated):
+    POST: rows.append({
+    POST: "cycle_number": int(item.cycle_number),
+
+R:\SolarShield AI\scripts\run_eda.py:117: for phase, value in zip(phase_grid, interpolated):
+    PRE: observed_phase = np.linspace(0.0, 1.0, len(data))
+    PRE: interpolated = np.interp(phase_grid, observed_phase, data["ssn"].to_numpy(dtype=float))
+    POST: rows.append({
+    POST: "cycle_number": int(item.cycle_number),
+    POST: "normalized_phase": phase,
+
+R:\SolarShield AI\scripts\run_eda.py:120: "normalized_phase": phase,
+    PRE: rows.append({
+    PRE: "cycle_number": int(item.cycle_number),
+    POST: "interpolated_monthly_ssn": value,
+    POST: "normalization_note": "first observed month=0; last observed month=1; linear interpolation",
+    POST: })
+
+R:\SolarShield AI\scripts\run_eda.py:121: "interpolated_monthly_ssn": value,
+    PRE: "cycle_number": int(item.cycle_number),
+    PRE: "normalized_phase": phase,
+    POST: "normalization_note": "first observed month=0; last observed month=1; linear interpolation",
+    POST: })
+    POST: return pd.DataFrame(rows)
+
+R:\SolarShield AI\scripts\run_eda.py:122: "normalization_note": "first observed month=0; last observed month=1; linear interpolation",
+    PRE: "normalized_phase": phase,
+    PRE: "interpolated_monthly_ssn": value,
+    POST: })
+    POST: return pd.DataFrame(rows)
+    POST: 
+
+R:\SolarShield AI\scripts\run_eda.py:145: "median_ssn": values.median(),
+    PRE: "provisional_months": int(data["is_provisional"].sum()),
+    PRE: "mean_ssn": values.mean(),
+    POST: "std_ssn_sample": values.std(ddof=1),
+    POST: "coefficient_of_variation": values.std(ddof=1) / values.mean() if values.mean() else np.nan,
+    POST: "minimum_ssn": values.min(),
+
+R:\SolarShield AI\scripts\run_eda.py:174: ("duration_months_minimum_to_minimum", "official_smoothed_max_sn_published"),
+    PRE: data = metrics[metrics["status"] == "completed"]
+    PRE: pairs = [
+    POST: ("duration_months_minimum_to_minimum", "raw_monthly_peak_ssn"),
+    POST: ("duration_months_minimum_to_minimum", "months_from_cycle_start_to_raw_peak"),
+    POST: ("official_smoothed_max_sn_published", "months_from_cycle_start_to_raw_peak"),
+
+R:\SolarShield AI\scripts\run_eda.py:177: ("official_smoothed_max_sn_published", "months_from_cycle_start_to_raw_peak"),
+    PRE: ("duration_months_minimum_to_minimum", "raw_monthly_peak_ssn"),
+    PRE: ("duration_months_minimum_to_minimum", "months_from_cycle_start_to_raw_peak"),
+    POST: ("raw_monthly_peak_ssn", "months_from_cycle_start_to_raw_peak"),
+    POST: ]
+    POST: rows = []
+
+R:\SolarShield AI\scripts\run_eda.py:237: if pd.notna(info.official_smoothed_max_month) and pd.notna(info.official_smoothed_max_sn):
+    PRE: ax.scatter([peak["month_start"]], [peak["ssn"]], marker="^", color="#111111",
+    PRE: s=65, zorder=5, label="Computed raw monthly peak")
+    POST: official_month = info.official_smoothed_max_month
+    POST: official_value = float(info.official_smoothed_max_sn)
+    POST: ax.scatter([official_month], [official_value], marker="D", facecolors="none",
+
+R:\SolarShield AI\scripts\run_eda.py:238: official_month = info.official_smoothed_max_month
+    PRE: s=65, zorder=5, label="Computed raw monthly peak")
+    PRE: if pd.notna(info.official_smoothed_max_month) and pd.notna(info.official_smoothed_max_sn):
+    POST: official_value = float(info.official_smoothed_max_sn)
+    POST: ax.scatter([official_month], [official_value], marker="D", facecolors="none",
+    POST: edgecolors="#e67e22", s=65, zorder=5,
+
+R:\SolarShield AI\scripts\run_eda.py:239: official_value = float(info.official_smoothed_max_sn)
+    PRE: if pd.notna(info.official_smoothed_max_month) and pd.notna(info.official_smoothed_max_sn):
+    PRE: official_month = info.official_smoothed_max_month
+    POST: ax.scatter([official_month], [official_value], marker="D", facecolors="none",
+    POST: edgecolors="#e67e22", s=65, zorder=5,
+    POST: label="Published 13-month-smoothed maximum")
+
+R:\SolarShield AI\scripts\run_eda.py:265: axes[1].plot(x, data["official_smoothed_max_sn_published"], "o-", color="#e67e22",
+    PRE: axes[0].set_ylabel("Months")
+    PRE: axes[0].set_title("Published minimum-to-minimum duration")
+    POST: label="Official SILSO smoothed maximum")
+    POST: axes[1].plot(x, data["raw_monthly_peak_ssn"], "s--", color="#234f73",
+    POST: label="Computed raw monthly peak")
+
+R:\SolarShield AI\scripts\run_eda.py:284: def plot_normalized_phase(phase: pd.DataFrame, output: Path) -> None:
+    PRE: 
+    PRE: 
+    POST: fig, ax = plt.subplots(figsize=(12, 6))
+    POST: for cycle, data in phase.groupby("cycle_number", sort=True):
+    POST: ax.plot(data["normalized_phase"], data["interpolated_monthly_ssn"],
+
+R:\SolarShield AI\scripts\run_eda.py:286: for cycle, data in phase.groupby("cycle_number", sort=True):
+    PRE: def plot_normalized_phase(phase: pd.DataFrame, output: Path) -> None:
+    PRE: fig, ax = plt.subplots(figsize=(12, 6))
+    POST: ax.plot(data["normalized_phase"], data["interpolated_monthly_ssn"],
+    POST: color="#567c8d", alpha=0.24, linewidth=0.8)
+    POST: avg = phase.groupby("normalized_phase")["interpolated_monthly_ssn"].mean()
+
+R:\SolarShield AI\scripts\run_eda.py:287: ax.plot(data["normalized_phase"], data["interpolated_monthly_ssn"],
+    PRE: fig, ax = plt.subplots(figsize=(12, 6))
+    PRE: for cycle, data in phase.groupby("cycle_number", sort=True):
+    POST: color="#567c8d", alpha=0.24, linewidth=0.8)
+    POST: avg = phase.groupby("normalized_phase")["interpolated_monthly_ssn"].mean()
+    POST: ax.plot(avg.index, avg.values, color="#bd3b30", linewidth=2.2, label="Mean across Cycles 1-24")
+
+R:\SolarShield AI\scripts\run_eda.py:289: avg = phase.groupby("normalized_phase")["interpolated_monthly_ssn"].mean()
+    PRE: ax.plot(data["normalized_phase"], data["interpolated_monthly_ssn"],
+    PRE: color="#567c8d", alpha=0.24, linewidth=0.8)
+    POST: ax.plot(avg.index, avg.values, color="#bd3b30", linewidth=2.2, label="Mean across Cycles 1-24")
+    POST: ax.set(title="Completed-cycle comparison on normalized phase",
+    POST: xlabel="Normalized phase (0 = first observed month; 1 = last observed month)",
+
+R:\SolarShield AI\scripts\run_eda.py:291: ax.set(title="Completed-cycle comparison on normalized phase",
+    PRE: avg = phase.groupby("normalized_phase")["interpolated_monthly_ssn"].mean()
+    PRE: ax.plot(avg.index, avg.values, color="#bd3b30", linewidth=2.2, label="Mean across Cycles 1-24")
+    POST: xlabel="Normalized phase (0 = first observed month; 1 = last observed month)",
+    POST: ylabel="Linearly interpolated monthly sunspot number")
+    POST: ax.text(0.01, 0.02, "Phase is relative position within a cycle, not calendar time.",
+
+R:\SolarShield AI\scripts\run_eda.py:292: xlabel="Normalized phase (0 = first observed month; 1 = last observed month)",
+    PRE: ax.plot(avg.index, avg.values, color="#bd3b30", linewidth=2.2, label="Mean across Cycles 1-24")
+    PRE: ax.set(title="Completed-cycle comparison on normalized phase",
+    POST: ylabel="Linearly interpolated monthly sunspot number")
+    POST: ax.text(0.01, 0.02, "Phase is relative position within a cycle, not calendar time.",
+    POST: transform=ax.transAxes, fontsize=8, color="#555555")
+
+R:\SolarShield AI\scripts\run_eda.py:293: ylabel="Linearly interpolated monthly sunspot number")
+    PRE: ax.set(title="Completed-cycle comparison on normalized phase",
+    PRE: xlabel="Normalized phase (0 = first observed month; 1 = last observed month)",
+    POST: ax.text(0.01, 0.02, "Phase is relative position within a cycle, not calendar time.",
+    POST: transform=ax.transAxes, fontsize=8, color="#555555")
+    POST: ax.grid(alpha=0.2)
+
+R:\SolarShield AI\scripts\run_eda.py:294: ax.text(0.01, 0.02, "Phase is relative position within a cycle, not calendar time.",
+    PRE: xlabel="Normalized phase (0 = first observed month; 1 = last observed month)",
+    PRE: ylabel="Linearly interpolated monthly sunspot number")
+    POST: transform=ax.transAxes, fontsize=8, color="#555555")
+    POST: ax.grid(alpha=0.2)
+    POST: ax.legend()
+
+R:\SolarShield AI\scripts\run_eda.py:351: ("duration_months_minimum_to_minimum", "official_smoothed_max_sn_published",
+    PRE: data = metrics[metrics["status"] == "completed"]
+    PRE: panels = [
+    POST: "Duration vs official smoothed maximum"),
+    POST: ("duration_months_minimum_to_minimum", "months_from_cycle_start_to_raw_peak",
+    POST: "Duration vs months to raw monthly peak"),
+
+R:\SolarShield AI\scripts\run_eda.py:355: ("official_smoothed_max_sn_published", "months_from_cycle_start_to_raw_peak",
+    PRE: ("duration_months_minimum_to_minimum", "months_from_cycle_start_to_raw_peak",
+    PRE: "Duration vs months to raw monthly peak"),
+    POST: "Official smoothed maximum vs rise time"),
+    POST: ("raw_monthly_peak_ssn", "months_from_cycle_start_to_raw_peak",
+    POST: "Raw monthly peak vs rise time"),
+
+R:\SolarShield AI\scripts\run_eda.py:379: official = completed["official_smoothed_max_sn_published"]
+    PRE: completed = metrics[metrics["status"] == "completed"]
+    PRE: duration = completed["duration_months_minimum_to_minimum"]
+    POST: raw = completed["raw_monthly_peak_ssn"]
+    POST: rise_time = completed["months_from_cycle_start_to_raw_peak"]
+    POST: rise_rate = completed["net_rise_ssn_per_month_start_to_raw_peak"].dropna()
+
+R:\SolarShield AI\scripts\run_eda.py:404: "normalized_cycle_phase.png", "monthly_distributions.png",
+    PRE: output_files = [
+    PRE: "historical_monthly_sunspots.png", "completed_cycle_metrics.png",
+    POST: "completed_cycle_autocorrelation.png", "cycle_relationships.png",
+    POST: "cycle_metrics.csv", "normalized_cycle_phase.csv", "monthly_distribution_stats.csv",
+    POST: "cycle_autocorrelation.csv", "cycle_relationships.csv", "eda_checks.csv",
+
+R:\SolarShield AI\scripts\run_eda.py:406: "cycle_metrics.csv", "normalized_cycle_phase.csv", "monthly_distribution_stats.csv",
+    PRE: "normalized_cycle_phase.png", "monthly_distributions.png",
+    PRE: "completed_cycle_autocorrelation.png", "cycle_relationships.png",
+    POST: "cycle_autocorrelation.csv", "cycle_relationships.csv", "eda_checks.csv",
+    POST: "EDA_REPORT.md",
+    POST: ] + [f"cycle_{i:02d}_monthly.png" for i in range(1, 26)]
+
+R:\SolarShield AI\scripts\run_eda.py:425: - Rise and decay descriptors are endpoint net changes per month: from the first monthly value to the raw monthly peak, and from that peak to the last observed month. These do not fit a smooth physical curve and should be interpreted cautiously because monthly values are noisy. Cycle 25 has no completed duration or decay-to-cycle-end measure.
+    PRE: - The full historical plot shows raw monthly SILSO values and published minimum-month markers. The individual plots cover each cycle, including ongoing Cycle 25. A triangle denotes a computed raw monthly peak; an open diamond denotes a **published 13-month-smoothed maximum**, not a raw monthly observation.
+    PRE: - Completed-cycle duration is the prepared published minimum-to-next-minimum interval in months. Raw peak and peak month are recomputed from monthly `ssn`. Months to peak count elapsed calendar months from the published minimum month (start is month 0). The published smoothed maximum and its month are kept in separate fields.
+    POST: - Normalized-phase CSV and plot include completed cycles only. For each cycle, the first observed month maps to phase 0 and the final observed month (the month before the next minimum) maps to phase 1; the monthly values are linearly interpolated to {PHASE_POINTS} equally spaced phase points. This removes calendar duration from the horizontal axis; phase is not calendar time.
+    POST: - Distribution summaries report mean, median, sample standard deviation, coefficient of variation, quartiles, and observed range. Autocorrelation is calculated separately within each completed cycle for lags 1-{ACF_MAX_LAG} months, so no pairs cross cycle boundaries. Correlations are descriptive Pearson and Spearman coefficients across completed cycles.
+    POST: - Centered 13-month smoothing is not calculated or used. In particular, no centered smoother is used as a real-time or predictive feature.
+
+R:\SolarShield AI\scripts\run_eda.py:426: - Normalized-phase CSV and plot include completed cycles only. For each cycle, the first observed month maps to phase 0 and the final observed month (the month before the next minimum) maps to phase 1; the monthly values are linearly interpolated to {PHASE_POINTS} equally spaced phase points. This removes calendar duration from the horizontal axis; phase is not calendar time.
+    PRE: - Completed-cycle duration is the prepared published minimum-to-next-minimum interval in months. Raw peak and peak month are recomputed from monthly `ssn`. Months to peak count elapsed calendar months from the published minimum month (start is month 0). The published smoothed maximum and its month are kept in separate fields.
+    PRE: - Rise and decay descriptors are endpoint net changes per month: from the first monthly value to the raw monthly peak, and from that peak to the last observed month. These do not fit a smooth physical curve and should be interpreted cautiously because monthly values are noisy. Cycle 25 has no completed duration or decay-to-cycle-end measure.
+    POST: - Distribution summaries report mean, median, sample standard deviation, coefficient of variation, quartiles, and observed range. Autocorrelation is calculated separately within each completed cycle for lags 1-{ACF_MAX_LAG} months, so no pairs cross cycle boundaries. Correlations are descriptive Pearson and Spearman coefficients across completed cycles.
+    POST: - Centered 13-month smoothing is not calculated or used. In particular, no centered smoother is used as a real-time or predictive feature.
+    POST: 
+
+R:\SolarShield AI\scripts\run_eda.py:427: - Distribution summaries report mean, median, sample standard deviation, coefficient of variation, quartiles, and observed range. Autocorrelation is calculated separately within each completed cycle for lags 1-{ACF_MAX_LAG} months, so no pairs cross cycle boundaries. Correlations are descriptive Pearson and Spearman coefficients across completed cycles.
+    PRE: - Rise and decay descriptors are endpoint net changes per month: from the first monthly value to the raw monthly peak, and from that peak to the last observed month. These do not fit a smooth physical curve and should be interpreted cautiously because monthly values are noisy. Cycle 25 has no completed duration or decay-to-cycle-end measure.
+    PRE: - Normalized-phase CSV and plot include completed cycles only. For each cycle, the first observed month maps to phase 0 and the final observed month (the month before the next minimum) maps to phase 1; the monthly values are linearly interpolated to {PHASE_POINTS} equally spaced phase points. This removes calendar duration from the horizontal axis; phase is not calendar time.
+    POST: - Centered 13-month smoothing is not calculated or used. In particular, no centered smoother is used as a real-time or predictive feature.
+    POST: 
+    POST: ## Findings
+
+R:\SolarShield AI\scripts\run_eda.py:432: - The {len(completed)} completed cycles have durations from **{duration.min():.0f} to {duration.max():.0f} months** (median {duration.median():.1f}); official published smoothed maxima range from **{official.min():.1f} to {official.max():.1f}**. Computed raw monthly peaks range from **{raw.min():.1f} to {raw.max():.1f}**. These ranges describe different quantities and must not be conflated.
+    PRE: ## Findings
+    PRE: 
+    POST: - Time from cycle start to the raw monthly peak ranges from **{rise_time.min():.0f} to {rise_time.max():.0f} months** (median {rise_time.median():.1f}). Endpoint net rise rates range from **{rise_rate.min():.2f} to {rise_rate.max():.2f} SSN/month**; raw-peak-to-final-month net changes range from **{decay_rate.min():.2f} to {decay_rate.max():.2f} SSN/month**. These endpoint measures describe overall change, not fitted smooth rise/decay curves.
+    POST: - The {len(completed_monthly):,} monthly values assigned to completed cycles have mean **{completed_monthly.mean():.1f}**, median **{completed_monthly.median():.1f}**, and sample standard deviation **{completed_monthly.std(ddof=1):.1f}**. Per-cycle monthly sample standard deviations span **{completed_cycle_stats['std_ssn_sample'].min():.1f} to {completed_cycle_stats['std_ssn_sample'].max():.1f}**; month-level serial dependence means these are descriptive variability measures, not independent-sample uncertainty estimates.
+    POST: - Across Cycle 1-24, the mean within-cycle lag-1 autocorrelation is **{acf1.mean():.3f}** (cycle-level range {acf1.min():.3f} to {acf1.max():.3f}). Autocorrelation indicates temporal dependence and is not evidence of predictive performance.
+
+R:\SolarShield AI\scripts\run_eda.py:433: - Time from cycle start to the raw monthly peak ranges from **{rise_time.min():.0f} to {rise_time.max():.0f} months** (median {rise_time.median():.1f}). Endpoint net rise rates range from **{rise_rate.min():.2f} to {rise_rate.max():.2f} SSN/month**; raw-peak-to-final-month net changes range from **{decay_rate.min():.2f} to {decay_rate.max():.2f} SSN/month**. These endpoint measures describe overall change, not fitted smooth rise/decay curves.
+    PRE: 
+    PRE: - The {len(completed)} completed cycles have durations from **{duration.min():.0f} to {duration.max():.0f} months** (median {duration.median():.1f}); official published smoothed maxima range from **{official.min():.1f} to {official.max():.1f}**. Computed raw monthly peaks range from **{raw.min():.1f} to {raw.max():.1f}**. These ranges describe different quantities and must not be conflated.
+    POST: - The {len(completed_monthly):,} monthly values assigned to completed cycles have mean **{completed_monthly.mean():.1f}**, median **{completed_monthly.median():.1f}**, and sample standard deviation **{completed_monthly.std(ddof=1):.1f}**. Per-cycle monthly sample standard deviations span **{completed_cycle_stats['std_ssn_sample'].min():.1f} to {completed_cycle_stats['std_ssn_sample'].max():.1f}**; month-level serial dependence means these are descriptive variability measures, not independent-sample uncertainty estimates.
+    POST: - Across Cycle 1-24, the mean within-cycle lag-1 autocorrelation is **{acf1.mean():.3f}** (cycle-level range {acf1.min():.3f} to {acf1.max():.3f}). Autocorrelation indicates temporal dependence and is not evidence of predictive performance.
+    POST: - Relationship coefficients are based on only 24 completed cycles:
+
+R:\SolarShield AI\scripts\run_eda.py:434: - The {len(completed_monthly):,} monthly values assigned to completed cycles have mean **{completed_monthly.mean():.1f}**, median **{completed_monthly.median():.1f}**, and sample standard deviation **{completed_monthly.std(ddof=1):.1f}**. Per-cycle monthly sample standard deviations span **{completed_cycle_stats['std_ssn_sample'].min():.1f} to {completed_cycle_stats['std_ssn_sample'].max():.1f}**; month-level serial dependence means these are descriptive variability measures, not independent-sample uncertainty estimates.
+    PRE: - The {len(completed)} completed cycles have durations from **{duration.min():.0f} to {duration.max():.0f} months** (median {duration.median():.1f}); official published smoothed maxima range from **{official.min():.1f} to {official.max():.1f}**. Computed raw monthly peaks range from **{raw.min():.1f} to {raw.max():.1f}**. These ranges describe different quantities and must not be conflated.
+    PRE: - Time from cycle start to the raw monthly peak ranges from **{rise_time.min():.0f} to {rise_time.max():.0f} months** (median {rise_time.median():.1f}). Endpoint net rise rates range from **{rise_rate.min():.2f} to {rise_rate.max():.2f} SSN/month**; raw-peak-to-final-month net changes range from **{decay_rate.min():.2f} to {decay_rate.max():.2f} SSN/month**. These endpoint measures describe overall change, not fitted smooth rise/decay curves.
+    POST: - Across Cycle 1-24, the mean within-cycle lag-1 autocorrelation is **{acf1.mean():.3f}** (cycle-level range {acf1.min():.3f} to {acf1.max():.3f}). Autocorrelation indicates temporal dependence and is not evidence of predictive performance.
+    POST: - Relationship coefficients are based on only 24 completed cycles:
+    POST: 
+
+R:\SolarShield AI\scripts\run_eda.py:445: - Monthly observations are serially dependent; monthly distributions and autocorrelation summaries should not be interpreted as independent samples. Cycle 25 is a partial cycle, so its distribution and raw peak are to-date statistics and are not comparable to completed-cycle durations or completed-cycle maxima.
+    PRE: 
+    PRE: - The effective sample size for cycle-level relationships is at most **24 cycles**; cycle duration, peak strength, and peak timing are not independent across long historical records. Correlations are descriptive, sensitive to individual cycles, and do not establish causation.
+    POST: - Provisional months ({', '.join(prov['month_start'].dt.strftime('%Y-%m')) if len(prov) else 'none'}) are explicitly marked and counted. Any value revised later can affect endpoints, current-cycle descriptive statistics, and plots. The current Cycle 25 raw monthly peak {ongoing_peak_status}; that does not make the incomplete cycle final.
+    POST: - The prepared cycle summary contains no official smoothed maximum for Cycle 25. This report does not substitute a computed or NOAA-derived value for a published maximum. See the preparation report for the unresolved source discrepancy concerning Cycle 25.
+    POST: - Early-history `ssn_std` and `n_obs` availability does not affect this EDA because these fields are not used. The analysis is limited to the prepared inputs and does not independently validate their source lineage.
+
+R:\SolarShield AI\scripts\run_eda.py:473: phase = build_normalized_phase(monthly, summary)
+    PRE: 
+    PRE: metrics = build_cycle_metrics(monthly, summary)
+    POST: distributions = build_distribution_stats(monthly)
+    POST: acf = build_autocorrelation(monthly)
+    POST: relationships = build_relationships(metrics)
+
+R:\SolarShield AI\scripts\run_eda.py:481: plot_normalized_phase(phase, output_dir / "normalized_cycle_phase.png")
+    PRE: plot_individual_cycles(monthly, summary, output_dir)
+    PRE: plot_cycle_metrics(metrics, output_dir / "completed_cycle_metrics.png")
+    POST: plot_distributions(monthly, output_dir / "monthly_distributions.png")
+    POST: plot_autocorrelation(acf, output_dir / "completed_cycle_autocorrelation.png")
+    POST: plot_relationships(metrics, output_dir / "cycle_relationships.png")
+
+R:\SolarShield AI\scripts\run_eda.py:486: phase.to_csv(output_dir / "normalized_cycle_phase.csv", index=False, float_format="%.6f")
+    PRE: plot_relationships(metrics, output_dir / "cycle_relationships.png")
+    PRE: metrics.to_csv(output_dir / "cycle_metrics.csv", index=False, float_format="%.6f")
+    POST: distributions.to_csv(output_dir / "monthly_distribution_stats.csv", index=False, float_format="%.6f")
+    POST: acf.to_csv(output_dir / "cycle_autocorrelation.csv", index=False, float_format="%.6f")
+    POST: relationships.to_csv(output_dir / "cycle_relationships.csv", index=False, float_format="%.6f")
+
+R:\SolarShield AI\scripts\run_eda.py:543: pd.notna(row.official_smoothed_max_sn) or pd.notna(row.official_smoothed_max_month)
+    PRE: consistency_errors.append(f"cycle {int(row.cycle_number)} provisional peak flag differs from summary")
+    PRE: if row.status == "ongoing" and (
+    POST: ):
+    POST: consistency_errors.append("ongoing cycle has an official maximum in the prepared summary")
+    POST: checks.append(("PASS" if not consistency_errors else "FAIL", "Consistency with prepared summary",
+
+R:\SolarShield AI\scripts\run_eda.py:553: output_dir / "normalized_cycle_phase.png",
+    PRE: output_dir / "historical_monthly_sunspots.png",
+    PRE: output_dir / "completed_cycle_metrics.png",
+    POST: output_dir / "monthly_distributions.png",
+    POST: output_dir / "completed_cycle_autocorrelation.png",
+    POST: output_dir / "cycle_relationships.png",
+
+R:\SolarShield AI\scripts\run_eda.py:558: output_dir / "normalized_cycle_phase.csv",
+    PRE: output_dir / "cycle_relationships.png",
+    PRE: output_dir / "cycle_metrics.csv",
+    POST: output_dir / "monthly_distribution_stats.csv",
+    POST: output_dir / "cycle_autocorrelation.csv",
+    POST: output_dir / "cycle_relationships.csv",
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:96: normalized_flag = flag.strip().lower() if flag is not None else ""
+    PRE: continue
+    PRE: flag = row.get("is_provisional")
+    POST: if normalized_flag in TRUE_PROVISIONAL_VALUES:
+    POST: is_provisional = True
+    POST: elif normalized_flag in FALSE_PROVISIONAL_VALUES:
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:97: if normalized_flag in TRUE_PROVISIONAL_VALUES:
+    PRE: flag = row.get("is_provisional")
+    PRE: normalized_flag = flag.strip().lower() if flag is not None else ""
+    POST: is_provisional = True
+    POST: elif normalized_flag in FALSE_PROVISIONAL_VALUES:
+    POST: is_provisional = False
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:99: elif normalized_flag in FALSE_PROVISIONAL_VALUES:
+    PRE: if normalized_flag in TRUE_PROVISIONAL_VALUES:
+    PRE: is_provisional = True
+    POST: is_provisional = False
+    POST: else:
+    POST: raise ValueError(
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:259: phase: str,
+    PRE: def classify_warnings(
+    PRE: captured: list[warnings.WarningMessage],
+    POST: ) -> tuple[str, str]:
+    POST: """Classify warnings by operation; interval warnings never invalidate points."""
+    POST: details = []
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:269: "fatal_optimizer_warning" if phase in {"fit", "point_forecast"}
+    PRE: if category == "ConvergenceWarning":
+    PRE: classification = (
+    POST: else "interval_warning_not_point_fatal"
+    POST: )
+    POST: details.append({
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:273: "phase": phase,
+    PRE: )
+    PRE: details.append({
+    POST: "category": category,
+    POST: "classification": classification,
+    POST: "message": str(item.message),
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:438: [item for item in warning_details if item["phase"] == "fit"], sort_keys=True
+    PRE: "warning_classification": json.dumps(warning_details, sort_keys=True),
+    PRE: "fit_warnings": json.dumps(
+    POST: ),
+    POST: "point_forecast_warnings": json.dumps(
+    POST: [item for item in warning_details if item["phase"] == "point_forecast"],
+
+R:\SolarShield AI\scripts\run_statistical_backtesting.py:441: [item for item in warning_details if item["phase"] == "point_forecast"],
+    PRE: ),
+    PRE: "point_forecast_warnings": json.dumps(
+    POST: sort_keys=True,
+    POST: ),
+    POST: "interval_warnings": json.dumps(interval_warning_details, sort_keys=True),
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:29: "Task 3 - curve analogs": (
+    PRE: ["cycle_hindcast_records.csv", "cycle_hindcast_metrics.csv", "run_metadata.json"],
+    PRE: ),
+    POST: V1 / "task3_curve_analogs_20261025_021825",
+    POST: ["curve_hindcast_metrics.csv", "curve_hindcast_records.csv",
+    POST: "exploratory_cycle26_27_curves.csv", "run_metadata.json"],
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:30: V1 / "task3_curve_analogs_20261025_021825",
+    PRE: ),
+    PRE: "Task 3 - curve analogs": (
+    POST: ["curve_hindcast_metrics.csv", "curve_hindcast_records.csv",
+    POST: "exploratory_cycle26_27_curves.csv", "run_metadata.json"],
+    POST: ),
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:31: ["curve_hindcast_metrics.csv", "curve_hindcast_records.csv",
+    PRE: "Task 3 - curve analogs": (
+    PRE: V1 / "task3_curve_analogs_20261025_021825",
+    POST: "exploratory_cycle26_27_curves.csv", "run_metadata.json"],
+    POST: ),
+    POST: }
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:32: "exploratory_cycle26_27_curves.csv", "run_metadata.json"],
+    PRE: V1 / "task3_curve_analogs_20261025_021825",
+    PRE: ["curve_hindcast_metrics.csv", "curve_hindcast_records.csv",
+    POST: ),
+    POST: }
+    POST: 
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:44: "Task 3 - curve analogs/curve_hindcast_records.csv": 1452,
+    PRE: "Task 2 - cycle analogs/cycle_hindcast_records.csv": 36,
+    PRE: "Task 2 - cycle analogs/cycle_hindcast_metrics.csv": 3,
+    POST: "Task 3 - curve analogs/curve_hindcast_metrics.csv": 12,
+    POST: "Task 3 - curve analogs/exploratory_cycle26_27_curves.csv": 242,
+    POST: }
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:45: "Task 3 - curve analogs/curve_hindcast_metrics.csv": 12,
+    PRE: "Task 2 - cycle analogs/cycle_hindcast_metrics.csv": 3,
+    PRE: "Task 3 - curve analogs/curve_hindcast_records.csv": 1452,
+    POST: "Task 3 - curve analogs/exploratory_cycle26_27_curves.csv": 242,
+    POST: }
+    POST: 
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:46: "Task 3 - curve analogs/exploratory_cycle26_27_curves.csv": 242,
+    PRE: "Task 3 - curve analogs/curve_hindcast_records.csv": 1452,
+    PRE: "Task 3 - curve analogs/curve_hindcast_metrics.csv": 12,
+    POST: }
+    POST: 
+    POST: 
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:150: task3 = frames["Task 3 - curve analogs/curve_hindcast_records.csv"]
+    PRE: ets = frames["Task 1 - ETS candidate/ets_forecast_records.csv"]
+    PRE: task2 = frames["Task 2 - cycle analogs/cycle_hindcast_records.csv"]
+    POST: future = frames["Task 3 - curve analogs/exploratory_cycle26_27_curves.csv"]
+    POST: 
+    POST: # Check unique keys only where the expected key schema is present.
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:151: future = frames["Task 3 - curve analogs/exploratory_cycle26_27_curves.csv"]
+    PRE: task2 = frames["Task 2 - cycle analogs/cycle_hindcast_records.csv"]
+    PRE: task3 = frames["Task 3 - curve analogs/curve_hindcast_records.csv"]
+    POST: 
+    POST: # Check unique keys only where the expected key schema is present.
+    POST: if {"origin_month", "horizon", "model"}.issubset(baseline.columns):
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:171: if {"heldout_cycle", "phase_index"}.issubset(task3.columns):
+    PRE: })
+    PRE: 
+    POST: dup = task3.duplicated(["heldout_cycle", "phase_index"]).sum()
+    POST: validations.append({
+    POST: "check": "Task 3 unique held-out-cycle/phase keys",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:172: dup = task3.duplicated(["heldout_cycle", "phase_index"]).sum()
+    PRE: 
+    PRE: if {"heldout_cycle", "phase_index"}.issubset(task3.columns):
+    POST: validations.append({
+    POST: "check": "Task 3 unique held-out-cycle/phase keys",
+    POST: "expected": 0, "actual": int(dup),
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:174: "check": "Task 3 unique held-out-cycle/phase keys",
+    PRE: dup = task3.duplicated(["heldout_cycle", "phase_index"]).sum()
+    PRE: validations.append({
+    POST: "expected": 0, "actual": int(dup),
+    POST: "status": "PASS" if dup == 0 else "FAIL",
+    POST: })
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:207: ("Task 3 - curve analogs", "curve_hindcast_metrics.csv"),
+    PRE: ("Task 1 - ETS candidate", "paired_metrics_and_skill.csv"),
+    PRE: ("Task 2 - cycle analogs", "cycle_hindcast_metrics.csv"),
+    POST: ]
+    POST: combined = []
+    POST: for label, filename in metric_keys:
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:244: "- Scope: Task 1 monthly baselines and ETS; Task 2 cycle analogs; Task 3 curve analogs.",
+    PRE: "- Audit mode: existing-output inspection; no forecasting stage invoked.",
+    PRE: "- No model fitting or forecast regeneration performed by this audit.",
+    POST: "",
+    POST: "## 1. Artifact inventory",
+    POST: "",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:280: "Interpretation: only 12 held-out cycles are available. Empirical q10-q90 "
+    PRE: md_table(frames["Task 2 - cycle analogs/cycle_hindcast_metrics.csv"]),
+    PRE: "",
+    POST: "coverage is descriptive and does not prove interval calibration.",
+    POST: "",
+    POST: "## 6. Task 3 — curve analogs",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:283: "## 6. Task 3 — curve analogs",
+    PRE: "coverage is descriptive and does not prove interval calibration.",
+    PRE: "",
+    POST: "",
+    POST: md_table(frames["Task 3 - curve analogs/curve_hindcast_metrics.csv"]),
+    POST: "",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:285: md_table(frames["Task 3 - curve analogs/curve_hindcast_metrics.csv"]),
+    PRE: "## 6. Task 3 — curve analogs",
+    PRE: "",
+    POST: "",
+    POST: "The curve metrics compare normalized phase-aligned curves. They do not by "
+    POST: "themselves validate calendar-time forecasting. Pointwise interval coverage "
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:287: "The curve metrics compare normalized phase-aligned curves. They do not by "
+    PRE: md_table(frames["Task 3 - curve analogs/curve_hindcast_metrics.csv"]),
+    PRE: "",
+    POST: "themselves validate calendar-time forecasting. Pointwise interval coverage "
+    POST: "is not simultaneous whole-cycle coverage.",
+    POST: "",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:291: "Cycle 26/27 files are exploratory analog curves and must not be described as "
+    PRE: "is not simultaneous whole-cycle coverage.",
+    PRE: "",
+    POST: "validated forecasts. The current future-curve export uses the same training "
+    POST: "median template for both cycles.",
+    POST: "",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:292: "validated forecasts. The current future-curve export uses the same training "
+    PRE: "",
+    PRE: "Cycle 26/27 files are exploratory analog curves and must not be described as "
+    POST: "median template for both cycles.",
+    POST: "",
+    POST: "Peak definitions require care: Task 3's peak values/timings are derived from "
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:293: "median template for both cycles.",
+    PRE: "Cycle 26/27 files are exploratory analog curves and must not be described as "
+    PRE: "validated forecasts. The current future-curve export uses the same training "
+    POST: "",
+    POST: "Peak definitions require care: Task 3's peak values/timings are derived from "
+    POST: "the interpolated phase-grid curve, unlike Task 2's official smoothed peak labels.",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:296: "the interpolated phase-grid curve, unlike Task 2's official smoothed peak labels.",
+    PRE: "",
+    PRE: "Peak definitions require care: Task 3's peak values/timings are derived from "
+    POST: "",
+    POST: "## 7. Dataset fingerprints",
+    POST: "",
+
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py:317: "5. Task 3 curve MAE/RMSE condition on observed cycle durations through phase alignment.",
+    PRE: "3. Cycle tasks have only 12 held-out cycles; uncertainty is substantial.",
+    PRE: "4. Pointwise empirical intervals are not guaranteed to be calibrated.",
+    POST: "6. Cycle 26/27 outputs are exploratory, not validated predictions.",
+    POST: "",
+    POST: "## 10. Output files",
+
+R:\SolarShield AI\scripts\development\run_task1_ets_candidate.py:257: print("\nInspect fit_failures.csv and fit_warnings.csv before interpreting results.")
+    PRE: print("\nPaired metrics and skill:")
+    PRE: print(summary.to_string(index=False))
+    POST: 
+    POST: 
+    POST: if __name__ == "__main__":
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:33: "official_smoothed_max_month", "official_smoothed_max_sn",
+    PRE: required = {
+    PRE: "cycle_number", "status", "published_minimum_month",
+    POST: "months_expected_min_to_min",
+    POST: }
+    POST: if not required.issubset(df.columns):
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:43: df["official_smoothed_max_month"] = pd.to_datetime(
+    PRE: df["published_minimum_month"], errors="coerce"
+    PRE: )
+    POST: df["official_smoothed_max_month"], errors="coerce"
+    POST: )
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:44: df["official_smoothed_max_month"], errors="coerce"
+    PRE: )
+    PRE: df["official_smoothed_max_month"] = pd.to_datetime(
+    POST: )
+    POST: 
+    POST: complete = df.loc[
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:57: "published_minimum_month", "official_smoothed_max_month",
+    PRE: if complete[
+    PRE: [
+    POST: "official_smoothed_max_sn", "months_expected_min_to_min"
+    POST: ]
+    POST: ].isna().any().any():
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:58: "official_smoothed_max_sn", "months_expected_min_to_min"
+    PRE: [
+    PRE: "published_minimum_month", "official_smoothed_max_month",
+    POST: ]
+    POST: ].isna().any().any():
+    POST: raise ValueError("Missing published labels in completed cycles.")
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:63: complete["peak_strength"] = complete["official_smoothed_max_sn"].astype(float)
+    PRE: raise ValueError("Missing published labels in completed cycles.")
+    PRE: 
+    POST: complete["peak_timing_months"] = (
+    POST: (complete["official_smoothed_max_month"].dt.year
+    POST: - complete["published_minimum_month"].dt.year) * 12
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:65: (complete["official_smoothed_max_month"].dt.year
+    PRE: complete["peak_strength"] = complete["official_smoothed_max_sn"].astype(float)
+    PRE: complete["peak_timing_months"] = (
+    POST: - complete["published_minimum_month"].dt.year) * 12
+    POST: + complete["official_smoothed_max_month"].dt.month
+    POST: - complete["published_minimum_month"].dt.month
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:67: + complete["official_smoothed_max_month"].dt.month
+    PRE: (complete["official_smoothed_max_month"].dt.year
+    PRE: - complete["published_minimum_month"].dt.year) * 12
+    POST: - complete["published_minimum_month"].dt.month
+    POST: ).astype(float)
+    POST: complete["duration_months"] = complete["months_expected_min_to_min"].astype(float)
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:88: prediction = float(np.median(values))
+    PRE: values = train[target].astype(float).to_numpy()
+    PRE: actual = float(actual_row[target])
+    POST: lower = float(np.quantile(values, 0.10))
+    POST: upper = float(np.quantile(values, 0.90))
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:99: "prediction_median": prediction,
+    PRE: "target": target,
+    PRE: "actual": actual,
+    POST: "absolute_error": abs(actual - prediction),
+    POST: "squared_error": (actual - prediction) ** 2,
+    POST: "interval_lower_q10": lower,
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:134: "method": "Expanding-cycle median analog baseline",
+    PRE: metadata = {
+    PRE: "task": "Task 2 solar-cycle characteristic hindcasts",
+    POST: "training_rule": "For held-out cycle c, train only on completed cycles 1..c-1",
+    POST: "heldout_cycles": list(range(13, 25)),
+    POST: "targets": list(TARGETS),
+
+R:\SolarShield AI\scripts\development\run_task2_cycle_analogs.py:138: "peak_reference": "Published official_smoothed_max_sn and official_smoothed_max_month",
+    PRE: "heldout_cycles": list(range(13, 25)),
+    PRE: "targets": list(TARGETS),
+    POST: "timing_definition": "Elapsed calendar months from published minimum to published smoothed maximum",
+    POST: "duration_definition": "Published months_expected_min_to_min",
+    POST: "interval_definition": "Training-only empirical 10th and 90th percentiles; descriptive, not assumed calibrated",
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:14: PHASE_POINTS = 121
+    PRE: MONTHLY_PATH = ROOT / "data" / "processed" / "sunspot_monthly_clean.csv"
+    PRE: CYCLE_PATH = ROOT / "data" / "processed" / "solar_cycle_summary.csv"
+    POST: HELDOUT_CYCLES = range(13, 25)
+    POST: FUTURE_CYCLES = (26, 27)
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:86: # No Cycle 25 SSN values are used as a completed training curve.
+    PRE: 
+    PRE: # Cycle 25 is used only to mark Cycle 24's exclusive end boundary.
+    POST: starts = {
+    POST: int(row["cycle_number"]): row["published_minimum_month"]
+    POST: for _, row in complete.iterrows()
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:94: phase_grid = np.linspace(0.0, 1.0, PHASE_POINTS)
+    PRE: 
+    PRE: date_index = monthly.set_index("month_start")
+    POST: curves = {}
+    POST: durations = {}
+    POST: actual_peak_strength = {}
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:95: curves = {}
+    PRE: date_index = monthly.set_index("month_start")
+    PRE: phase_grid = np.linspace(0.0, 1.0, PHASE_POINTS)
+    POST: durations = {}
+    POST: actual_peak_strength = {}
+    POST: actual_peak_timing = {}
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:132: # Documented phase convention: first observed month maps to 0,
+    PRE: require(np.isfinite(values).all(), f"Non-finite SSN in Cycle {cycle}.")
+    PRE: 
+    POST: # last observed month before the next minimum maps to 1.
+    POST: source_phase = np.linspace(0.0, 1.0, len(values))
+    POST: curves[cycle] = np.interp(phase_grid, source_phase, values)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:134: source_phase = np.linspace(0.0, 1.0, len(values))
+    PRE: # Documented phase convention: first observed month maps to 0,
+    PRE: # last observed month before the next minimum maps to 1.
+    POST: curves[cycle] = np.interp(phase_grid, source_phase, values)
+    POST: durations[cycle] = float(expected_duration)
+    POST: peak_idx = int(np.argmax(values))
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:135: curves[cycle] = np.interp(phase_grid, source_phase, values)
+    PRE: # last observed month before the next minimum maps to 1.
+    PRE: source_phase = np.linspace(0.0, 1.0, len(values))
+    POST: durations[cycle] = float(expected_duration)
+    POST: peak_idx = int(np.argmax(values))
+    POST: actual_peak_strength[cycle] = float(values[peak_idx])
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:142: hindcast_curve_rows = []
+    PRE: 
+    PRE: hindcast_rows = []
+    POST: 
+    POST: for heldout in HELDOUT_CYCLES:
+    POST: training_cycles = list(range(1, heldout))
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:146: train_curves = np.vstack([curves[c] for c in training_cycles])
+    PRE: for heldout in HELDOUT_CYCLES:
+    PRE: training_cycles = list(range(1, heldout))
+    POST: 
+    POST: predicted_curve = np.median(train_curves, axis=0)
+    POST: lower_curve = np.quantile(train_curves, 0.10, axis=0)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:148: predicted_curve = np.median(train_curves, axis=0)
+    PRE: train_curves = np.vstack([curves[c] for c in training_cycles])
+    PRE: 
+    POST: lower_curve = np.quantile(train_curves, 0.10, axis=0)
+    POST: upper_curve = np.quantile(train_curves, 0.90, axis=0)
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:149: lower_curve = np.quantile(train_curves, 0.10, axis=0)
+    PRE: 
+    PRE: predicted_curve = np.median(train_curves, axis=0)
+    POST: upper_curve = np.quantile(train_curves, 0.90, axis=0)
+    POST: 
+    POST: actual_curve = curves[heldout]
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:150: upper_curve = np.quantile(train_curves, 0.90, axis=0)
+    PRE: predicted_curve = np.median(train_curves, axis=0)
+    PRE: lower_curve = np.quantile(train_curves, 0.10, axis=0)
+    POST: 
+    POST: actual_curve = curves[heldout]
+    POST: residuals = actual_curve - predicted_curve
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:152: actual_curve = curves[heldout]
+    PRE: upper_curve = np.quantile(train_curves, 0.90, axis=0)
+    PRE: 
+    POST: residuals = actual_curve - predicted_curve
+    POST: predicted_duration = float(np.median([durations[c] for c in training_cycles]))
+    POST: actual_duration = durations[heldout]
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:153: residuals = actual_curve - predicted_curve
+    PRE: 
+    PRE: actual_curve = curves[heldout]
+    POST: predicted_duration = float(np.median([durations[c] for c in training_cycles]))
+    POST: actual_duration = durations[heldout]
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:154: predicted_duration = float(np.median([durations[c] for c in training_cycles]))
+    PRE: actual_curve = curves[heldout]
+    PRE: residuals = actual_curve - predicted_curve
+    POST: actual_duration = durations[heldout]
+    POST: 
+    POST: predicted_peak_idx = int(np.argmax(predicted_curve))
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:157: predicted_peak_idx = int(np.argmax(predicted_curve))
+    PRE: actual_duration = durations[heldout]
+    PRE: 
+    POST: predicted_peak_phase = float(phase_grid[predicted_peak_idx])
+    POST: predicted_peak_strength = float(predicted_curve[predicted_peak_idx])
+    POST: predicted_peak_timing = predicted_peak_phase * (predicted_duration - 1.0)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:158: predicted_peak_phase = float(phase_grid[predicted_peak_idx])
+    PRE: 
+    PRE: predicted_peak_idx = int(np.argmax(predicted_curve))
+    POST: predicted_peak_strength = float(predicted_curve[predicted_peak_idx])
+    POST: predicted_peak_timing = predicted_peak_phase * (predicted_duration - 1.0)
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:159: predicted_peak_strength = float(predicted_curve[predicted_peak_idx])
+    PRE: predicted_peak_idx = int(np.argmax(predicted_curve))
+    PRE: predicted_peak_phase = float(phase_grid[predicted_peak_idx])
+    POST: predicted_peak_timing = predicted_peak_phase * (predicted_duration - 1.0)
+    POST: 
+    POST: actual_peak_idx = int(np.argmax(actual_curve))
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:160: predicted_peak_timing = predicted_peak_phase * (predicted_duration - 1.0)
+    PRE: predicted_peak_phase = float(phase_grid[predicted_peak_idx])
+    PRE: predicted_peak_strength = float(predicted_curve[predicted_peak_idx])
+    POST: 
+    POST: actual_peak_idx = int(np.argmax(actual_curve))
+    POST: actual_peak_strength = float(actual_curve[actual_peak_idx])
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:162: actual_peak_idx = int(np.argmax(actual_curve))
+    PRE: predicted_peak_timing = predicted_peak_phase * (predicted_duration - 1.0)
+    PRE: 
+    POST: actual_peak_strength = float(actual_curve[actual_peak_idx])
+    POST: actual_peak_phase = float(phase_grid[actual_peak_idx])
+    POST: actual_peak_timing_months = actual_peak_phase * (actual_duration - 1.0)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:163: actual_peak_strength = float(actual_curve[actual_peak_idx])
+    PRE: 
+    PRE: actual_peak_idx = int(np.argmax(actual_curve))
+    POST: actual_peak_phase = float(phase_grid[actual_peak_idx])
+    POST: actual_peak_timing_months = actual_peak_phase * (actual_duration - 1.0)
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:164: actual_peak_phase = float(phase_grid[actual_peak_idx])
+    PRE: actual_peak_idx = int(np.argmax(actual_curve))
+    PRE: actual_peak_strength = float(actual_curve[actual_peak_idx])
+    POST: actual_peak_timing_months = actual_peak_phase * (actual_duration - 1.0)
+    POST: 
+    POST: point_covered = (actual_curve >= lower_curve) & (actual_curve <= upper_curve)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:165: actual_peak_timing_months = actual_peak_phase * (actual_duration - 1.0)
+    PRE: actual_peak_strength = float(actual_curve[actual_peak_idx])
+    PRE: actual_peak_phase = float(phase_grid[actual_peak_idx])
+    POST: 
+    POST: point_covered = (actual_curve >= lower_curve) & (actual_curve <= upper_curve)
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:167: point_covered = (actual_curve >= lower_curve) & (actual_curve <= upper_curve)
+    PRE: actual_peak_timing_months = actual_peak_phase * (actual_duration - 1.0)
+    PRE: 
+    POST: 
+    POST: hindcast_rows.append({
+    POST: "heldout_cycle": heldout,
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:174: "curve_MAE": float(np.mean(np.abs(residuals))),
+    PRE: "training_end_cycle": max(training_cycles),
+    PRE: "training_cycle_count": len(training_cycles),
+    POST: "curve_RMSE": float(np.sqrt(np.mean(residuals ** 2))),
+    POST: "pointwise_interval_coverage": float(np.mean(point_covered)),
+    POST: "mean_pointwise_interval_width": float(np.mean(upper_curve - lower_curve)),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:175: "curve_RMSE": float(np.sqrt(np.mean(residuals ** 2))),
+    PRE: "training_cycle_count": len(training_cycles),
+    PRE: "curve_MAE": float(np.mean(np.abs(residuals))),
+    POST: "pointwise_interval_coverage": float(np.mean(point_covered)),
+    POST: "mean_pointwise_interval_width": float(np.mean(upper_curve - lower_curve)),
+    POST: "actual_raw_peak_strength": actual_peak_strength,
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:177: "mean_pointwise_interval_width": float(np.mean(upper_curve - lower_curve)),
+    PRE: "curve_RMSE": float(np.sqrt(np.mean(residuals ** 2))),
+    PRE: "pointwise_interval_coverage": float(np.mean(point_covered)),
+    POST: "actual_raw_peak_strength": actual_peak_strength,
+    POST: "predicted_raw_peak_strength": predicted_peak_strength,
+    POST: "peak_strength_absolute_error": abs(
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:193: for i, phase in enumerate(phase_grid):
+    PRE: })
+    PRE: 
+    POST: hindcast_curve_rows.append({
+    POST: "heldout_cycle": heldout,
+    POST: "phase_index": i,
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:194: hindcast_curve_rows.append({
+    PRE: 
+    PRE: for i, phase in enumerate(phase_grid):
+    POST: "heldout_cycle": heldout,
+    POST: "phase_index": i,
+    POST: "normalized_phase": float(phase),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:196: "phase_index": i,
+    PRE: hindcast_curve_rows.append({
+    PRE: "heldout_cycle": heldout,
+    POST: "normalized_phase": float(phase),
+    POST: "actual_curve_ssn": float(actual_curve[i]),
+    POST: "predicted_curve_ssn": float(predicted_curve[i]),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:197: "normalized_phase": float(phase),
+    PRE: "heldout_cycle": heldout,
+    PRE: "phase_index": i,
+    POST: "actual_curve_ssn": float(actual_curve[i]),
+    POST: "predicted_curve_ssn": float(predicted_curve[i]),
+    POST: "interval_lower_q10": float(lower_curve[i]),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:198: "actual_curve_ssn": float(actual_curve[i]),
+    PRE: "phase_index": i,
+    PRE: "normalized_phase": float(phase),
+    POST: "predicted_curve_ssn": float(predicted_curve[i]),
+    POST: "interval_lower_q10": float(lower_curve[i]),
+    POST: "interval_upper_q90": float(upper_curve[i]),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:199: "predicted_curve_ssn": float(predicted_curve[i]),
+    PRE: "normalized_phase": float(phase),
+    PRE: "actual_curve_ssn": float(actual_curve[i]),
+    POST: "interval_lower_q10": float(lower_curve[i]),
+    POST: "interval_upper_q90": float(upper_curve[i]),
+    POST: "training_cycle_count": len(training_cycles),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:200: "interval_lower_q10": float(lower_curve[i]),
+    PRE: "actual_curve_ssn": float(actual_curve[i]),
+    PRE: "predicted_curve_ssn": float(predicted_curve[i]),
+    POST: "interval_upper_q90": float(upper_curve[i]),
+    POST: "training_cycle_count": len(training_cycles),
+    POST: })
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:201: "interval_upper_q90": float(upper_curve[i]),
+    PRE: "predicted_curve_ssn": float(predicted_curve[i]),
+    PRE: "interval_lower_q10": float(lower_curve[i]),
+    POST: "training_cycle_count": len(training_cycles),
+    POST: })
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:206: hindcast_curves = pd.DataFrame(hindcast_curve_rows)
+    PRE: 
+    PRE: hindcast_metrics = pd.DataFrame(hindcast_rows)
+    POST: 
+    POST: # Exploratory future curves use all 24 completed cycles only.
+    POST: all_training_curves = np.vstack([curves[c] for c in range(1, 25)])
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:208: # Exploratory future curves use all 24 completed cycles only.
+    PRE: hindcast_curves = pd.DataFrame(hindcast_curve_rows)
+    PRE: 
+    POST: all_training_curves = np.vstack([curves[c] for c in range(1, 25)])
+    POST: future_median = np.median(all_training_curves, axis=0)
+    POST: future_lower = np.quantile(all_training_curves, 0.10, axis=0)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:209: all_training_curves = np.vstack([curves[c] for c in range(1, 25)])
+    PRE: 
+    PRE: # Exploratory future curves use all 24 completed cycles only.
+    POST: future_median = np.median(all_training_curves, axis=0)
+    POST: future_lower = np.quantile(all_training_curves, 0.10, axis=0)
+    POST: future_upper = np.quantile(all_training_curves, 0.90, axis=0)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:210: future_median = np.median(all_training_curves, axis=0)
+    PRE: # Exploratory future curves use all 24 completed cycles only.
+    PRE: all_training_curves = np.vstack([curves[c] for c in range(1, 25)])
+    POST: future_lower = np.quantile(all_training_curves, 0.10, axis=0)
+    POST: future_upper = np.quantile(all_training_curves, 0.90, axis=0)
+    POST: future_duration = float(np.median([durations[c] for c in range(1, 25)]))
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:211: future_lower = np.quantile(all_training_curves, 0.10, axis=0)
+    PRE: all_training_curves = np.vstack([curves[c] for c in range(1, 25)])
+    PRE: future_median = np.median(all_training_curves, axis=0)
+    POST: future_upper = np.quantile(all_training_curves, 0.90, axis=0)
+    POST: future_duration = float(np.median([durations[c] for c in range(1, 25)]))
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:212: future_upper = np.quantile(all_training_curves, 0.90, axis=0)
+    PRE: future_median = np.median(all_training_curves, axis=0)
+    PRE: future_lower = np.quantile(all_training_curves, 0.10, axis=0)
+    POST: future_duration = float(np.median([durations[c] for c in range(1, 25)]))
+    POST: 
+    POST: future_rows = []
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:213: future_duration = float(np.median([durations[c] for c in range(1, 25)]))
+    PRE: future_lower = np.quantile(all_training_curves, 0.10, axis=0)
+    PRE: future_upper = np.quantile(all_training_curves, 0.90, axis=0)
+    POST: 
+    POST: future_rows = []
+    POST: for future_cycle in FUTURE_CYCLES:
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:217: for i, phase in enumerate(phase_grid):
+    PRE: future_rows = []
+    PRE: for future_cycle in FUTURE_CYCLES:
+    POST: future_rows.append({
+    POST: "future_cycle": future_cycle,
+    POST: "phase_index": i,
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:220: "phase_index": i,
+    PRE: future_rows.append({
+    PRE: "future_cycle": future_cycle,
+    POST: "normalized_phase": float(phase),
+    POST: "predicted_curve_ssn": float(future_median[i]),
+    POST: "interval_lower_q10": float(future_lower[i]),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:221: "normalized_phase": float(phase),
+    PRE: "future_cycle": future_cycle,
+    PRE: "phase_index": i,
+    POST: "predicted_curve_ssn": float(future_median[i]),
+    POST: "interval_lower_q10": float(future_lower[i]),
+    POST: "interval_upper_q90": float(future_upper[i]),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:222: "predicted_curve_ssn": float(future_median[i]),
+    PRE: "phase_index": i,
+    PRE: "normalized_phase": float(phase),
+    POST: "interval_lower_q10": float(future_lower[i]),
+    POST: "interval_upper_q90": float(future_upper[i]),
+    POST: "predicted_duration_months": future_duration,
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:229: future_curves = pd.DataFrame(future_rows)
+    PRE: "validated_accuracy_claim": False,
+    PRE: })
+    POST: 
+    POST: stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    POST: outdir = ROOT / "reports" / "development" / "v1_1" / f"task3_curve_analogs_{stamp}"
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:232: outdir = ROOT / "reports" / "development" / "v1_1" / f"task3_curve_analogs_{stamp}"
+    PRE: 
+    PRE: stamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    POST: outdir.mkdir(parents=True, exist_ok=False)
+    POST: 
+    POST: hindcast_metrics.to_csv(outdir / "curve_hindcast_metrics.csv", index=False)
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:235: hindcast_metrics.to_csv(outdir / "curve_hindcast_metrics.csv", index=False)
+    PRE: outdir.mkdir(parents=True, exist_ok=False)
+    PRE: 
+    POST: hindcast_curves.to_csv(outdir / "curve_hindcast_records.csv", index=False)
+    POST: future_curves.to_csv(outdir / "exploratory_cycle26_27_curves.csv", index=False)
+    POST: 
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:236: hindcast_curves.to_csv(outdir / "curve_hindcast_records.csv", index=False)
+    PRE: 
+    PRE: hindcast_metrics.to_csv(outdir / "curve_hindcast_metrics.csv", index=False)
+    POST: future_curves.to_csv(outdir / "exploratory_cycle26_27_curves.csv", index=False)
+    POST: 
+    POST: metadata = {
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:237: future_curves.to_csv(outdir / "exploratory_cycle26_27_curves.csv", index=False)
+    PRE: hindcast_metrics.to_csv(outdir / "curve_hindcast_metrics.csv", index=False)
+    PRE: hindcast_curves.to_csv(outdir / "curve_hindcast_records.csv", index=False)
+    POST: 
+    POST: metadata = {
+    POST: "task": "Task 3 long-term activity-curve analog hindcasts",
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:240: "task": "Task 3 long-term activity-curve analog hindcasts",
+    PRE: 
+    PRE: metadata = {
+    POST: "method": "Pointwise median of preceding completed cycle curves",
+    POST: "phase_grid_points": PHASE_POINTS,
+    POST: "phase_convention": (
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:241: "method": "Pointwise median of preceding completed cycle curves",
+    PRE: metadata = {
+    PRE: "task": "Task 3 long-term activity-curve analog hindcasts",
+    POST: "phase_grid_points": PHASE_POINTS,
+    POST: "phase_convention": (
+    POST: "For each complete cycle, first observed month maps to phase 0 and "
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:242: "phase_grid_points": PHASE_POINTS,
+    PRE: "task": "Task 3 long-term activity-curve analog hindcasts",
+    PRE: "method": "Pointwise median of preceding completed cycle curves",
+    POST: "phase_convention": (
+    POST: "For each complete cycle, first observed month maps to phase 0 and "
+    POST: "last month before the next minimum maps to phase 1; linear interpolation "
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:243: "phase_convention": (
+    PRE: "method": "Pointwise median of preceding completed cycle curves",
+    PRE: "phase_grid_points": PHASE_POINTS,
+    POST: "For each complete cycle, first observed month maps to phase 0 and "
+    POST: "last month before the next minimum maps to phase 1; linear interpolation "
+    POST: "to 121 equally spaced phase points."
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:244: "For each complete cycle, first observed month maps to phase 0 and "
+    PRE: "phase_grid_points": PHASE_POINTS,
+    PRE: "phase_convention": (
+    POST: "last month before the next minimum maps to phase 1; linear interpolation "
+    POST: "to 121 equally spaced phase points."
+    POST: ),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:245: "last month before the next minimum maps to phase 1; linear interpolation "
+    PRE: "phase_convention": (
+    PRE: "For each complete cycle, first observed month maps to phase 0 and "
+    POST: "to 121 equally spaced phase points."
+    POST: ),
+    POST: "cycle_boundary_convention": (
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:246: "to 121 equally spaced phase points."
+    PRE: "For each complete cycle, first observed month maps to phase 0 and "
+    PRE: "last month before the next minimum maps to phase 1; linear interpolation "
+    POST: ),
+    POST: "cycle_boundary_convention": (
+    POST: "Published minimum inclusive, next published minimum exclusive. "
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:252: "curve_metric_interpretation": (
+    PRE: "Cycle 25 minimum is used only as Cycle 24's end boundary."
+    PRE: ),
+    POST: "Phase-aligned curve errors condition on each held-out cycle's observed "
+    POST: "duration; duration prediction is evaluated separately."
+    POST: ),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:253: "Phase-aligned curve errors condition on each held-out cycle's observed "
+    PRE: ),
+    PRE: "curve_metric_interpretation": (
+    POST: "duration; duration prediction is evaluated separately."
+    POST: ),
+    POST: "peak_metric_definition": (
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:257: "Raw monthly SSN maximum of the phase-grid curve; timing is normalized "
+    PRE: ),
+    PRE: "peak_metric_definition": (
+    POST: "peak phase multiplied by duration minus one."
+    POST: ),
+    POST: "interval_definition": (
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:258: "peak phase multiplied by duration minus one."
+    PRE: "peak_metric_definition": (
+    PRE: "Raw monthly SSN maximum of the phase-grid curve; timing is normalized "
+    POST: ),
+    POST: "interval_definition": (
+    POST: "Pointwise empirical 10th and 90th percentiles across training curves. "
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:261: "Pointwise empirical 10th and 90th percentiles across training curves. "
+    PRE: ),
+    PRE: "interval_definition": (
+    POST: "Coverage is pointwise across phase grid, not cycle-level simultaneous coverage."
+    POST: ),
+    POST: "training_rule": "Held-out cycle c uses only completed cycles 1..c-1.",
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:262: "Coverage is pointwise across phase grid, not cycle-level simultaneous coverage."
+    PRE: "interval_definition": (
+    PRE: "Pointwise empirical 10th and 90th percentiles across training curves. "
+    POST: ),
+    POST: "training_rule": "Held-out cycle c uses only completed cycles 1..c-1.",
+    POST: "heldout_cycles": list(HELDOUT_CYCLES),
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:278: "Curve metrics use retrospective phase alignment and do not by themselves validate calendar-time forecasting.",
+    PRE: "limitations": [
+    PRE: "Only 12 held-out cycles are available.",
+    POST: "Pointwise intervals are not guaranteed to be calibrated.",
+    POST: "Cycle 26 and 27 curves are exploratory analog forecasts, not validated predictions.",
+    POST: "Raw monthly peaks are not the same as the published smoothed peak labels used in Task 2.",
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:280: "Cycle 26 and 27 curves are exploratory analog forecasts, not validated predictions.",
+    PRE: "Curve metrics use retrospective phase alignment and do not by themselves validate calendar-time forecasting.",
+    PRE: "Pointwise intervals are not guaranteed to be calibrated.",
+    POST: "Raw monthly peaks are not the same as the published smoothed peak labels used in Task 2.",
+    POST: ],
+    POST: }
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:288: print("Task 3 curve analog hindcasts completed.")
+    PRE: )
+    PRE: 
+    POST: print(f"Output directory: {outdir}")
+    POST: print(f"Held-out cycles evaluated: {len(hindcast_metrics)}")
+    POST: print(f"Hindcast curve points: {len(hindcast_curves)}")
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:291: print(f"Hindcast curve points: {len(hindcast_curves)}")
+    PRE: print(f"Output directory: {outdir}")
+    PRE: print(f"Held-out cycles evaluated: {len(hindcast_metrics)}")
+    POST: print(f"Exploratory future curve points: {len(future_curves)}")
+    POST: print("\nHindcast metrics:")
+    POST: print(hindcast_metrics.to_string(index=False))
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:292: print(f"Exploratory future curve points: {len(future_curves)}")
+    PRE: print(f"Held-out cycles evaluated: {len(hindcast_metrics)}")
+    PRE: print(f"Hindcast curve points: {len(hindcast_curves)}")
+    POST: print("\nHindcast metrics:")
+    POST: print(hindcast_metrics.to_string(index=False))
+    POST: print("\nCycle 25 excluded as a completed curve: PASS")
+
+R:\SolarShield AI\scripts\development\run_task3_curve_analogs.py:295: print("\nCycle 25 excluded as a completed curve: PASS")
+    PRE: print("\nHindcast metrics:")
+    PRE: print(hindcast_metrics.to_string(index=False))
+    POST: print("Cycle 26/27 outputs explicitly marked unvalidated: PASS")
+    POST: 
+    POST: 
+
+R:\SolarShield AI\scripts\development\validate_forecasting_protocol.py:147: "official_smoothed_max_month", "official_smoothed_max_sn",
+    PRE: required_cycle = {
+    PRE: "cycle_number", "status", "published_minimum_month",
+    POST: "months_expected_min_to_min",
+    POST: }
+    POST: require(required_cycle.issubset(cycles.columns),
+
+R:\SolarShield AI\scripts\development\validate_forecasting_protocol.py:165: "official_smoothed_max_month",
+    PRE: for col in (
+    PRE: "published_minimum_month",
+    POST: "official_smoothed_max_sn",
+    POST: "months_expected_min_to_min",
+    POST: ):
+
+R:\SolarShield AI\scripts\development\validate_forecasting_protocol.py:166: "official_smoothed_max_sn",
+    PRE: "published_minimum_month",
+    PRE: "official_smoothed_max_month",
+    POST: "months_expected_min_to_min",
+    POST: ):
+    POST: require(complete[col].notna().all(),
+

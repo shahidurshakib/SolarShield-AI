@@ -1,0 +1,40 @@
+{
+  "a1_a2_executed": false,
+  "authorization_gate": "CLEARED",
+  "backtest_a0_excluded": 0,
+  "backtest_a0_interval_records": 6477,
+  "backtest_a0_records": 3112,
+  "calibration_a0_excluded": 0,
+  "calibration_a0_records": 720,
+  "cycle25_forecast_generated": false,
+  "execution_id": "V3_PRODUCTION_EXECUTION_20261112_202059_644437_UTC",
+  "execution_status": "PARTIAL_A0_SCOPES_COMPLETED_OTHER_SCOPES_BLOCKED",
+  "finished_at_utc": "2026-11-12T20:21:12.613559+00:00",
+  "historical_model_execution_performed": true,
+  "prior_release_integrity": {
+    "file_count": 52,
+    "manifest_sha256": "119DB23702B3AE2EBE02387EC3DC68DA1323BD85FF1C0165B8FC6CE08F58EB4D",
+    "release_id": "V3_PRODUCTION_ENGINE_RELEASE_20261112_200241_605790_UTC"
+  },
+  "r20_preservation": "PASS_NOT_RERUN",
+  "r21_training_fit": {
+    "identifiability": "NOT_ESTABLISHED",
+    "q_physical": 100.00298144563507,
+    "r_physical": 100.00298144563507,
+    "status": "ESTIMATION_COMPLETED_REQUIRES_REVIEW",
+    "training_cycles": [
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  },
+  "scientific_acceptance": "NOT_GRANTED",
+  "started_at_utc": "2026-11-12T20:20:59.645448+00:00",
+  "test_status": 0
+}

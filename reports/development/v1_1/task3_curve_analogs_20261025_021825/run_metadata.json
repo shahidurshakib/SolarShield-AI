@@ -1,0 +1,45 @@
+{
+  "task": "Task 3 long-term activity-curve analog hindcasts",
+  "method": "Pointwise median of preceding completed cycle curves",
+  "phase_grid_points": 121,
+  "phase_convention": "For each complete cycle, first observed month maps to phase 0 and last month before the next minimum maps to phase 1; linear interpolation to 121 equally spaced phase points.",
+  "cycle_boundary_convention": "Published minimum inclusive, next published minimum exclusive. Cycle 25 minimum is used only as Cycle 24's end boundary.",
+  "curve_metric_interpretation": "Phase-aligned curve errors condition on each held-out cycle's observed duration; duration prediction is evaluated separately.",
+  "peak_metric_definition": "Raw monthly SSN maximum of the phase-grid curve; timing is normalized peak phase multiplied by duration minus one.",
+  "interval_definition": "Pointwise empirical 10th and 90th percentiles across training curves. Coverage is pointwise across phase grid, not cycle-level simultaneous coverage.",
+  "training_rule": "Held-out cycle c uses only completed cycles 1..c-1.",
+  "heldout_cycles": [
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "future_cycles": [
+    26,
+    27
+  ],
+  "monthly_dataset_sha256": "8920e24e6d0ed0c41e8ab91eb681c9ea13cdf07f93bf1d82e3c099f3d079d194",
+  "cycle_summary_sha256": "3f2a85859dc1df2a4501b60fa7f54ca05dbc4b69008210cbcb5acb92c9ee33ac",
+  "software": {
+    "python": "3.15.1 (tags/v3.15.1:c37e74c, Oct 21 2026, 06:24:08) [MSC v.1951 64 bit (AMD64)]",
+    "platform": "Windows-11-10.0.26300-SP0",
+    "pandas": "3.1.0",
+    "numpy": "2.5.4"
+  },
+  "created_utc": "2026-10-24T20:18:25.743827+00:00",
+  "limitations": [
+    "Only 12 held-out cycles are available.",
+    "Curve metrics use retrospective phase alignment and do not by themselves validate calendar-time forecasting.",
+    "Pointwise intervals are not guaranteed to be calibrated.",
+    "Cycle 26 and 27 curves are exploratory analog forecasts, not validated predictions.",
+    "Raw monthly peaks are not the same as the published smoothed peak labels used in Task 2."
+  ]
+}

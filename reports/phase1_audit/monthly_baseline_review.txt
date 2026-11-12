@@ -1,0 +1,86 @@
+﻿    indexed = data.set_index("month_start", drop=False)
+    origins = pd.date_range(START, LAST_ORIGIN, freq="MS")
+    if not origins.isin(indexed.index).all():
+        raise ValueError("One or more forecast origins are missing.")
+
+    records = []
+    excluded = []
+    for origin in origins:
+        training = data.loc[data["month_start"] <= origin, "ssn"].astype(float)
+        if len(training) < 2:
+            raise ValueError(f"Insufficient training data at {origin:%Y-%m}")
+
+        # Non-seasonal MASE denominator: mean absolute first difference
+        # calculated strictly from observations available through origin.
+        mase_scale = float(training.diff().abs().dropna().mean())
+        if not np.isfinite(mase_scale) or mase_scale <= 0:
+            raise ValueError(f"Invalid MASE scale at {origin:%Y-%m}")
+
+        for horizon in HORIZONS:
+            target = origin + pd.DateOffset(months=horizon)
+            if target > CUTOFF:
+                excluded.append({
+                    "origin": origin, "horizon": horizon,
+                    "target_month": target, "reason": "beyond_cutoff"
+                })
+                continue
+            if target not in indexed.index:
+                excluded.append({
+                    "origin": origin, "horizon": horizon,
+                    "target_month": target, "reason": "target_missing"
+                })
+                continue
+
+            target_row = indexed.loc[target]
+            if bool(target_row["is_provisional"]):
+                excluded.append({
+                    "origin": origin, "horizon": horizon,
+                    "target_month": target, "reason": "provisional_target"
+                })
+                continue
+
+            persistence_source = origin
+            seasonal_source = target - pd.DateOffset(months=12)
+            for source in (persistence_source, seasonal_source):
+                if source > origin:
+                    raise ValueError(
+                        f"Leakage: source {source} exceeds origin {origin}"
+                    )
+                if source not in indexed.index:
+                    raise ValueError(f"Missing baseline source month: {source}")
+
+            actual = float(target_row["ssn"])
+            predictions = {
+                "persistence": (
+                    float(indexed.loc[persistence_source, "ssn"]),
+                    persistence_source
+                ),
+                "seasonal_naive_12": (
+                    float(indexed.loc[seasonal_source, "ssn"]),
+                    seasonal_source
+                ),
+            }
+
+            for model, (prediction, source_month) in predictions.items():
+                if not np.isfinite(prediction):
+                    raise ValueError("Non-finite baseline prediction.")
+                records.append({
+                    "origin": origin,
+                    "training_start": data["month_start"].iloc[0],
+                    "training_cutoff": origin,
+                    "training_size": len(training),
+                    "target_month": target,
+                    "horizon_months": horizon,
+                    "model": model,
+                    "prediction": prediction,
+                    "actual_ssn": actual,
+                    "source_month": source_month,
+                    "source_ssn": prediction,
+                    "absolute_error": abs(actual - prediction),
+                    "squared_error": (actual - prediction) ** 2,
+                    "mase_scale_training_only": mase_scale,
+                    "scaled_absolute_error": abs(actual - prediction) / mase_scale,
+                    "dataset_sha256": dataset_hash,
+                })
+
+    forecasts = pd.DataFrame(records)

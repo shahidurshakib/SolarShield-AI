@@ -1,0 +1,130 @@
+﻿{
+    "protocol_revision":  "1.7",
+    "protocol_sha256":  "18DD4B37A3CE6A23C380F30368610CAB3B5BEB1E295DE57D5CE053318E565048",
+    "review_timestamp_local":  "2026-11-12T03:56:57+06:00",
+    "review_type":  "Evidence-based protocol review disposition",
+    "model_execution_performed":  false,
+    "execution_gate_cleared":  false,
+    "requirements":  [
+                         {
+                             "status":  "PASS_IMPLEMENTATION",
+                             "requirement":  "R19",
+                             "unresolved":  [
+
+                                            ],
+                             "finding":  "Warm-up, initialization, missing-month handling and cycle reset have implementation and regression-test evidence."
+                         },
+                         {
+                             "status":  "POST_FREEZE_EXECUTION",
+                             "requirement":  "R20",
+                             "unresolved":  [
+                                                "Cycles 6-12 selection results not yet generated."
+                                            ],
+                             "finding":  "Selection grid and cycle partition are specified."
+                         },
+                         {
+                             "status":  "APPROVED_WITH_LIMITATIONS",
+                             "requirement":  "R21",
+                             "unresolved":  [
+                                                "Identifiability and scientific parameter recovery NOT_ESTABLISHED; scientific acceptance NOT_GRANTED."
+                                            ],
+                             "finding":  "Option A protocol has explicit owner approval."
+                         },
+                         {
+                             "status":  "POST_FREEZE_EXECUTION",
+                             "requirement":  "R22",
+                             "unresolved":  [
+                                                "EnKF selection and comparison results not yet generated."
+                                            ],
+                             "finding":  "EnKF candidate sizes, seeds and selection criteria are specified."
+                         },
+                         {
+                             "status":  "PROTOCOL_SPECIFIED",
+                             "requirement":  "R23",
+                             "unresolved":  [
+                                                "Final detector implementation and selection evidence remain to be verified."
+                                            ],
+                             "finding":  "Causal detector candidates and missing-month rules are specified."
+                         },
+                         {
+                             "status":  "POST_FREEZE_EXECUTION",
+                             "requirement":  "R24",
+                             "unresolved":  [
+                                                "Selection results not yet generated."
+                                            ],
+                             "finding":  "DTW candidate phase deviations and path constraints are specified."
+                         },
+                         {
+                             "status":  "POST_FREEZE_EXECUTION",
+                             "requirement":  "R25",
+                             "unresolved":  [
+                                                "Selection results not yet generated."
+                                            ],
+                             "finding":  "Peak prominence, matching distance and penalty candidate grids are specified."
+                         },
+                         {
+                             "status":  "EVIDENCE_LIMITED",
+                             "requirement":  "R26",
+                             "unresolved":  [
+                                                "Only three calibration cycles; empirical coverage is not validated or guaranteed."
+                                            ],
+                             "finding":  "Calibration policy and evidence-sufficiency diagnostic are preserved."
+                         },
+                         {
+                             "status":  "POST_FREEZE_EXECUTION",
+                             "requirement":  "R27",
+                             "unresolved":  [
+                                                "Cycles 16-24 final comparison not yet executed."
+                                            ],
+                             "finding":  "Common-origin comparison requirements are specified."
+                         },
+                         {
+                             "status":  "OWNER_APPROVED",
+                             "requirement":  "R28",
+                             "unresolved":  [
+                                                "Scientific superiority remains dependent on final evaluation."
+                                            ],
+                             "finding":  "Acceptance policy and four R32 criteria have explicit owner approval."
+                         },
+                         {
+                             "status":  "CONDITIONALLY_AUTHORIZED",
+                             "requirement":  "R29",
+                             "unresolved":  [
+                                                "Execution remains conditional on the separate execution gate."
+                                            ],
+                             "finding":  "Owner authorization exists for the five specified execution scopes."
+                         },
+                         {
+                             "status":  "PROTOCOL_FREEZE_ONLY",
+                             "requirement":  "R30",
+                             "unresolved":  [
+                                                "This disposition does not clear the model execution gate."
+                                            ],
+                             "finding":  "This revision resolves the obsolete Draft 1.3 reference and records the freeze evidence."
+                         },
+                         {
+                             "status":  "PRESERVATION_EVIDENCE_PASS",
+                             "requirement":  "R31",
+                             "unresolved":  [
+                                                "Historical artifacts must remain immutable."
+                                            ],
+                             "finding":  "Prior preservation and partition diagnostics are included."
+                         },
+                         {
+                             "status":  "EVALUATOR_AND_TESTS_PASS",
+                             "requirement":  "R32",
+                             "unresolved":  [
+                                                "No scientific acceptance is implied."
+                                            ],
+                             "finding":  "Dedicated four-condition evaluator and synthetic regression evidence are preserved."
+                         },
+                         {
+                             "status":  "PROTOCOL_HIERARCHY_DEFINED",
+                             "requirement":  "R33",
+                             "unresolved":  [
+
+                                            ],
+                             "finding":  "Acceptance hierarchy, authorization rules and non-claims are specified."
+                         }
+                     ]
+}

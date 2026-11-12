@@ -1,0 +1,115 @@
+{
+  "created_utc": "2026-11-07T21:14:47.787952+00:00",
+  "file_count": 18,
+  "files": [
+    {
+      "bytes": 0,
+      "path": "src/v3/__init__.py",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 6898,
+      "path": "src/v3/solarshield_v3_cycle_detection.py",
+      "sha256": "52db9a3fb61ef523e4177fade855a3be24687ec84024f3b9799bd1ec8ad921a7",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 2106,
+      "path": "src/v3/solarshield_v3_dtw.py",
+      "sha256": "a41d7378ad4c2dbbe38d10b95a2bbf8f0b8240112db042b616c9caacde789fc7",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 6617,
+      "path": "src/v3/solarshield_v3_enkf.py",
+      "sha256": "92f6171c5fb6c15ec0f2817b4de2cd83e5d71d97fd49e451249715cc6102eb64",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 5516,
+      "path": "src/v3/solarshield_v3_kalman.py",
+      "sha256": "efe4cb78194cbde4546a8d7ad1b8ba39aa372dd936537d7d07b1127d6156d5b7",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 3219,
+      "path": "src/v3/solarshield_v3_losses.py",
+      "sha256": "73e0a47799802b46c15a5ada9df03bae46396a6314b121dd5686b686534fd541",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 2424,
+      "path": "src/v3/solarshield_v3_peaks.py",
+      "sha256": "ec175adb92d59184c98fd3fee112330093e21925c62c70279c4c067afb897eb2",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 1479,
+      "path": "tests/v3/test_v3_api_edges.py",
+      "sha256": "8a7cd020f195cc5f5e07e3610e8a77fbec6d440616005720c87864422a16d386",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 2668,
+      "path": "tests/v3/test_v3_atomic_assimilation.py",
+      "sha256": "52ac7b623b391ab0625711f225dd1ec764087ea105c2b05dd1e47429de590abc",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 1444,
+      "path": "tests/v3/test_v3_cycle_detection.py",
+      "sha256": "110183f1f4c31e9154a0d1b12843132fdd0d691bbe571563375a74352ad6f76c",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 5078,
+      "path": "tests/v3/test_v3_detector_reset.py",
+      "sha256": "2c9d38ccb1753041477bbaf69410830414749c1eb8393c08c8f924cf752fc07f",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 1555,
+      "path": "tests/v3/test_v3_dtw.py",
+      "sha256": "adcb1fb79d48cda8a684f0c2b98be9669db3cc94eb5a0e87402188996ea604ea",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 1038,
+      "path": "tests/v3/test_v3_enkf.py",
+      "sha256": "2d70b1ca9f26e2026efe9243166a16707e5ef2d09a81ba91b0058c2b70cf1fef",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 918,
+      "path": "tests/v3/test_v3_kalman.py",
+      "sha256": "293dc7275c0cb46cc28a713accc797bedb41efcfd5b11c652c8e98ec51aa593e",
+      "utf8_bom": true
+    },
+    {
+      "bytes": 4517,
+      "path": "tests/v3/test_v3_losses.py",
+      "sha256": "bb37ee6dcbf2360323697529e8d330a0221c8ea5e1868be91a50e2f9baa11dcc",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 5587,
+      "path": "tests/v3/test_v3_numerical_edges.py",
+      "sha256": "67d97c9e8de4f8f6ee1811276ceefe85bf45853f80ad212cce16e0eacd6184a6",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 1518,
+      "path": "tests/v3/test_v3_peaks.py",
+      "sha256": "bf9a375ccdbc481a3e62e3ed9a66a2282c08f5e41e56a8e8aeebacb4a4fdbacd",
+      "utf8_bom": false
+    },
+    {
+      "bytes": 4371,
+      "path": "tests/v3/test_v3_robustness.py",
+      "sha256": "0528b2677f42ef79400600d50ec135a35ec1e0e7a47d203e23c3f6c87352f0f3",
+      "utf8_bom": true
+    }
+  ],
+  "snapshot_name": "V3_A_C_numerical_safety_20261107_211447_UTC"
+}

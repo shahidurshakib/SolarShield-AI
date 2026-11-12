@@ -1,0 +1,54 @@
+PHASE 10A — CARRINGTON CONVENTION AND TIME AUDIT
+====================================================================
+Input records: 65
+Processed records: 65
+Timestamp scan rows: 6305
+Timestamp scan: -24 to +24 hours, 0.5-hour interval
+
+CONVENTION COMPARISON
+-------------------------------------------------------
+L0 + CMD absolute residual: n=65, median=1.213755, mean=1.842089, max=11.157429
+L0 - CMD absolute residual: n=65, median=100.817116, mean=102.425240, max=179.503577
+
+EPHEMERIS CONFIGURATION COMPARISON
+-------------------------------------------------------
+default_absolute_residual: n=65, median=1.213755, mean=1.842089, max=11.157429
+no_ltt_absolute_residual: n=65, median=1.131865, mean=1.800569, max=11.239220
+Solar-centre LTT absolute residual: n=65, median=1.214136, mean=1.842283, max=11.157048
+Stellar-aberration absolute residual: n=65, median=1.208086, mean=1.839207, max=11.163105
+
+TIMESTAMP SENSITIVITY
+-------------------------------------------------------
+Midnight vs exact L0 difference: n=65, median=0.000000, mean=0.000000, max=0.000000
+Best-offset residual: n=65, median=0.061243, mean=0.063901, max=0.134631
+Best-offset hours: n=65, median=1.500000, mean=0.469231, max=18.500000
+Offsets at scan boundary: 0
+
+RESULTS BY RECORD ROLE
+-------------------------------------------------------
+
+ROLE: NEIGHBOUR
+Default residual: n=52, median=0.817116, mean=1.094825, max=7.503577
+Best-offset residual: n=52, median=0.064992, mean=0.066252, max=0.134631
+Best-offset hours: n=52, median=1.250000, mean=0.942308, max=6.000000
+
+ROLE: TARGET_ANOMALY
+Default residual: n=13, median=3.585748, mean=4.831149, max=11.157429
+Best-offset residual: n=13, median=0.042569, mean=0.054496, max=0.115862
+Best-offset hours: n=13, median=4.000000, mean=-1.423077, max=18.500000
+
+TARGET ANOMALIES
+-------------------------------------------------------
+2002-04-11T00:00:00.000 group=9887 default=10.2100 noLTT=10.1283 best_offset=+18.5h best_residual=0.0348 PA_err=0.0211 Dist_err=0.000352
+2003-07-25T00:00:00.000 group=10417 default=2.8171 noLTT=2.7343 best_offset=+5.0h best_residual=0.0611 PA_err=0.0431 Dist_err=0.000253
+2011-05-02T00:00:00.000 group=11195 default=3.5857 noLTT=3.6679 best_offset=-6.5h best_residual=0.0064 PA_err=0.0194 Dist_err=0.000462
+2012-01-09T00:00:00.000 group=11388 default=3.3562 noLTT=3.2760 best_offset=+6.0h best_residual=0.0639 PA_err=0.0287 Dist_err=0.000002
+2012-10-25T00:00:00.000 group=11591 default=2.1801 noLTT=2.0990 best_offset=+4.0h best_residual=0.0180 PA_err=0.0460 Dist_err=0.000323
+2013-03-26T00:00:00.000 group=11703 default=4.4269 noLTT=4.5082 best_offset=-8.0h best_residual=0.0308 PA_err=0.0412 Dist_err=0.000015
+2013-09-06T00:00:00.000 group=11834 default=2.2410 noLTT=2.1588 best_offset=+4.0h best_residual=0.0400 PA_err=0.0092 Dist_err=0.000237
+2014-03-01T00:00:00.000 group=11984 default=2.4964 noLTT=2.4156 best_offset=+4.5h best_residual=0.0267 PA_err=0.0019 Dist_err=0.000162
+2014-09-25T00:00:00.000 group=12174 default=11.1574 noLTT=11.2392 best_offset=-20.5h best_residual=0.1159 PA_err=0.0149 Dist_err=0.000360
+2022-08-30T00:00:00.000 group=13088 default=5.7138 noLTT=5.7961 best_offset=-10.5h best_residual=0.0658 PA_err=0.0088 Dist_err=0.000037
+2023-05-24T00:00:00.000 group=13308 default=3.1935 noLTT=3.1110 best_offset=+6.0h best_residual=0.1139 PA_err=0.0015 Dist_err=0.000179
+2023-09-21T00:00:00.000 group=13425 default=6.7862 noLTT=6.8681 best_offset=-12.5h best_residual=0.0888 PA_err=0.0279 Dist_err=0.000198
+2024-05-11T00:00:00.000 group=13663 default=4.6405 noLTT=4.7229 best_offset=-8.5h best_residual=0.0426 PA_err=0.0053 Dist_err=0.000542

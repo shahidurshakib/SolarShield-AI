@@ -1,0 +1,216 @@
+﻿
+========== protocol.md ==========
+
+# SolarShield-AI Model Development v2
+
+Status: Draft protocol; no candidate is approved.
+Scope: Solar Cycles 1-24 and monthly sunspot forecasting.
+Rule: No frozen historical artifact may be overwritten.
+
+## 1. Research tasks
+
+Task A - Monthly SSN forecasting:
+- Target: canonical monthly SILSO SSN.
+- Reference baselines: persistence and 12-month seasonal naive.
+- Evaluate horizons of 1, 3, 6 and 12 months.
+- Use expanding-window origins and training-only MASE scaling.
+- Exclude provisional target months from scored evaluation.
+- Record origin, training cutoff, target month, horizon, model configuration,
+  data hash, predictions, errors and interval bounds where available.
+
+Task B - Solar-cycle characteristics:
+- Scope: completed Solar Cycles 1-24.
+- Targets: official smoothed peak strength, peak timing relative to the
+  published minimum month, and minimum-to-minimum duration.
+- Use sequential cycle-wise validation: for each held-out cycle, fit using
+  only earlier eligible cycles.
+- Cycle 25 is ongoing and is not a completed-cycle target.
+
+Task C - Solar-cycle shape:
+- Scope: completed Cycles 1-24.
+- Represent each cycle on a normalized phase grid of 121 points.
+- Fit every held-out cycle using only earlier eligible cycles.
+- Evaluate curve MAE/RMSE and peak/timing errors.
+- Derive uncertainty intervals using training cycles only.
+- Distinguish normalized-phase curve estimates from calendar-time forecasts.
+
+## 2. Historical data and prior experiments
+
+The current prepared dataset spans 1749-01 through 2026-09.
+The latest non-provisional month in the audited dataset is 2026-06.
+The v1.1 monthly evaluation used origins from 1976-01 through 2025-06
+and target cutoff 2026-06.
+
+The prior cycle-analogue experiment evaluated held-out Cycles 13-24.
+These existing results are development evidence, not an untouched test set.
+
+The prior ARIMA/SARIMA selection window was 1976-01 through 1995-12.
+No candidate passed the pre-specified selection rule. Preserve that result.
+Do not alter its threshold, files, hashes, or conclusions.
+
+The confirmation window was January 1996 through December 2015.
+Prior experiments have already used data in this period. Treat it as
+historical confirmation evidence, not as a newly independent test set.
+
+## 3. Data separation rules
+
+1. Preserve existing selection artifacts and reports.
+2. Do not label any previously inspected or scored period as untouched test data.
+3. Use rolling-origin and sequential cycle-wise evaluation for development.
+4. Keep model fitting and preprocessing inside each training fold.
+5. Never use a held-out cycle's outcomes to select features, parameters,
+   curve templates, interval bounds or acceptance thresholds.
+6. Store new outputs only beneath reports/model_development_v2/.
+7. Record hashes and exact date/cycle boundaries for every experiment.
+8. Do not run the old statistical backtesting stage runners as part of v2.
+
+A genuinely independent final evaluation requires a target period or
+evaluation protocol not used for model selection or tuning. It must be
+specified and frozen before final evaluation. There is currently no
+untouched completed solar cycle among Cycles 1-24 for a new final test.
+Do not claim otherwise.
+
+## 4. Candidate models
+
+Candidates may include:
+- Persistence and seasonal-naive baselines for monthly SSN.
+- Historical-cycle median templates.
+- Phase-based curve models.
+- Parametric cycle-shape models.
+- Models for peak amplitude, peak timing and duration.
+- Combined phase, amplitude and duration models.
+
+Register candidate definitions, features, hyperparameters, selection rules
+and acceptance criteria before running each experiment.
+
+## 5. Metrics and diagnostics
+
+Monthly task:
+- MAE, RMSE, MASE and skill relative to each baseline.
+- Prediction interval coverage and mean interval width.
+- Residual autocorrelation, bias and error by horizon.
+
+Cycle characteristics:
+- MAE and RMSE for peak strength, peak timing and duration.
+- Interval coverage and interval width.
+- Report the number of held-out cycles and uncertainty from the small sample.
+
+Curve task:
+- Normalized-phase curve MAE/RMSE.
+- Peak strength and timing errors, with metric definitions stated explicitly.
+- Pointwise interval coverage and width.
+- Do not confuse pointwise coverage with simultaneous whole-curve coverage.
+
+Forecast errors can be serially dependent, and multi-horizon errors overlap.
+Do not assume independent errors without justification. Any uncertainty
+analysis must document its dependence-aware method and limitations.
+
+## 6. Acceptance and reporting
+
+Specify acceptance thresholds before running a candidate.
+Compare against the same eligible origins/cycles and the same target set.
+Report failures, exclusions, warnings and negative skill.
+Never change thresholds after seeing results to make a candidate pass.
+Separate model selection, confirmation evidence and final evaluation.
+
+## 7. Reproducibility
+
+Every experiment must record:
+- experiment ID and timestamp;
+- protocol version and candidate configuration;
+- dataset path and SHA-256;
+- training and evaluation boundaries;
+- software/environment versions;
+- forecast and metric output paths;
+- exclusions, failures, warnings and validation results.
+
+Protocol status remains DRAFT until reviewed and frozen.
+No model training or forecasting is authorized by creating this document.
+
+
+========== candidate_specification.md ==========
+
+# SolarShield-AI v2 Candidate Specification
+
+Status: DRAFT - review required before execution.
+Scope: Completed Solar Cycles 1-24.
+
+## A. Evaluation design
+
+- Initial training pool: completed Cycles 1-5.
+- Sequential evaluation targets: Cycles 6-24.
+- For each target cycle k, fit or calculate predictions using only
+  eligible completed cycles with cycle_number < k.
+- Do not use the target cycle's observations to fit its forecast,
+  choose features, tune parameters, or construct prediction intervals.
+- Use the same eligible target cycles for candidate-to-baseline comparisons.
+- This is development walk-forward evaluation, not an independent final test.
+- Existing Cycle 13-24 results have been inspected; disclose this history.
+
+## B. Cycle-characteristic candidates
+
+### C1 - Historical median baseline
+For each held-out cycle, predict:
+- official smoothed peak strength: median of prior eligible cycles;
+- peak timing: median month offset from published minimum;
+- duration: median minimum-to-minimum duration.
+
+Use only prior cycles with valid values for the specific target.
+Record the number of training cycles contributing to each prediction.
+
+### C2 - Phase median template
+- Normalize each eligible completed cycle onto a 121-point phase grid.
+- Use only cycles earlier than the held-out cycle.
+- At each phase point, predict the median SSN among eligible training curves.
+- Document interpolation, missing-value handling and edge behavior.
+- Do not use a held-out curve when computing the template.
+
+### C3 - Parametric curve candidate
+- Status remains PLANNED.
+- Before execution, specify the exact equation, parameter bounds,
+  fitting objective, initialization, convergence checks and fallback behavior.
+- Fit only on eligible prior cycles.
+- Do not compare or select equations after seeing held-out-cycle outcomes
+  unless a new development experiment is registered.
+
+## C. Metrics
+
+Cycle characteristics:
+- MAE and RMSE for peak strength, peak timing in months, and duration in months.
+- Report per-cycle errors and aggregate results.
+- Report n and missing/excluded target counts.
+
+Curve:
+- MAE and RMSE across the 121 normalized phase points.
+- Define peak metrics explicitly and distinguish interpolated-curve peaks
+  from official smoothed monthly peak measurements.
+- Report pointwise interval coverage and mean interval width separately.
+- Do not describe pointwise coverage as simultaneous whole-curve coverage.
+
+Monthly SSN:
+- Keep the existing v1.1 persistence and seasonal-naive results as references.
+- Any new monthly candidate must be compared on identical origins and targets.
+- Report MAE, RMSE, MASE, baseline-relative skill and interval diagnostics.
+
+## D. Acceptance rules - not yet frozen
+
+Before running candidates, the project owner must specify:
+- primary metric for each task;
+- minimum practically meaningful improvement over baseline;
+- any guardrail against material degradation on secondary metrics;
+- interval coverage target and interval-width reporting rule;
+- treatment of failed fits, missing targets and ties.
+
+Do not invent or change thresholds after inspecting candidate results.
+If a candidate does not meet the pre-registered rule, report that outcome.
+
+## E. Interpretation and leakage safeguards
+
+- A normalized-phase curve is not automatically a calendar-date forecast.
+- Historical-cycle medians are simple baselines, not proof of future-cycle skill.
+- Small sample size (at most 19 proposed evaluation cycles) limits precision.
+- Previously inspected periods and cycles cannot be called untouched test data.
+- Cycle 25 is ongoing and is excluded from completed-cycle evaluation.
+- Preserve all frozen historical selection artifacts and v1.1 outputs.
+- Write all new outputs beneath reports/model_development_v2/.
+

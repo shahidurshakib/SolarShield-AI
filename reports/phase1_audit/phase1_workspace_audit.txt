@@ -1,0 +1,155 @@
+﻿**********************
+Windows PowerShell transcript start
+Start time: 20261101022855
+Username: SHAHIDUR_RAHMAN\msr15
+RunAs User: SHAHIDUR_RAHMAN\msr15
+Configuration Name: 
+Machine: SHAHIDUR_RAHMAN (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\msr15\AppData\Local\Programs\Microsoft VS Code\2c33b50b16\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 2292
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is R:\SolarShield AI\reports\phase1_audit\phase1_workspace_audit.txt
+
+=== SOLARSHIELD-AI PHASE 1 AUDIT ===
+Workspace: R:\SolarShield AI
+Date: 2026-11-01T02:28:55.9214094+06:00
+
+=== 1. SYSTEM ===
+
+
+=== 2. PYTHON ===
+
+
+
+
+=== 3. GIT STATUS ===
+
+
+=== 4. IMPORTANT DIRECTORIES ===
+data : True
+data\raw : True
+data\processed : True
+data\metadata : True
+scripts : True
+scripts\development : True
+tests : True
+reports\statistical_backtesting\selection : True
+reports\model_development_v2 : True
+reports\phase1_audit : True
+
+=== 5. FILE INVENTORY ===
+Total files: 247
+Inventory: R:\SolarShield AI\reports\phase1_audit\workspace_inventory.csv
+
+=== 6. TEST METHOD INVENTORY ===
+test_backtesting.py: 7 test methods
+test_eda.py: 1 test methods
+test_prep.py: 16 test methods
+test_statistical_backtesting.py: 25 test methods
+Total discovered test methods: 49
+
+=== 7. DEPENDENCY FILES ===
+
+--- R:\SolarShield AI\requirements-lock-py315-win-amd64.txt ---
+Caption                  Version    OSArchitecture
+-------                  -------    --------------
+Microsoft Windows 11 Pro 10.0.26300 64-bit
+contourpy==1.4.0
+cycler==0.12.1
+fonttools==4.67.0
+formulaic==1.2.2
+interface_meta==2.0.1
+kiwisolver==1.5.1
+matplotlib==3.11.2
+narwhals==2.27.1
+numpy==2.5.4
+packaging==26.3
+pandas==3.1.0
+patsy==1.0.3
+pillow==13.0.0
+pyparsing==3.3.3
+python-dateutil==3.0.0
+scipy==1.18.1
+six==1.17.0
+statsmodels==0.15.0
+typing_extensions==4.16.0
+tzdata==2026.5
+wrapt==2.5.2rc1
+
+--- R:\SolarShield AI\requirements.txt ---
+numpy>=1.26,<3
+pandas>=2.2,<4
+matplotlib>=3.9,<4
+
+=== 8. SHA256 DATA AND SELECTION ===
+Hash manifest: R:\SolarShield AI\reports\phase1_audit\sha256_manifest.csv
+Hashed files: 26
+
+=== 9. MAIN PROJECT FILES ===
+R:\SolarShield AI\AUXILIARY_FILE_AUDIT.md
+R:\SolarShield AI\README.md
+R:\SolarShield AI\requirements-lock-py315-win-amd64.txt
+R:\SolarShield AI\requirements.txt
+R:\SolarShield AI\data\metadata\workspace_sha256_manifest.csv
+R:\SolarShield AI\reports\statistical_backtesting_methodology.md
+R:\SolarShield AI\reports\development\v1_1\consolidated_audit_20261025_022558\audit_inventory.csv
+R:\SolarShield AI\reports\development\v1_1\consolidated_audit_20261025_022558\audit_validations.csv
+R:\SolarShield AI\reports\development\v1_1\consolidated_audit_20261025_022558\consolidated_audit_report.md
+R:\SolarShield AI\reports\development\v1_1\consolidated_audit_20261025_022808\audit_inventory.csv
+R:\SolarShield AI\reports\development\v1_1\consolidated_audit_20261025_022808\audit_validations.csv
+R:\SolarShield AI\reports\development\v1_1\consolidated_audit_20261025_022808\consolidated_audit_report.md
+R:\SolarShield AI\reports\model_development_v2\c2_c3_cross_protocol_review_note.md
+R:\SolarShield AI\reports\model_development_v2\c2_c3_cross_protocol_review_note.md.before_cross_protocol_reconcile_20261029_034939.bak
+R:\SolarShield AI\reports\model_development_v2\c2_c3_owner_decision_addendum.md.pre_protocol_alignment_20261026_033003.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.before_acceptance_test_reconcile_20261027_031000.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.before_c3_reconcile_20261027_022343.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.before_c3_scale_derivative_20261027_033159.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.before_encoding_fix_20261027_022817.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.before_knot_vector_20261027_020551.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.pre_approved_decisions_20261026_032307.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.pre_peak_mapping_20261026_033848.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.pre_protocol_alignment_20261026_033003.bak
+R:\SolarShield AI\reports\model_development_v2\c3_consolidated_protocol_draft.md.pre_wording_patch_20261026_033733.bak
+R:\SolarShield AI\reports\model_development_v2\c3_hyperparameter_protocol_draft.md
+R:\SolarShield AI\reports\model_development_v2\c3_hyperparameter_protocol_draft.md.before_c3_reconcile_20261027_022343.bak
+R:\SolarShield AI\reports\model_development_v2\c3_hyperparameter_protocol_draft.md.before_c3_scale_derivative_20261027_033159.bak
+R:\SolarShield AI\reports\model_development_v2\c3_hyperparameter_protocol_draft.md.before_hyperparameter_reconcile_20261027_032140.bak
+R:\SolarShield AI\reports\model_development_v2\c3_hyperparameter_protocol_draft.md.before_objective_line_edit_20261027_044457.bak
+R:\SolarShield AI\reports\model_development_v2\c3_optimizer_and_convergence_draft.md.pre_protocol_alignment_20261026_033003.bak
+R:\SolarShield AI\reports\model_development_v2\c3_resolution_decisions_draft.md.pre_protocol_alignment_20261026_033003.bak
+R:\SolarShield AI\reports\model_development_v2\protocol.md
+R:\SolarShield AI\reports\model_development_v2\protocol.md.preformat.bak
+R:\SolarShield AI\reports\model_development_v2\protocol.md.pre_task_a_revision_20261026_031447.bak
+R:\SolarShield AI\reports\model_development_v2\protocol_review_output.txt
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c2_c3_cross_protocol_review_note.md.before_reconciliation_20261026_044939.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c2_c3_cross_protocol_review_note.md.pre_decision_reconciliation_20261026_041045.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c2_c3_cross_protocol_review_note.md.pre_eligibility_approval_20261026_044715.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c2_c3_cross_protocol_review_note.md.pre_patch_20261026_044136.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c3_consolidated_protocol_draft.md.before_c3_decision_reconciliation_20261027_013858.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c3_consolidated_protocol_draft.md.before_flat_diag_reconcile_20261027_014807.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c3_consolidated_protocol_draft.md.pre_eligibility_approval_20261026_044715.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\c3_hyperparameter_protocol_draft.md.before_c3_decision_reconciliation_20261027_013858.bak
+R:\SolarShield AI\reports\model_development_v2\audit_backups\reconciliation_20261026_045509\c2_c3_cross_protocol_review_note.md
+R:\SolarShield AI\reports\model_development_v2\audit_backups\reconciliation_20261026_045509\protocol.md
+R:\SolarShield AI\reports\phase1_audit\phase1_workspace_audit.txt
+R:\SolarShield AI\reports\statistical_backtesting\selection\evaluation_closure_and_next_protocol.md
+R:\SolarShield AI\reports\statistical_backtesting\selection\stage_manifest.json
+R:\SolarShield AI\scripts\development\build_consolidated_v1_1_audit.py
+R:\SolarShield AI\scripts\development\validate_forecasting_protocol.py
+
+=== AUDIT COMPLETE ===
+No model fitting or backtesting was executed.
+No existing dataset or selection result was modified.
+**********************
+Windows PowerShell transcript end
+End time: 20261101022857
+**********************

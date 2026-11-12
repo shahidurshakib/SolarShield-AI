@@ -1,0 +1,22 @@
+{
+  "release_id": "MASTER_PROJECT_RESULTS_AND_MODEL_FREEZE_RELEASE_20261112_211003_UTC",
+  "created_utc": "2026-11-12T21:10:03Z",
+  "release_type": "REPORT_AND_EVIDENCE_INDEX",
+  "included_snapshots": [
+    "MASTER_PROJECT_RESULTS_AND_MODEL_FREEZE_REPORT.md",
+    "MASTER_MODEL_FREEZE_REGISTRY.json",
+    "MASTER_EVIDENCE_HASH_INVENTORY.csv",
+    "RELEASE_METADATA.json"
+  ],
+  "manifest": {
+    "path": "SHA256_MANIFEST.json",
+    "algorithm": "SHA-256",
+    "manifest_excludes_itself": true
+  },
+  "source_repository": {
+    "head_at_assessment": "43157e02c90c425a1226fdf4c6332e770cbf81fb",
+    "clean_worktree": false,
+    "status_entries_before_report_creation": 603
+  },
+  "scope_boundary": "This release snapshots the report and its evidence index. It does not copy, alter, or re-freeze historical project runs, datasets, protocols, or source code. Those remain at their original paths and are referenced by SHA-256 in the evidence inventory."
+}

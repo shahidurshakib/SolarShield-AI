@@ -1,0 +1,65 @@
+﻿{
+    "experiment_id":  "V2-007",
+    "freeze_timestamp_local":  "2026-11-06T04:54:44.0760124+06:00",
+    "execution_timestamp_utc":  "2026-11-02T19:46:28.418202+00:00",
+    "execution_status":  "COMPLETED",
+    "protocol_status":  "FROZEN",
+    "primary_candidate":  "A1-S1",
+    "primary_acceptance":  "NOT_MET",
+    "expected_records":  133,
+    "observed_records":  133,
+    "fold_validation":  "PASS",
+    "artifact_count":  10,
+    "artifacts":  [
+                      {
+                          "path":  "audit\\v2_007_amplitude_aware\\execution_log.txt",
+                          "sha256":  "32E62C4E395809A12A84D99CD32912E5EDF9216AD540BC4BDD240D5BC10052B3",
+                          "size_bytes":  732
+                      },
+                      {
+                          "path":  "audit\\v2_007_amplitude_aware\\experiment_metadata.json",
+                          "sha256":  "33B8F23B0353BB03A9B5E8B9ED9973D069CE63BCF43588A7B757143530A94E54",
+                          "size_bytes":  2090
+                      },
+                      {
+                          "path":  "audit\\v2_007_amplitude_aware\\fold_manifest.json",
+                          "sha256":  "B56FAFBEF990F52715ECD0C3069AF1FF3061B1895451AAE8B169ADAA96EE7359",
+                          "size_bytes":  132062
+                      },
+                      {
+                          "path":  "audit\\v2_007_amplitude_aware\\preflight_evidence.json",
+                          "sha256":  "2B473C8B66CB49468A7E90D6A4BA7A1B7E513A37B6D5D646E539C7269B774A61",
+                          "size_bytes":  1488
+                      },
+                      {
+                          "path":  "diagnostics\\v2_007_amplitude_aware\\shape_diagnostics.csv",
+                          "sha256":  "E19B011FA06167661EC880CAA37B9DB8DEBCE2C278E62E087025682FD1839A6E",
+                          "size_bytes":  801301
+                      },
+                      {
+                          "path":  "metrics\\v2_007_amplitude_aware\\c2_matched_fold_comparison.csv",
+                          "sha256":  "EF3A3D04BD529DAD59E73815B8E75176E961484307DCB5D9301FD11ADC278868",
+                          "size_bytes":  18737
+                      },
+                      {
+                          "path":  "metrics\\v2_007_amplitude_aware\\execution_summary.json",
+                          "sha256":  "04CB7C5F308EAE2A9CD76BD4A365B0F751E127E5113AEA24F2F93BF0D4D85FFD",
+                          "size_bytes":  3117
+                      },
+                      {
+                          "path":  "metrics\\v2_007_amplitude_aware\\fold_metrics.csv",
+                          "sha256":  "F3AD72F8619DCFD0764C5E79AC43740AEDE97D393EAEFE8C442BDAF95AE76E96",
+                          "size_bytes":  27099
+                      },
+                      {
+                          "path":  "predictions\\v2_007_amplitude_aware\\amplitude_estimates.csv",
+                          "sha256":  "46574C30866015E51CDA52719BE152B607BF0ACFB3B5A00B540630FF96844799",
+                          "size_bytes":  42064
+                      },
+                      {
+                          "path":  "predictions\\v2_007_amplitude_aware\\curve_predictions.csv",
+                          "sha256":  "69C988969E2FA6C97EC7D6D89B49844AE5D587D198616F23E89DA44979370E94",
+                          "size_bytes":  1279238
+                      }
+                  ]
+}

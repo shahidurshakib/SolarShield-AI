@@ -1,0 +1,20 @@
+{
+  "experiment_id": "V2-004",
+  "candidate": "phase_median_template",
+  "required_fold_count": 19,
+  "successful_fold_count": 19,
+  "failed_fold_count": 0,
+  "all_required_folds_succeeded": true,
+  "fold_integrity": {
+    "expected_fold_count": 19,
+    "observed_record_count": 19,
+    "unique_fold_count": 19,
+    "missing_folds": [],
+    "unexpected_folds": [],
+    "duplicate_folds": [],
+    "passed": true
+  },
+  "equal_cycle_weighted_curve_MAE": 32.28618221690591,
+  "equal_cycle_weighted_curve_RMSE": 43.007945798589034,
+  "aggregation_note": "Arithmetic mean of per-cycle curve metrics; each heldout cycle has equal weight. Incomplete results are descriptive only."
+}

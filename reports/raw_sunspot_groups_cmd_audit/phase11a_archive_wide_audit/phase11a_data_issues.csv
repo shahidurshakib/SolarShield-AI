@@ -1,0 +1,138 @@
+member,line_number,category,detail,raw_line
+g1874.txt,1,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,2,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 2.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,3,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 3.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,4,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 4.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,5,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 5.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,6,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 6.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,7,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 7.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,8,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 5 8.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,57,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 6 6.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,58,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 6 7.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,59,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 6 8.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,60,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 6 9.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,61,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1874 610.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,395,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741024.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,396,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741025.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,397,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741026.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,398,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741027.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,399,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741028.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,400,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741031.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,401,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',187411 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,402,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',187411 2.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,441,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741128.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,442,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741129.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,443,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741130.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,444,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',187412 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,445,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',187412 5.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,446,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',187412 6.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,464,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741219.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,465,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741220.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,466,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741221.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,467,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741222.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,468,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741223.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,469,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741224.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,470,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741225.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,471,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741226.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,472,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741227.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,473,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741228.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,474,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741229.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,475,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741230.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1874.txt,476,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18741231.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,1,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 1 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,7,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 117.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,8,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 118.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,9,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 119.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,10,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 120.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,11,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 121.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,223,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1875 615.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1875.txt,345,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',187511 4.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1876.txt,150,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1876 7 2.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1876.txt,205,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1876 913.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1876.txt,212,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1876 919.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1876.txt,213,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1876 920.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1876.txt,214,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1876 926.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1877.txt,78,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1877 415.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1877.txt,146,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1877 612.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1877.txt,147,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1877 613.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1877.txt,148,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1877 624.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1877.txt,150,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1877 626.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1877.txt,151,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1877 627.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1879.txt,43,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1879 814.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1879.txt,99,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18791126.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1880.txt,154,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1880 410.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1880.txt,155,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1880 411.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1880.txt,307,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1880 8 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1880.txt,386,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1880 825.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1880.txt,387,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1880 826.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1880.txt,388,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1880 827.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1882.txt,30,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1882 110.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1882.txt,31,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1882 111.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1882.txt,32,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1882 112.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1885.txt,46,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1885 119.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1885.txt,609,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1885 513.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1885.txt,679,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1885 525.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1885.txt,879,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1885 626.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1885.txt,1162,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1885 830.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1886.txt,6,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1886 1 3.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1886.txt,60,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1886 118.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1887.txt,1,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1887 1 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1887.txt,454,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18871231.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1888.txt,47,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1888 219.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1888.txt,64,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1888 312.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1889.txt,11,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1889 224.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1890.txt,107,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1890 730.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1890.txt,176,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1890 926.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1890.txt,241,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18901216.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1891.txt,30,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1891 124.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1891.txt,38,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1891 127.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1892.txt,272,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1892 212.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1892.txt,279,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1892 214.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1893.txt,439,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1893 3 6.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1893.txt,1356,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1893 624.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1893.txt,3075,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',18931231.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1894.txt,1,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1894 1 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1895.txt,38,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1895 1 7.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1896.txt,151,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1896 214.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1896.txt,734,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1896 810.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,132,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 2 5.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,542,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 717.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,543,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 718.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,544,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 719.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,545,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 720.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,546,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 721.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,547,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 722.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,548,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 723.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,549,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 724.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,550,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 725.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,551,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 726.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,552,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 727.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1897.txt,553,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1897 728.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1898.txt,88,CARRINGTON_OUTSIDE_0_360,CARRINGTON_OUTSIDE_0_360,1898 128.224    468100 7   85  399   59  276 0.694 281.9 360.1   3.9  42.9
+g1898.txt,89,CARRINGTON_OUTSIDE_0_360,CARRINGTON_OUTSIDE_0_360,1898 129.187    468100 7   61  311   55  279 0.836 278.3 360.6   3.6  56.0
+g1898.txt,90,CARRINGTON_OUTSIDE_0_360,CARRINGTON_OUTSIDE_0_360,1898 130.237    468100 7   16  105   24  154 0.940 276.8 360.2   4.3  69.4
+g1898.txt,762,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',189812 7.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1899.txt,69,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1899 2 6.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1900.txt,28,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1900 2 2.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1900.txt,40,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1900 2 7.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1902.txt,22,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1902 3 6.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,133,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 411.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,245,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 619.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,250,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 621.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,295,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 712.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,315,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 719.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,316,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 720.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1903.txt,329,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1903 728.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1904.txt,33,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1904 110.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1904.txt,144,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1904 225.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1904.txt,168,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1904 3 7.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1905.txt,1,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1905 1 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1906.txt,1843,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',19061228.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1909.txt,798,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1909 8 1.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1915.txt,256,CARRINGTON_OUTSIDE_0_360,CARRINGTON_OUTSIDE_0_360,1915 3 3.175    719500 2    3   16    1    9 0.327 147.2 361.0 -23.1 -11.1
+g1916.txt,1056,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',1916 619.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1918.txt,2677,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',19181124.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1924.txt,476,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',19241113.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1979.txt,5028,FIELD_PARSE_ERROR,invalid literal for int() with base 10: '',197912 3.000         0 0    0    0    0    0 0.000   0.0   0.0   0.0   0.0
+g1980.txt,801,CARRINGTON_OUTSIDE_0_360,CARRINGTON_OUTSIDE_0_360,1980 321.500    234300 0    0   44    0   50 0.991 251.7 408.9 -19.0  84.0
+g1980.txt,1390,CARRINGTON_OUTSIDE_0_360,CARRINGTON_OUTSIDE_0_360,1980 517.500    246100 0    0    9    0   10 0.953 248.6 364.1 -21.0  72.0

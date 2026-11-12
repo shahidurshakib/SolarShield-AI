@@ -1,0 +1,35 @@
+{
+  "acceptance_status": "NOT_ACCEPTED_FOR_PRODUCTION",
+  "all_nine_optimizer_starts_hit_boundary": true,
+  "all_nine_optimizer_starts_reported_success": true,
+  "application_to_cycles_13_24": false,
+  "candidate_q_physical": 100.00298144563507,
+  "candidate_r_physical": 100.00298144563507,
+  "configured_upper_bound": 100.00298144563507,
+  "eligible_sequence_count": 9,
+  "execution_output_sha256": "EA3EBF1021593168A51AC0C54DD3BED6FA22C2E92038950F5D073D54BA6D3A26",
+  "identifiability": "NOT_ESTABLISHED",
+  "local_curvature": {
+    "condition_number": 3.137231102537658,
+    "eigenvalues": [
+      -364.7068340636763,
+      1144.1696231326061
+    ],
+    "status": "NON_POSITIVE_LOCAL_CURVATURE"
+  },
+  "projected_gradient_norm": 1214.6852988383678,
+  "protocol": "R21 Option A",
+  "reason": "All starts converge to both upper parameter bounds and the numerical Hessian has a negative eigenvalue; protocol requires boundary and curvature diagnostics and supplies no acceptance rule for this boundary case.",
+  "training_cycles": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "valid_training_residual_count": 1101
+}

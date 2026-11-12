@@ -1,0 +1,67 @@
+PHASE 11A.1 — HISTORICAL FORMAT AND DUPLICATE FORENSICS
+============================================================================
+
+FAILED RECORDS
+----------------------------------------------------------------------------
+Failed records: 131
+Failed members: 33
+Failed years: 33
+
+FAILED RECORDS BY YEAR
+----------------------------------------------------------------------------
+1874: 40
+1875: 8
+1876: 5
+1877: 6
+1879: 2
+1880: 6
+1882: 3
+1885: 5
+1886: 2
+1887: 2
+1888: 2
+1889: 1
+1890: 3
+1891: 2
+1892: 2
+1893: 3
+1894: 1
+1895: 1
+1896: 2
+1897: 13
+1898: 1
+1899: 1
+1900: 2
+1902: 1
+1903: 7
+1904: 3
+1905: 1
+1906: 1
+1909: 1
+1916: 1
+1918: 1
+1924: 1
+1979: 1
+
+DUPLICATE OBSERVATION KEYS
+----------------------------------------------------------------------------
+Duplicate key groups: 2001
+Records belonging to duplicate groups: 4202
+Extra records beyond one per key: 2201
+Duplicate groups with multiple members: 0
+Duplicate groups with differing raw lines: 2001
+
+DUPLICATE MEASUREMENT VARIATION
+----------------------------------------------------------------------------
+distance: duplicate groups with >1 distinct value = 1990
+PA: duplicate groups with >1 distinct value = 1991
+Carrington: duplicate groups with >1 distinct value = 1933
+latitude: duplicate groups with >1 distinct value = 1928
+CMD: duplicate groups with >1 distinct value = 1935
+
+CARRINGTON FLAGS
+----------------------------------------------------------------------------
+Carrington range flags: 6
+
+OUTPUT DIRECTORY
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a1_forensics

@@ -1,0 +1,35 @@
+{
+  "total_records": 257852,
+  "no_position_zero_placeholders": 131,
+  "position_records": 257721,
+  "pa_valid_records": 257196,
+  "pa_excluded_near_center_or_no_position": 656,
+  "distance_error_position_records": {
+    "median": 0.0005281045462197653,
+    "p95": 0.0025825205913443394,
+    "p99": 0.003592605852966688,
+    "max": 0.009077702896141848
+  },
+  "distance_gt_0.005": 46,
+  "pa_error_valid_records": {
+    "median": 0.08714577706621185,
+    "p95": 0.4203580619934755,
+    "p99": 0.8035097715712205,
+    "max": 5.052566859255933
+  },
+  "pa_gt_0.5_degrees": 8514,
+  "combined_review_union": 8554,
+  "distance_threshold_counts": {
+    "0.001": 74358,
+    "0.002": 25956,
+    "0.005": 46,
+    "0.01": 0
+  },
+  "pa_threshold_counts": {
+    "0.1": 115953,
+    "0.2": 53540,
+    "0.5": 8514,
+    "1.0": 1388,
+    "2.0": 179
+  }
+}

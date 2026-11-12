@@ -1,0 +1,40 @@
+PHASE 10F - L0 CONVENTION DIAGNOSTIC
+========================================================================
+Input records: 65
+Processed records: 65
+Source verification: PASS
+Field verification: PASS
+
+L0 IMPLEMENTATION COMPARISON
+------------------------------------------------------------------------
+
+[NEIGHBOUR] n=52
+PyMeeus_principal_minus_SunPy: mean=-110.737805161, median=-179.959727828, max_abs=179.982193867
+PyMeeus_atan2_minus_SunPy: mean=-179.968574392, median=-179.969876658, max_abs=179.982193867
+SunPy_no_LTT_minus_default: mean=-0.081786262, median=-0.081901562, max_abs=0.082837548
+SunPy_center_LTT_minus_default: mean=0.000380977, median=0.000380977, max_abs=0.000380977
+SunPy_aberration_minus_default: mean=-0.005676812, median=-0.005668405, max_abs=0.005789961
+SunPy_default_absolute_residual: mean=1.094824603, median=0.817116122, max_abs=7.503576893
+PyMeeus_principal_absolute_residual: mean=110.767531482, median=178.578782224, max_abs=179.791109692
+PyMeeus_atan2_absolute_residual: mean=178.886196973, median=179.164550203, max_abs=179.791109692
+
+[TARGET_ANOMALY] n=13
+PyMeeus_principal_minus_SunPy: mean=-110.737806054, median=-179.959730700, max_abs=179.982193867
+PyMeeus_atan2_minus_SunPy: mean=-179.968575285, median=-179.969876658, max_abs=179.982193867
+SunPy_no_LTT_minus_default: mean=-0.081788500, median=-0.081889995, max_abs=0.082837548
+SunPy_center_LTT_minus_default: mean=0.000380977, median=0.000380977, max_abs=0.000380977
+SunPy_aberration_minus_default: mean=-0.005676660, median=-0.005669202, max_abs=0.005789834
+SunPy_default_absolute_residual: mean=4.831148938, median=3.585747911, max_abs=11.157428592
+PyMeeus_principal_absolute_residual: mean=109.938409732, median=174.325707966, max_abs=177.729107220
+PyMeeus_atan2_absolute_residual: mean=175.169809273, median=176.441517494, max_abs=177.789932421
+
+BRANCH DIAGNOSTIC
+------------------------------------------------------------------------
+cos(delta) NON_NEGATIVE: 40
+cos(delta) NEGATIVE: 25
+
+LIMITATIONS
+------------------------------------------------------------------------
+This is a convention and implementation comparison only.
+No archive correction or timestamp correction was applied.
+No model execution was performed.

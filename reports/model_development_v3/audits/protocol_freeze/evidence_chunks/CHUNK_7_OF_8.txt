@@ -1,0 +1,716 @@
+﻿          "R_normalized": [
+            [
+              7.247560782594134e-05
+            ]
+          ],
+          "P0_normalized": [
+            [
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.027777777777777776
+            ]
+          ]
+        },
+        {
+          "scale": 30.513154662402837,
+          "Q_normalized": [
+            [
+              1.8142399450497944e-05,
+              9.071199725248972e-06
+            ],
+            [
+              9.071199725248972e-06,
+              1.8142399450497944e-05
+            ]
+          ],
+          "R_normalized": [
+            [
+              0.0001344302463862571
+            ]
+          ],
+          "P0_normalized": [
+            [
+              1.0,
+              0.0
+            ],
+            [
+              0.0,
+              0.027777777777777776
+            ]
+          ]
+        }
+      ],
+      "scales": [
+        23.765139177894692,
+        41.55656808422545,
+        30.513154662402837
+      ]
+    }
+  ]
+}
+
+
+==========================================================================================
+FILE: reports\model_development_v3\r21_review\R21_REVIEW_20261108_203649.txt
+==========================================================================================
+BYTES: 21202
+SHA256: CBE6A2A2945D0D5A18D268570F363B54D9CE4A60600891DF8ACD4D3FAE8D909B
+
+**********************
+Windows PowerShell transcript start
+Start time: 20261109023649
+Username: SHAHIDUR_RAHMAN\msr15
+RunAs User: SHAHIDUR_RAHMAN\msr15
+Configuration Name: 
+Machine: SHAHIDUR_RAHMAN (Microsoft Windows NT 10.0.26300.0)
+Host Application: C:\WINDOWS\System32\WindowsPowerShell\v1.0\powershell.exe -noexit -command try { . "c:\Users\msr15\AppData\Local\Programs\Microsoft VS Code\c4453f8ea4\resources\app\out\vs\workbench\contrib\terminal\common\scripts\shellIntegration.ps1" } catch {}
+Process ID: 9712
+PSVersion: 5.1.26100.9711
+PSEdition: Desktop
+PSCompatibleVersions: 1.0, 2.0, 3.0, 4.0, 5.0, 5.1.26100.9711
+BuildVersion: 10.0.26100.9711
+CLRVersion: 4.0.30319.42000
+WSManStackVersion: 3.0
+PSRemotingProtocolVersion: 2.3
+SerializationVersion: 1.1.0.1
+**********************
+Transcript started, output file is reports\model_development_v3\r21_review\R21_REVIEW_20261108_203649.txt
+
+========== R21 PRE-FLIGHT ==========
+
+Python version:
+
+
+Source SHA256:
+
+Algorithm       Hash
+---------       ----
+SHA256          EF2D51086727520D2E1CC00CB3DFD914257BD25580F09...
+
+Test SHA256:
+SHA256          9B3EB8E7660DD0DACF0F7866987AAA8FEE629EA565159...
+
+========== MATHEMATICAL IMPLEMENTATION REVIEW ==========
+
+IgnoreCase : True
+LineNumber : 11
+Line       : Q_SHAPE = np.array([[1.0, 0.5], [0.5, 1.0]])
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 12
+Line       : R_SHAPE = np.array([[1.0]])
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 13
+Line       : P0 = np.diag([1.0, 1.0 / 36.0])
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 28
+Line       :     scale: float
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 32
+Line       : def robust_scale(values):
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 35
+Line       :         raise
+             R21EstimationError("UNRESOLVED_RESIDUAL_SCALE")
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 38
+Line       :     mad = np.median(np.abs(finite - median))
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 39
+Line       :     scale = 1.4826 * mad
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 41
+Line       :     if not np.isfinite(scale) or scale <= 0:
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 43
+Line       :         scale = (q75 - q25) / 1.349
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 45
+Line       :     if not np.isfinite(scale) or scale <= 0:
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 46
+Line       :         raise
+             R21EstimationError("UNRESOLVED_RESIDUAL_SCALE")
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 48
+Line       :     return float(scale)
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 64
+Line       :         scale = robust_scale(values)
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 66
+Line       :             Sequence(values / scale, scale, valid)
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 75
+Line       : def sequence_nll(values, q, r):
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 79
+Line       :     Q = q * Q_SHAPE
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 80
+Line       :     R = r * R_SHAPE
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 83
+Line       :     covariance = P0.copy()
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 131
+Line       : def objective(log_parameters, sequences):
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 135
+Line       :             sequence_nll(item.values, q, r)
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 149
+Line       :             objective,
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 152
+Line       :             method="L-BFGS-B",
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 169
+Line       :         boundary = bool(
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 181
+Line       :             "objective": float(result.fun),
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 185
+Line       :             "boundary_hit": boundary,
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 188
+Line       :     successful = [item for item in diagnostics if
+             item["valid"]]
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 189
+Line       :     if not successful:
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 192
+Line       :     best = min(successful, key=lambda item:
+             item["objective"])
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 194
+Line       :         item for item in successful
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 195
+Line       :         if item["objective"] <= best["objective"]
+             + 1e-6
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 211
+Line       :         "Q_normalized": (best["q"] *
+             Q_SHAPE).tolist(),
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 212
+Line       :         "R_normalized": (best["r"] *
+             R_SHAPE).tolist(),
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 213
+Line       :         "P0_normalized": P0.tolist(),
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 214
+Line       :         "residual_scales": [x.scale for x in
+             sequences],
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 218
+Line       :         "objective": best["objective"],
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 219
+Line       :         "optimizer": "L-BFGS-B",
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 222
+Line       :         "successful_initializations":
+             len(successful),
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+IgnoreCase : True
+LineNumber : 223
+Line       :         "boundary_hit": best["boundary_hit"],
+Filename   : solarshield_v3_noise_estimation.py
+Path       : R:\SolarShield
+             AI\src\v3\solarshield_v3_noise_estimation.py
+Pattern    : robust|MAD|IQR|scale|normalize|q_matrix|Q_SHAPE|R_S
+             HAPE|P0|objective|sequence_nll|sensitivity|successf
+             ul|boundary|L-BFGS|multistart|physical
+Context    : Microsoft.PowerShell.Commands.MatchInfoContext
+Matches    : {0}
+
+
+========== R21 TARGETED TESTS ==========
+
+
+========== FULL V3 SYNTHETIC REGRESSION ==========
+
+
+========== FINAL SOURCE HASH ==========
+SHA256          EF2D51086727520D2E1CC00CB3DFD914257BD25580F09...
+
+R21 REVIEW AND TEST EXECUTION COMPLETED.
+No historical model execution or forecast generation was performed.
+Review report: reports\model_development_v3\r21_review\R21_REVIEW_20261108_203649.txt
+**********************
+Windows PowerShell transcript end
+End time: 20261109023726
+**********************
+
+
+==========================================================================================
+FILE: reports\model_development_v3\r21_review\R21_SCIENTIFIC_VALIDATION_20261108_205059.json
+==========================================================================================
+BYTES: 12565
+SHA256: 17403BF56C53C4AF0BA575E6D8C19FF4541055AEFF75F11190F880399D30288C
+
+{
+  "audit": "R21_OPTION_A_SCIENTIFIC_SYNTHETIC_VALIDATION",
+  "historical_data_used": false,
+  "forecast_generated": false,
+  "true_parameters": {
+    "q": 0.02,
+    "r": 0.15
+  },
+  "experiment_count": 9,
+  "sequence_count_per_experiment": 7,
+  "lengths": [
+    24,
+    48,
+    96
+  ],
+  "seeds": [
+    20261112,
+    20261113,
+    20261114
+  ],
+  "q_relative_error_median": 0.1360125278962938,
+  "q_relative_error_max": 0.5585297302152101,
+  "r_relative_error_median": 0.032853143747860414,
+  "r_relative_error_max": 0.06079667913945397,
+  "all_runs_all_starts_successful": true,
+  "any_initialization_sensitive": true,
+  "any_boundary_hit": false,
+  "scale_equivariance": {
+    "scale_multiplier": 3.0,
+    "expected_variance_multiplier": 9.0,
+    "q_ratio": 8.999993530602055,
+    "r_ratio": 9.00000472918667,
+    "q_relative_deviation_from_expected": 7.188219939280316e-07,
+    "r_relative_deviation_from_expected": 5.254651858077608e-07,
+    "base_initialization_sensitive": false,
+    "scaled_initialization_sensitive": true
+  },
+  "local_profile_grid": {
+    "interpretation": "Exploratory objective surface; not a confidence interval.",
+    "points": [
+      {
+        "q_multiplier": 0.5,
+        "r_multiplier": 0.5,
+        "delta_objective": 100.9622328496115
+      },
+      {
+        "q_multiplier": 0.5,
+        "r_multiplier": 0.75,
+        "delta_objective": 31.873144393777125
+      },
+      {
+        "q_multiplier": 0.5,
+        "r_multiplier": 1.0,
+        "delta_objective": 14.745324616078392
+      },
+      {
+        "q_multiplier": 0.5,
+        "r_multiplier": 1.5,
+        "delta_objective": 24.74419194223765
+      },
+      {
+        "q_multiplier": 0.5,
+        "r_multiplier": 2.0,
+        "delta_objective": 50.668943352935
+      },
+      {
+        "q_multiplier": 0.75,
+        "r_multiplier": 0.5,
+        "delta_objective": 74.09940596216825
+      },
+      {
+        "q_multiplier": 0.75,
+        "r_multiplier": 0.75,
+        "delta_objective": 15.020551142365093
+      },
+      {
+        "q_multiplier": 0.75,
+        "r_multiplier": 1.0,
+        "delta_objective": 2.3945179284444293

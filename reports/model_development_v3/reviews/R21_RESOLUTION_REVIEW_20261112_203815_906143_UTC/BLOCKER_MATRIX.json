@@ -1,0 +1,139 @@
+{
+  "review_id": "R21_RESOLUTION_REVIEW_20261112_203815_906143_UTC",
+  "overall_status": "BLOCKED_PENDING_OWNER_APPROVAL_OR_REQUIRED_EVIDENCE",
+  "blockers": [
+    {
+      "id": "B-R21-BOUNDARY-FIT",
+      "requirement": "Acceptable, scientifically supported Q/R estimates under R21 Option A.",
+      "existing_evidence": "Nine starts, likelihood profile and leave-one-cycle-out fits all press to both approved upper bounds; synthetic diagnostics do not establish historical identifiability.",
+      "missing_evidence": "A valid interior estimate or independently justified approved covariance values with uncertainty; owner decision on model/estimation revision.",
+      "scientific_consequence": "Current Q/R candidate is not an accepted production configuration.",
+      "required_resolution": "Owner-approved revised R21 approach or externally supported physical Q/R values; do not silently widen bounds or apply the boundary fit.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "A1/KF",
+        "A2/EnKF",
+        "R27",
+        "R32"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "id": "B-R21-HELDOUT-SCALE",
+      "requirement": "Apply training-only R21 scales and P0 to held-out cycles.",
+      "existing_evidence": "Option A approves normalized P0=diag(1,1/36) and per-sequence scale normalization.",
+      "missing_evidence": "Frozen mapping from cycles 1-12 training scales to physical Q/R/P0 for cycles 13-25.",
+      "scientific_consequence": "No defensible held-out covariance initialization can be constructed without using held-out observations or inventing a mapping.",
+      "required_resolution": "Owner-approved, training-only scale application rule with evidence references.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "A1/KF",
+        "A2/EnKF",
+        "R27",
+        "R32",
+        "Cycle 25"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "id": "B-R21-TRAINING-RESIDUAL-CHRONOLOGY",
+      "requirement": "Define the training residual chronology used by the R21 likelihood.",
+      "existing_evidence": "The cycles 4-5 residual sequences use the R20-selected w=0.50,tau=12 configuration, selected on cycles 6-12; all remain within the cycles 1-12 R21 training partition.",
+      "missing_evidence": "Explicit ruling whether this is acceptable for R21 training likelihoods or whether every training-cycle residual must use only configuration information available before that cycle.",
+      "scientific_consequence": "The strict causal interpretation of the cycles 4-5 residuals is unresolved, although no cycles 13-24 were used.",
+      "required_resolution": "Specify the intended prequential/cross-fitted training residual procedure before any revised R21 fit.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "R21"
+      ],
+      "status": "REVIEW_REQUIRED"
+    },
+    {
+      "id": "B-R22-SELECTION",
+      "requirement": "Freeze A2 ensemble size and deterministic seed policy.",
+      "existing_evidence": "Draft 1.7 lists sizes 100, 250, 500 and seeds 0-4 as candidates and gives diagnostic criteria.",
+      "missing_evidence": "No verified candidate results or selected configuration; the exact deterministic tie-break is not frozen.",
+      "scientific_consequence": "A2 production settings cannot be selected without either valid R22 results and an approved decision rule or owner approval.",
+      "required_resolution": "Resolve R21 first, then execute candidates on cycles 6-12 and freeze a deterministic selection/tie-break rule.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "A2/EnKF",
+        "R27",
+        "R32"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "id": "B-R23-R25-SELECTION",
+      "requirement": "Freeze cycle detector, DTW, and local peak/matching settings.",
+      "existing_evidence": "Draft 1.7 contains candidate grids for R23-R25; repository search found no verified selected outputs.",
+      "missing_evidence": "Candidate result records, deterministic objectives/tie-breaks, and selected settings for cycles 6-12.",
+      "scientific_consequence": "Required diagnostics cannot be reported as using selected, frozen settings.",
+      "required_resolution": "Execute authorized training-only candidate diagnostics where independent, and obtain owner-approved selection rules where the protocol does not specify a unique winner.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "Protocol freeze",
+        "R27 diagnostics"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "id": "B-R26-INTERVAL-DEFINITION",
+      "requirement": "Generate protocol-defined calibration intervals and evidence status.",
+      "existing_evidence": "A0 Type-8 absolute-error diagnostics exist for cycles 13-15; existing outputs used symmetric error bounds as an implementation interpretation.",
+      "missing_evidence": "Frozen interval-bound construction and independent-cycle sufficiency decision.",
+      "scientific_consequence": "Existing A0 interval output is evidence-limited and not protocol-certified; no coverage guarantee is established.",
+      "required_resolution": "Freeze the interval construction and retain UNRESOLVED_CALIBRATION_EVIDENCE when independent cycle evidence is insufficient.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "Protocol freeze",
+        "Calibration reporting"
+      ],
+      "status": "BLOCKED_FOR_CERTIFICATION"
+    },
+    {
+      "id": "B-CYCLE25-ORIGIN-HORIZON",
+      "requirement": "Generate the authorized Cycle 25 exploratory forecast.",
+      "existing_evidence": "R29/R30 authorize a Cycle 25 exploratory forecast; the current dataset has 79 non-provisional and 3 provisional records.",
+      "missing_evidence": "Frozen forecast origin, target horizon, and provisional-suffix handling for Cycle 25.",
+      "scientific_consequence": "No unique forecast can be produced without choosing an unapproved origin/horizon or using provisional observations contrary to the approved policy.",
+      "required_resolution": "Owner approval of origin, horizon and provisional observation treatment.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "Cycle 25 forecast",
+        "Protocol freeze"
+      ],
+      "status": "BLOCKED"
+    },
+    {
+      "id": "B-R32-NO-CANDIDATE-RECORDS",
+      "requirement": "Evaluate A1 and A2 independently against A0 under the four R32 conditions.",
+      "existing_evidence": "R32 evaluator and synthetic tests are implemented; V3 pytest suite passes.",
+      "missing_evidence": "Protocol-compliant, identical-origin A1/A2 forecasts and final evaluation rows.",
+      "scientific_consequence": "R32 is NOT_EVALUABLE for historical candidates; scientific acceptance is not granted.",
+      "required_resolution": "Resolve covariance/configuration gates, execute matched cycles 16-24 forecasts, then run R32 independently for A1 and A2.",
+      "owner_approval_required": false,
+      "dependent_scopes": [
+        "R32"
+      ],
+      "status": "NOT_EVALUABLE"
+    },
+    {
+      "id": "B-NEW-PROTOCOL-AUTHORIZATION",
+      "requirement": "Authorize exact scopes under the revised production protocol.",
+      "existing_evidence": "R30 gate is CLEARED for the exact Draft 1.7 scope set.",
+      "missing_evidence": "Owner authorization for a future protocol revision and its exact configuration/execution scopes.",
+      "scientific_consequence": "Draft 1.7 authorization cannot be treated as automatic authorization for a materially revised protocol.",
+      "required_resolution": "Obtain explicit owner approval and exact-scope authorization after the revised protocol is complete.",
+      "owner_approval_required": true,
+      "dependent_scopes": [
+        "Protocol freeze",
+        "All new production execution"
+      ],
+      "status": "BLOCKED"
+    }
+  ],
+  "non_authorized_scope": {
+    "babcock_leighton": "NOT_AUTHORIZED_NOT_EXECUTED"
+  }
+}

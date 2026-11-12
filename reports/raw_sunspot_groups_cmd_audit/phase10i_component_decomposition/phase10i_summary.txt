@@ -1,0 +1,19 @@
+PHASE 10I — COMPONENT DECOMPOSITION
+========================================================================
+Records: 65
+Unique dates: 24
+
+SUNPY COMPONENT RECONSTRUCTION
+------------------------------------------------------------------------
+component_vs_API_error: mean=0.000000000, median=0.000000000, max_abs=0.000000000
+PyMeeus_vs_SunPy: mean=-112.468039200, median=-179.959727828, max_abs=179.982193867
+PyMeeus_eta_minus_SunPy_Earth: mean=35.269255896, median=102.769089776, max_abs=102.769610249
+PyMeeus_theta_minus_SunPy_meridian: mean=-77.262704903, median=-77.261043653, max_abs=77.271883617
+
+LIMITATIONS
+------------------------------------------------------------------------
+Component decomposition only.
+No longitude convention was changed.
+No archive correction was applied.
+No timestamp correction was applied.
+No model execution was performed.

@@ -1,0 +1,38 @@
+{
+  "period": "1982-2025",
+  "records_scanned": 77728,
+  "record_length_errors": 0,
+  "blank_group_number": 0,
+  "nonnumeric_group_number": 0,
+  "blank_group_type_review": 158,
+  "unusual_suffix_review": 0,
+  "suffix_frequency": {
+    "<BLANK>": 74938,
+    "A": 1755,
+    "B": 629,
+    "D": 91,
+    "E": 30,
+    "C": 255,
+    "F": 15,
+    "G": 5,
+    "H": 1,
+    "6": 1,
+    "c": 4,
+    "a": 1,
+    "b": 1,
+    "d": 2
+  },
+  "top_group_type_values": {
+    "B": 42749,
+    "A": 27140,
+    "BG": 5047,
+    "BGD": 1921,
+    "BD": 658,
+    "GD": 35,
+    "G": 17,
+    "Gam": 2,
+    "B-D": 1
+  },
+  "review_candidate_rows": 158,
+  "archive_modified": "NO"
+}

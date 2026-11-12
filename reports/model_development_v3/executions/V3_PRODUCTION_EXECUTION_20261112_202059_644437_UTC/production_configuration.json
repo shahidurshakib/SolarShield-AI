@@ -1,0 +1,97 @@
+{
+  "P0_normalized": [
+    [
+      1.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.027777777777777776
+    ]
+  ],
+  "Q_physical_estimate": [
+    [
+      100.00298144563507,
+      50.001490722817536
+    ],
+    [
+      50.001490722817536,
+      100.00298144563507
+    ]
+  ],
+  "Q_shape": [
+    [
+      1.0,
+      0.5
+    ],
+    [
+      0.5,
+      1.0
+    ]
+  ],
+  "R21_identifiability": "NOT_ESTABLISHED",
+  "R21_option": "OPTION_A",
+  "R21_training_cycles": [
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12
+  ],
+  "R21_training_scales": [
+    42.72407226496919,
+    20.204098734140302,
+    18.759233993812185,
+    26.214258440246727,
+    34.98462628031902,
+    32.396912281801804,
+    26.621041612779667,
+    20.748958353005577,
+    24.806627753761276
+  ],
+  "R22_ensemble_sizes": [
+    100,
+    250,
+    500
+  ],
+  "R22_predeclared_seeds": [
+    0,
+    1,
+    2,
+    3,
+    4
+  ],
+  "R22_selected_ensemble_configuration": null,
+  "R_physical_estimate": [
+    [
+      100.00298144563507
+    ]
+  ],
+  "baseline": {
+    "method": "A0_T2_anchored_template",
+    "source": "PRESERVED_R20_RESULTS_FREEZE_V2",
+    "tau": 12,
+    "w": 0.5
+  },
+  "heldout_covariance_scale_application": "UNRESOLVED",
+  "observation_matrix": [
+    [
+      1.0,
+      0.0
+    ]
+  ],
+  "state_transition": [
+    [
+      1.0,
+      1.0
+    ],
+    [
+      0.0,
+      1.0
+    ]
+  ]
+}

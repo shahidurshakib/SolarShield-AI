@@ -1,0 +1,46 @@
+PHASE 10C — DATE-LEVEL INDEPENDENT TRANSFER VALIDATION
+====================================================================
+Input records: 65
+Neighbour records: 52
+Target records: 13
+Target dates: 13
+
+NEIGHBOUR-ONLY OFFSET
+-------------------------------------------------------
+Global neighbour-only offset: +1.5 h
+
+TARGET RECORD-WEIGHTED PERFORMANCE
+-------------------------------------------------------
+Zero offset: mean=4.831149, median=3.585748, max=11.157429
+Global neighbour offset (+1.5h): mean=4.767884, median=4.411763, max=11.982292
+LODO neighbour offsets: n=13, median=4.411763, mean=4.810147, max=11.707338
+Same-day neighbour offsets: n=13, median=2.917925, mean=4.598518, max=11.982292
+
+DATE-LEVEL OFFSET DISTRIBUTION
+-------------------------------------------------------
+LODO offsets: median=+1.5h, mean=+1.27h
+Dates with same-day neighbours: 13
+Same-day offsets: median=+1.0h, mean=+0.96h
+
+PER-TARGET-DATE RESULTS
+-------------------------------------------------------
+2002-04-11 | targets=97 | same_day_neighbours=2 | LODO=+1.5h | same_day=+0.5h | zero=10.2100 | LODO_res=9.3850
+2003-07-25 | targets=97 | same_day_neighbours=4 | LODO=+1.0h | same_day=+1.5h | zero=2.8171 | LODO_res=2.2659
+2011-05-02 | targets=97 | same_day_neighbours=2 | LODO=+1.5h | same_day=-2.5h | zero=3.5857 | LODO_res=4.4118
+2012-01-09 | targets=97 | same_day_neighbours=2 | LODO=+1.0h | same_day=+2.5h | zero=3.3562 | LODO_res=2.8074
+2012-10-25 | targets=97 | same_day_neighbours=2 | LODO=+1.0h | same_day=+2.0h | zero=2.1801 | LODO_res=1.6306
+2013-03-26 | targets=97 | same_day_neighbours=3 | LODO=+1.5h | same_day=+1.0h | zero=4.4269 | LODO_res=5.2511
+2013-09-06 | targets=97 | same_day_neighbours=2 | LODO=+1.0h | same_day=+2.5h | zero=2.2410 | LODO_res=1.6908
+2014-03-01 | targets=97 | same_day_neighbours=4 | LODO=+1.5h | same_day=-0.5h | zero=2.4964 | LODO_res=1.6732
+2014-09-25 | targets=97 | same_day_neighbours=2 | LODO=+1.0h | same_day=+1.5h | zero=11.1574 | LODO_res=11.7073
+2022-08-30 | targets=97 | same_day_neighbours=3 | LODO=+1.5h | same_day=+0.5h | zero=5.7138 | LODO_res=6.5394
+2023-05-24 | targets=97 | same_day_neighbours=2 | LODO=+1.5h | same_day=+0.5h | zero=3.1935 | LODO_res=2.3667
+2023-09-21 | targets=97 | same_day_neighbours=2 | LODO=+1.5h | same_day=+0.5h | zero=6.7862 | LODO_res=7.6112
+2024-05-11 | targets=97 | same_day_neighbours=2 | LODO=+1.0h | same_day=+2.5h | zero=4.6405 | LODO_res=5.1914
+
+INTERPRETATION LIMITS
+-------------------------------------------------------
+LODO offsets are selected only from neighbour records outside the target date. This reduces direct target leakage.
+Same-day offsets are exploratory and may be unstable when only one or two neighbours are available.
+A lower Carrington residual does not prove that the selected offset is the actual observation time.
+No source archive records were modified.

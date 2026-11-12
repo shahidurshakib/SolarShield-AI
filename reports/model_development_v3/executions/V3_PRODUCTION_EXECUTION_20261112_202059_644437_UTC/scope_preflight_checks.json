@@ -1,0 +1,20 @@
+{
+  "C16_C24_A0_backtest": {
+    "authorization_gate": "CLEARED",
+    "checked_at_utc": "2026-11-12T20:21:12.003523+00:00",
+    "inputs_and_prior_release": "PASS",
+    "source_hashes_unchanged": true
+  },
+  "R21_training_estimation": {
+    "authorization_gate": "CLEARED",
+    "checked_at_utc": "2026-11-12T20:20:59.896957+00:00",
+    "inputs_and_prior_release": "PASS",
+    "source_hashes_unchanged": true
+  },
+  "R26_A0_calibration": {
+    "authorization_gate": "CLEARED",
+    "checked_at_utc": "2026-11-12T20:21:11.771671+00:00",
+    "inputs_and_prior_release": "PASS",
+    "source_hashes_unchanged": true
+  }
+}

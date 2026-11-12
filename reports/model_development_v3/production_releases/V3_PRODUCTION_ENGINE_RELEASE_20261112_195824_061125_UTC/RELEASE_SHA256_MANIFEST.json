@@ -1,0 +1,215 @@
+{
+  "algorithm": "SHA256",
+  "file_count_excluding_manifest": 52,
+  "files": {
+    "FINAL_ENGINEERING_COMPLETION_REPORT.md": {
+      "sha256": "5AC21F833BE6B50E90A0F336891212B8D943C1CC8FFB5877F1B593309AEE29B3",
+      "size_bytes": 3378
+    },
+    "artifact_preservation_audit.json": {
+      "sha256": "A962F89FC8FF9D8D81AA87BED43088CF33D32D6D896402224EF9334A1C574CFC",
+      "size_bytes": 2716
+    },
+    "execution_blockers.json": {
+      "sha256": "F75A30573D2BB78A2A0D385FC383E43EF5391825E449ED4DD9EC0B69B989811C",
+      "size_bytes": 3551
+    },
+    "protocol_input_verification.json": {
+      "sha256": "BE433C567E6F3015C2CE77C095798681B6C5D0F52EED5C88C2E39E7951702CB9",
+      "size_bytes": 1891
+    },
+    "scopes/02_calibration/blocking_report.json": {
+      "sha256": "43DE03CAA017008EB08AA887EC342468DABEBDA311FA9BAEB5A2978EF1DF1803",
+      "size_bytes": 839
+    },
+    "scopes/02_calibration/execution_manifest.json": {
+      "sha256": "BDFB7A039362C3A3E4B04A2CA338AECAD64F434F98D34BDFC0A228F87C2C5812",
+      "size_bytes": 825
+    },
+    "scopes/03_historical_backtesting/blocking_report.json": {
+      "sha256": "09E1C8DA1B04AA6128C87F3F9D30A6E1C6D76117D7EE4891F50C2F76FD5D073B",
+      "size_bytes": 737
+    },
+    "scopes/03_historical_backtesting/execution_manifest.json": {
+      "sha256": "F78F64FAE32E3CAA85375D8C69872363D6A67A40A8695D9A07D981C92D1C5526",
+      "size_bytes": 825
+    },
+    "scopes/04_cycle25_exploratory/blocking_report.json": {
+      "sha256": "C1EB8C61142C1990B8514AA157C3A49F036463BEE34491E15AC9659F774C7A55",
+      "size_bytes": 794
+    },
+    "scopes/04_cycle25_exploratory/execution_manifest.json": {
+      "sha256": "54B08F9FAF4A826E4C60B8575A728BAF5AC9FCB2D8118A3E871E649F4EC543BC",
+      "size_bytes": 818
+    },
+    "scopes/05_kf_enkf_comparison/blocking_report.json": {
+      "sha256": "6B548319AA5F6E16F1872688FFBE4F4A96B4ACC6216AA2A71FC6898C50B615E6",
+      "size_bytes": 744
+    },
+    "scopes/05_kf_enkf_comparison/execution_manifest.json": {
+      "sha256": "437FC0AA08BB29CD793762B6022694CBF55A73CF9000D46131FBB5AFE2E4A6AA",
+      "size_bytes": 814
+    },
+    "source/src/v3/__init__.py": {
+      "sha256": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+      "size_bytes": 0
+    },
+    "source/src/v3/solarshield_v3_acceptance.py": {
+      "sha256": "8E47DF91AA8FA65A73FE86BB875AF45CF9D882E971D0C699707034C5CBDBED60",
+      "size_bytes": 14339
+    },
+    "source/src/v3/solarshield_v3_calibration.py": {
+      "sha256": "42983FDC4A0BAC2307E9A1BAEF7218D2F4D2AA2E6207D08CFDD91B7860E95851",
+      "size_bytes": 8939
+    },
+    "source/src/v3/solarshield_v3_cycle_detection.py": {
+      "sha256": "52DB9A3FB61EF523E4177FADE855A3BE24687EC84024F3B9799BD1EC8AD921A7",
+      "size_bytes": 6898
+    },
+    "source/src/v3/solarshield_v3_dtw.py": {
+      "sha256": "6982E96ABA36C9A03C8B5927F84E4C50A06CD8559913426701516C6A4F26BE21",
+      "size_bytes": 4592
+    },
+    "source/src/v3/solarshield_v3_enkf.py": {
+      "sha256": "92F6171C5FB6C15EC0F2817B4DE2CD83E5D71D97FD49E451249715CC6102EB64",
+      "size_bytes": 6617
+    },
+    "source/src/v3/solarshield_v3_forecast_integration.py": {
+      "sha256": "80F1AE74DAEF8AE1F27985252F171C26FB09394CB9F4DBB2E01B4AAD2CF94552",
+      "size_bytes": 5833
+    },
+    "source/src/v3/solarshield_v3_forecasting.py": {
+      "sha256": "5B90BFD27AA50656297FED92B998A41DFBA12AA9A065D303F2794F95A695EAD7",
+      "size_bytes": 9355
+    },
+    "source/src/v3/solarshield_v3_kalman.py": {
+      "sha256": "EFE4CB78194CBDE4546A8D7AD1B8BA39AA372DD936537D7D07B1127D6156D5B7",
+      "size_bytes": 5516
+    },
+    "source/src/v3/solarshield_v3_losses.py": {
+      "sha256": "09C03C1B7F58589B02614F74F21C23CAC3498834AC9C0E0C88AAE3C2F5567910",
+      "size_bytes": 9097
+    },
+    "source/src/v3/solarshield_v3_noise_estimation.py": {
+      "sha256": "8F1BBECEB5CD32B970EB3F15CBC27F26629426D6BC337FD085CFAC6BF4E1F3CF",
+      "size_bytes": 11401
+    },
+    "source/src/v3/solarshield_v3_orchestration.py": {
+      "sha256": "332E51CAD5EEB166BD1A06C935AD44127B4B184A4458C9A8C238CBF3768AB988",
+      "size_bytes": 10615
+    },
+    "source/src/v3/solarshield_v3_peaks.py": {
+      "sha256": "263CBF32493138D016D0D09D3FF456FFF83599AC5136D847E4961894256DBA6D",
+      "size_bytes": 5295
+    },
+    "source/src/v3/solarshield_v3_production.py": {
+      "sha256": "68422460573220594A4633531B45834ABED5C79468C235A6BFA51174C518DCD6",
+      "size_bytes": 12588
+    },
+    "source/src/v3/solarshield_v3_t2_engine_v4.py": {
+      "sha256": "1E9123A563888A68A5B0E3E3D2C7C735826969DE8D621315215A1823297451EE",
+      "size_bytes": 11026
+    },
+    "source_sha256_manifest.json": {
+      "sha256": "59D3B45AFA30D57FB4C809B9096F3B2459260E6E2E9B97E410728D0C92B01699",
+      "size_bytes": 4411
+    },
+    "synthetic_validation_evidence.json": {
+      "sha256": "2C65EA7D30D72A7DB54E3A8DB11FA51A45ABAD53AF3DC9607198A4AFF6BD0B42",
+      "size_bytes": 5487
+    },
+    "test_execution_report.json": {
+      "sha256": "ED9DC6E580C3F8C12910ACA4B65206D8A4793FD194DF113EFB5275FB9AD54AF5",
+      "size_bytes": 1271
+    },
+    "tests/src/v3/test_v3_acceptance.py": {
+      "sha256": "71E8441AA1AC8721A64043BC4C0EB98940998939EF9D6D58EF51BC67E782C7C8",
+      "size_bytes": 5818
+    },
+    "tests/tests/v3/test_v3_acceptance.py": {
+      "sha256": "DDF50C77A67384C4BC256E52DA966B0AAF7A46DDF9129073CEFC3EDE23BD7652",
+      "size_bytes": 5934
+    },
+    "tests/tests/v3/test_v3_api_edges.py": {
+      "sha256": "8A7CD020F195CC5F5E07E3610E8A77FBEC6D440616005720C87864422A16D386",
+      "size_bytes": 1479
+    },
+    "tests/tests/v3/test_v3_atomic_assimilation.py": {
+      "sha256": "52AC7B623B391AB0625711F225DD1EC764087EA105C2B05DD1E47429DE590ABC",
+      "size_bytes": 2668
+    },
+    "tests/tests/v3/test_v3_calibration.py": {
+      "sha256": "7898517C4AF5A23514F15549145199CFD1032115D40E4F3BA86EF42BE0AA8E79",
+      "size_bytes": 6187
+    },
+    "tests/tests/v3/test_v3_cycle_detection.py": {
+      "sha256": "110183F1F4C31E9154A0D1B12843132FDD0D691BBE571563375A74352AD6F76C",
+      "size_bytes": 1444
+    },
+    "tests/tests/v3/test_v3_detector_reset.py": {
+      "sha256": "2C9D38CCB1753041477BBAF69410830414749C1EB8393C08C8F924CF752FC07F",
+      "size_bytes": 5078
+    },
+    "tests/tests/v3/test_v3_dtw.py": {
+      "sha256": "28ADA97437187DF8904E4EC471B82DAD88D83068937653B485EB6417DD2C168D",
+      "size_bytes": 3685
+    },
+    "tests/tests/v3/test_v3_enkf.py": {
+      "sha256": "2D70B1CA9F26E2026EFE9243166A16707E5EF2D09A81BA91B0058C2B70CF1FEF",
+      "size_bytes": 1038
+    },
+    "tests/tests/v3/test_v3_enkf_ensemble_snapshots.py": {
+      "sha256": "C0BDD45632E9DFE635A943A74A3BF7E3255A263C13A3580130122CA5A2C70AC4",
+      "size_bytes": 3232
+    },
+    "tests/tests/v3/test_v3_forecast_integration.py": {
+      "sha256": "511F218EC50E2AD0FCD7886C5A610DCAEEEA6FC9C38009E5EAF25E21456FC596",
+      "size_bytes": 3997
+    },
+    "tests/tests/v3/test_v3_forecasting.py": {
+      "sha256": "A9CA2505671A2DDD5405A7A4C626DB7D50A1BA5875DF4BA2481B80E41435FBFE",
+      "size_bytes": 5017
+    },
+    "tests/tests/v3/test_v3_kalman.py": {
+      "sha256": "293DC7275C0CB46CC28A713ACCC797BEDB41EFCFD5B11C652C8E98EC51AA593E",
+      "size_bytes": 918
+    },
+    "tests/tests/v3/test_v3_losses.py": {
+      "sha256": "583E882D1812CEB0BD3369465FFB7631EBCE52ABC5565B94142E27FC9543055F",
+      "size_bytes": 7988
+    },
+    "tests/tests/v3/test_v3_noise_estimation.py": {
+      "sha256": "348CB0331AD323DC853B2087724951C6099B91E6177030267032BB8ADB5DE4CA",
+      "size_bytes": 3996
+    },
+    "tests/tests/v3/test_v3_numerical_edges.py": {
+      "sha256": "67D97C9E8DE4F8F6EE1811276CEEFE85BF45853F80AD212CCE16E0EACD6184A6",
+      "size_bytes": 5587
+    },
+    "tests/tests/v3/test_v3_orchestration.py": {
+      "sha256": "BB1F8D32C00116FA667DA01A973B5C337598E39F61C30BB5695CCB324DEDC22C",
+      "size_bytes": 4318
+    },
+    "tests/tests/v3/test_v3_peaks.py": {
+      "sha256": "FA4EB1FB2134BB529B822B1248D6EDF6AF3E4A64AB98D0B69D64D63F86042AD3",
+      "size_bytes": 3067
+    },
+    "tests/tests/v3/test_v3_production.py": {
+      "sha256": "38360F86171E61AF84933E183F1124AED49D6951CB223A1107BB1D57A790C359",
+      "size_bytes": 7213
+    },
+    "tests/tests/v3/test_v3_robustness.py": {
+      "sha256": "0528B2677F42EF79400600D50EC135A35EC1E0E7A47D203E23C3F6C87352F0F3",
+      "size_bytes": 4371
+    },
+    "tests/tests/v3/test_v3_t2_engine.py": {
+      "sha256": "430FA947855A1A30DF3C537D532F1984913A6C885C2E65E9D84153693D8B3A85",
+      "size_bytes": 2201
+    },
+    "tests/tests/v3/test_v3_t2_engine_v4.py": {
+      "sha256": "52F215E96C55985EA14D76046F848C4B5CF5D3D24FD58A9A7A48343036B397C6",
+      "size_bytes": 2729
+    }
+  },
+  "release_id": "V3_PRODUCTION_ENGINE_RELEASE_20261112_195824_061125_UTC"
+}

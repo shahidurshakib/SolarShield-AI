@@ -1,4 +1,4 @@
-﻿# Python-generated files
+# Python-generated files
 __pycache__/
 *.py[cod]
 *$py.class
@@ -13,3 +13,39 @@ env/
 .idea/
 .DS_Store
 Thumbs.db
+
+# Secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+secrets/
+credentials/
+
+# Python environments and caches
+.venv/
+.venv-*/
+venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+
+# IDE and OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.log
+
+# Sensitive audit file - review before publishing
+
+# Backup files
+*.bak
+*.backup
+reports/raw_sunspot_groups_cmd_audit/phase11a_archive_wide_audit/phase11a3_missing_day_reconciliation/phase11a3r_carrington_token_review.csv

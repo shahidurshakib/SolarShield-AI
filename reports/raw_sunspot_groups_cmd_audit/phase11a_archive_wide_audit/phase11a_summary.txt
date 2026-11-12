@@ -1,0 +1,55 @@
+PHASE 11A — FULL ARCHIVE-WIDE STRUCTURAL AUDIT
+============================================================================
+Archive: R:\SolarShield AI\data\raw\sunspot_groups\updated_2025\AR_databse-202508.zip
+Archive SHA-256: a494d401f45b838fd4fcfba14b8373774ddc3111788b8aa79d9ca2d8631f87c6
+ZIP test result: None
+
+ARCHIVE INVENTORY
+----------------------------------------------------------------------------
+ZIP entries: 152
+File members: 152
+Duplicate member names: 0
+Member inventory rows: 152
+
+RECORD COUNTS
+----------------------------------------------------------------------------
+Nonempty lines: 257852
+Blank lines: 0
+Valid 74-character lines: 257852
+Invalid-length lines: 0
+Parsed records: 257721
+Decode replacement characters: 0
+Parse status counts: {'PASS': 257715, 'FAIL': 131, 'REVIEW': 6}
+
+DATE COVERAGE
+----------------------------------------------------------------------------
+Minimum date: 1874-05-09 00:00:00
+Maximum date: 2025-08-03 00:00:00
+
+DUPLICATE CHECKS
+----------------------------------------------------------------------------
+Exact source-line duplicate groups: 0
+Duplicate observation-key groups: 2001
+
+ISSUE COUNTS
+----------------------------------------------------------------------------
+FIELD_PARSE_ERROR: 131
+CARRINGTON_OUTSIDE_0_360: 6
+
+LIMITATIONS
+----------------------------------------------------------------------------
+This is a structural and basic field-range audit.
+Range flags are screening signals, not proof of scientific error.
+CMD is not restricted to +/-90 degrees.
+Duplicate observation keys require source-context review.
+No raw archive data was modified.
+No scientific correction was applied.
+No model execution was performed.
+
+OUTPUT FILES
+----------------------------------------------------------------------------
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a_member_inventory.csv
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a_all_records.csv
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a_data_issues.csv
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a_duplicate_records.csv
+R:\SolarShield AI\reports\raw_sunspot_groups_cmd_audit\phase11a_archive_wide_audit\phase11a_summary.txt

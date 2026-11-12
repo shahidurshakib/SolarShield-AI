@@ -1,0 +1,21 @@
+{
+  "experiment_id": "V2-006",
+  "candidate": "constrained_cubic_bspline",
+  "required_fold_count": 19,
+  "successful_fold_count": 19,
+  "failed_fold_count": 0,
+  "all_required_folds_succeeded": true,
+  "fold_integrity": {
+    "expected_fold_count": 19,
+    "observed_record_count": 19,
+    "unique_fold_count": 19,
+    "missing_folds": [],
+    "unexpected_folds": [],
+    "duplicate_folds": [],
+    "passed": true
+  },
+  "equal_cycle_weighted_curve_MAE": 32.89758306311993,
+  "equal_cycle_weighted_curve_RMSE": 43.2074532722564,
+  "aggregation_note": "Arithmetic mean of successful per-cycle metrics. Incomplete results are descriptive only.",
+  "acceptance_decision": "NOT MADE BY THIS RUNNER"
+}

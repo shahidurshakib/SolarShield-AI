@@ -1,0 +1,13 @@
+{
+  "numpy": "2.5.4",
+  "pytest_command": [
+    "R:\\SolarShield AI\\.venv-astropy\\Scripts\\python.exe",
+    "-m",
+    "pytest",
+    "-q",
+    "tests/v3",
+    "src/v3/test_v3_acceptance.py"
+  ],
+  "python": "3.14.10 (tags/v3.14.10:b703b2c, Oct 25 2026, 17:36:52) [MSC v.1944 64 bit (AMD64)]",
+  "scipy": "1.18.1"
+}

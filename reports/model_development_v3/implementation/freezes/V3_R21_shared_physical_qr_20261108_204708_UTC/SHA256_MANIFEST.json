@@ -1,0 +1,26 @@
+﻿{
+    "snapshot_id":  "V3_R21_shared_physical_qr_20261108_204708_UTC",
+    "created_utc":  "2026-11-08T20:47:53.6050894Z",
+    "snapshot_type":  "R21_OPTION_A_IMPLEMENTATION_VALIDATION",
+    "protocol_status":  "DRAFT_NOT_FROZEN",
+    "historical_data_used":  false,
+    "forecast_generated":  false,
+    "files":  [
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_noise_estimation.py",
+                      "sha256":  "1CCAC7FA1EE21A1FA2CD45A31B27A6BBD3B193C69E5F390FA6371C1AFFB306D7"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_noise_estimation.py",
+                      "sha256":  "348CB0331AD323DC853B2087724951C6099B91E6177030267032BB8ADB5DE4CA"
+                  },
+                  {
+                      "relative_path":  "protocol\\R21_Option_A_Shared_Physical_QR.md",
+                      "sha256":  "5CBC56516B49A6A2E731D352006B69404C989FEDC6097C856613FCC3F9F68B4F"
+                  },
+                  {
+                      "relative_path":  "audit\\R21_OPTION_A_SENSITIVITY_20261108_204708.json",
+                      "sha256":  "24CE1BF5EEF3CC8D78523D688D9C164043FAE4DF5AC64DADCD5F39C6AB12F9F1"
+                  }
+              ]
+}

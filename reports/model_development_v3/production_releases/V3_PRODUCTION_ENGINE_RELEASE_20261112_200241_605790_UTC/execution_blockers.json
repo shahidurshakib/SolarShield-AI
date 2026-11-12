@@ -1,0 +1,65 @@
+{
+  "audit_status": "BLOCKED_PENDING_MISSING_FROZEN_SELECTION_EVIDENCE",
+  "babcock_leighton_authorized": false,
+  "blocked_scopes": [
+    {
+      "path": "scopes/02_calibration/blocking_report.json",
+      "scope_id": "V3_R30_C13_C15_CALIBRATION_20261111_220209_UTC",
+      "status": "BLOCKED"
+    },
+    {
+      "path": "scopes/03_historical_backtesting/blocking_report.json",
+      "scope_id": "V3_R30_C16_C24_BACKTEST_20261111_220209_UTC",
+      "status": "BLOCKED"
+    },
+    {
+      "path": "scopes/04_cycle25_exploratory/blocking_report.json",
+      "scope_id": "V3_R30_C25_EXPLORATORY_20261111_220209_UTC",
+      "status": "BLOCKED"
+    },
+    {
+      "path": "scopes/05_kf_enkf_comparison/blocking_report.json",
+      "scope_id": "V3_R30_KF_ENKF_COMPARE_20261111_220209_UTC",
+      "status": "BLOCKED"
+    }
+  ],
+  "blockers": [
+    {
+      "details": "Frozen disposition says EnKF selection/comparison results were not generated. Candidate sizes 100/250/500 and seeds 0-4 are alternatives, not a selected production configuration.",
+      "evidence": "reports/model_development_v3/protocols/freezes/V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC/R19_R33_FINAL_DISPOSITION.json",
+      "requirement": "R22 EnKF selection",
+      "status": "MISSING_SELECTION_EVIDENCE"
+    },
+    {
+      "details": "The disposition says final detector implementation and selection evidence remain to be verified; no selected smoother/confirmation configuration is frozen in the preserved R20 result.",
+      "evidence": "reports/model_development_v3/protocols/freezes/V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC/R19_R33_FINAL_DISPOSITION.json",
+      "requirement": "R23 cycle-detector selection",
+      "status": "MISSING_SELECTION_EVIDENCE"
+    },
+    {
+      "details": "The disposition records selection results as not generated. No selected window is present in the preserved R20 result.",
+      "evidence": "reports/model_development_v3/protocols/freezes/V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC/R19_R33_FINAL_DISPOSITION.json",
+      "requirement": "R24 DTW selection",
+      "status": "MISSING_SELECTION_EVIDENCE"
+    },
+    {
+      "details": "The disposition records selection results as not generated. No selected prominence, matching distance, or unmatched-peak penalty is present in the preserved R20 result.",
+      "evidence": "reports/model_development_v3/protocols/freezes/V3_PROTOCOL_DRAFT_1.7_FREEZE_20261111_215657_UTC/R19_R33_FINAL_DISPOSITION.json",
+      "requirement": "R25 local-peak selection",
+      "status": "MISSING_SELECTION_EVIDENCE"
+    },
+    {
+      "details": "The approved initialization requires a training-only sequence scale and corresponding covariance. No fitted historical Q/R/P0 application artifact exists; production helpers require explicit covariance inputs and do not substitute synthetic/default values.",
+      "evidence": "reports/model_development_v3/protocols/drafts/V3_Technical_Validation_Protocol_Draft_1.7.md",
+      "requirement": "R19/R21 filter initialization for production cycles",
+      "status": "NO_APPROVED_CYCLE_SCALE_ARTIFACT"
+    }
+  ],
+  "model_execution_performed_in_this_release": false,
+  "r20_scope": "PRESERVED_COMPLETED_NOT_RERUN",
+  "r21_identifiability": "NOT_ESTABLISHED",
+  "r26_calibration_status": "EVIDENCE_LIMITED_NOT_VALIDATED",
+  "r30_authorization_gate_status": "CLEARED",
+  "release_id": "V3_PRODUCTION_ENGINE_RELEASE_20261112_200241_605790_UTC",
+  "scientific_acceptance": "NOT_GRANTED"
+}

@@ -1,0 +1,60 @@
+﻿SOLARSHIELD-AI V3 — PROTOCOL REVIEW AND FREEZE RECORD
+Generated UTC: 20261111_211850_UTC
+Protocol: Technical Validation Protocol Draft 1.6
+
+OWNER APPROVAL:
+Verified against the approved R21 Option A protocol decision record.
+
+R19:
+First-residual initialization convention approved.
+Implementation and regression evidence retained.
+
+R20:
+Selection partition and candidate grid defined.
+Actual configuration selection is a post-freeze authorized activity.
+
+R21:
+Option A controls.
+Identifiability NOT_ESTABLISHED.
+Scientific parameter recovery NOT_ESTABLISHED.
+Scientific acceptance NOT_GRANTED.
+
+R22:
+Ensemble sizes and seed comparisons defined.
+Execution and selection evidence remain post-freeze work.
+
+R23-R25:
+Detector, DTW and peak-matching specifications defined.
+Selection evidence remains post-freeze work.
+
+R26:
+UNRESOLVED_CALIBRATION_EVIDENCE.
+No guaranteed interval coverage or validated-interval claim.
+
+R27-R28:
+Common-origin comparison and owner-approved four-condition
+acceptance policy retained.
+
+R29:
+Only explicitly granted activities are in scope.
+Babcock-Leighton integration NOT AUTHORIZED.
+
+R30:
+Input, partition, preservation, approval and regression evidence
+verified by this freeze procedure.
+Unique execution identifiers and separate output directories
+must be used for subsequent authorized execution.
+
+R31:
+Historical artifacts remain immutable.
+
+R32:
+A1 and A2 independently compared with A0.
+All four owner-approved conditions are mandatory.
+
+R33:
+Draft 1.6 and its controlling precedence are retained.
+
+NO MODEL EXECUTION WAS PERFORMED.
+NO HISTORICAL ARTIFACT WAS MODIFIED.
+R21 scientific limitations and R26 calibration limitations remain explicit.

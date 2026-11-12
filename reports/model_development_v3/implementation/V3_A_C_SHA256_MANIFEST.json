@@ -1,0 +1,90 @@
+﻿[
+    {
+        "File":  "src\\v3\\__init__.py",
+        "SHA256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+    },
+    {
+        "File":  "src\\v3\\__pycache__\\__init__.cpython-314.pyc",
+        "SHA256":  "334902DC674DC69C715DA20FE856C13444E94E9C1E5F73226AD2CF7661433950"
+    },
+    {
+        "File":  "src\\v3\\__pycache__\\solarshield_v3_cycle_detection.cpython-314.pyc",
+        "SHA256":  "7009932A337EBA885FEA1BAFCF8C056BCE2BFEC1E958CD836DE2772C093D57BB"
+    },
+    {
+        "File":  "src\\v3\\__pycache__\\solarshield_v3_dtw.cpython-314.pyc",
+        "SHA256":  "F66AEBB5CA1583441C7A89CFCF181399C340208037DB889DE3827A8E192CF4C5"
+    },
+    {
+        "File":  "src\\v3\\__pycache__\\solarshield_v3_enkf.cpython-314.pyc",
+        "SHA256":  "777F2BE81DE3882CAE6F241F1F10B346CF85A33FA6413541E1E02F04BA554ADE"
+    },
+    {
+        "File":  "src\\v3\\__pycache__\\solarshield_v3_kalman.cpython-314.pyc",
+        "SHA256":  "36C0C5F26CAFD47D0139F2ADFC0D63AE41CBA7F388ED61A19F6079ADD72E7C53"
+    },
+    {
+        "File":  "src\\v3\\__pycache__\\solarshield_v3_losses.cpython-314.pyc",
+        "SHA256":  "AB9628863E641CAC30B293CB5535420500E54795D9DFF6730A22A2C9F40842A9"
+    },
+    {
+        "File":  "src\\v3\\solarshield_v3_cycle_detection.py",
+        "SHA256":  "EDEEBF5537AC48922107E9830BEFA4E06C7FA8AD93825BF9F4A4C929EA8E724C"
+    },
+    {
+        "File":  "src\\v3\\solarshield_v3_dtw.py",
+        "SHA256":  "7A7F87585896EAC11EE962CF3A3136215E43CCB9A63B88AB819487C06B45AF1E"
+    },
+    {
+        "File":  "src\\v3\\solarshield_v3_enkf.py",
+        "SHA256":  "35F38694FDC9F00F4C99DB49078B1993295FA1F589380BFE50A70795869BA83E"
+    },
+    {
+        "File":  "src\\v3\\solarshield_v3_kalman.py",
+        "SHA256":  "53D395D340B1847B60093E991550C034F0D1277A5B43FF735307C6036559AA20"
+    },
+    {
+        "File":  "src\\v3\\solarshield_v3_losses.py",
+        "SHA256":  "7D517A6044288E9DE40E5CBE01F307966C64BB398C922840D8835F0F935DB74F"
+    },
+    {
+        "File":  "tests\\v3\\__pycache__\\test_v3_cycle_detection.cpython-314.pyc",
+        "SHA256":  "40D4EB3322AC5E26691985257C10E54BC7A4E2D8AEFE5A82349FE17982200888"
+    },
+    {
+        "File":  "tests\\v3\\__pycache__\\test_v3_dtw.cpython-314.pyc",
+        "SHA256":  "83865B9F94F73EBFE38F9572A142B047C8604020E03BA46EF3AC7265CC093DC5"
+    },
+    {
+        "File":  "tests\\v3\\__pycache__\\test_v3_enkf.cpython-314.pyc",
+        "SHA256":  "6C57C7F923717F027D06FD57FE5CB5B84F105A9E617BF3848BD776FC5D2F6B83"
+    },
+    {
+        "File":  "tests\\v3\\__pycache__\\test_v3_kalman.cpython-314.pyc",
+        "SHA256":  "D8D870F4B5D1EFD3870E8A4968C0F00C20BBB77C2F046E64A4F8A38140081130"
+    },
+    {
+        "File":  "tests\\v3\\__pycache__\\test_v3_losses.cpython-314.pyc",
+        "SHA256":  "B62143E6BFE766ABF3F1441AC3F2C48E5BC3836BB85B96FB0FCDA8DA9307FBC4"
+    },
+    {
+        "File":  "tests\\v3\\test_v3_cycle_detection.py",
+        "SHA256":  "EC7078D78C9A5D1B01C5D68C60977464DFA63CF55E32789EBD400DF1A9470D1E"
+    },
+    {
+        "File":  "tests\\v3\\test_v3_dtw.py",
+        "SHA256":  "E1E698BA2C77096F03C57C3F6049ECF1786E24F0A54249D86BC211AB6E102C72"
+    },
+    {
+        "File":  "tests\\v3\\test_v3_enkf.py",
+        "SHA256":  "2D70B1CA9F26E2026EFE9243166A16707E5EF2D09A81BA91B0058C2B70CF1FEF"
+    },
+    {
+        "File":  "tests\\v3\\test_v3_kalman.py",
+        "SHA256":  "293DC7275C0CB46CC28A713ACCC797BEDB41EFCFD5B11C652C8E98EC51AA593E"
+    },
+    {
+        "File":  "tests\\v3\\test_v3_losses.py",
+        "SHA256":  "6E0AEB4116AC7E018BE4629F0916F1D3A48E950687818147813776003BB9A9D0"
+    }
+]

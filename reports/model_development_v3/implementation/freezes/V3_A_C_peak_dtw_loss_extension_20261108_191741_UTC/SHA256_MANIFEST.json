@@ -1,0 +1,107 @@
+{
+    "snapshot_id":  "V3_A_C_peak_dtw_loss_extension_20261108_191741_UTC",
+    "created_utc":  "2026-11-08T19:17:41.8369750Z",
+    "status":  "IMPLEMENTATION_SNAPSHOT",
+    "protocol_status":  "DRAFT - NOT FROZEN",
+    "file_count":  18,
+    "source_hash_verification":  "PASS",
+    "copied_file_hash_verification":  "PASS",
+    "compile_check":  "PASS - reported by project owner",
+    "synthetic_test_suite":  "86/86 PASS - reported by project owner",
+    "scientific_validation":  "NOT PERFORMED",
+    "historical_backtesting":  "NOT AUTHORIZED",
+    "forecasting_execution":  "NOT AUTHORIZED",
+    "babcock_leighton_integration":  "NOT AUTHORIZED",
+    "files":  [
+                  {
+                      "relative_path":  "src\\v3\\__init__.py",
+                      "sha256":  "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_cycle_detection.py",
+                      "sha256":  "52DB9A3FB61EF523E4177FADE855A3BE24687EC84024F3B9799BD1EC8AD921A7",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_dtw.py",
+                      "sha256":  "6982E96ABA36C9A03C8B5927F84E4C50A06CD8559913426701516C6A4F26BE21",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_enkf.py",
+                      "sha256":  "92F6171C5FB6C15EC0F2817B4DE2CD83E5D71D97FD49E451249715CC6102EB64",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_kalman.py",
+                      "sha256":  "EFE4CB78194CBDE4546A8D7AD1B8BA39AA372DD936537D7D07B1127D6156D5B7",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_losses.py",
+                      "sha256":  "09C03C1B7F58589B02614F74F21C23CAC3498834AC9C0E0C88AAE3C2F5567910",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "src\\v3\\solarshield_v3_peaks.py",
+                      "sha256":  "263CBF32493138D016D0D09D3FF456FFF83599AC5136D847E4961894256DBA6D",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_api_edges.py",
+                      "sha256":  "8A7CD020F195CC5F5E07E3610E8A77FBEC6D440616005720C87864422A16D386",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_atomic_assimilation.py",
+                      "sha256":  "52AC7B623B391AB0625711F225DD1EC764087EA105C2B05DD1E47429DE590ABC",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_cycle_detection.py",
+                      "sha256":  "110183F1F4C31E9154A0D1B12843132FDD0D691BBE571563375A74352AD6F76C",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_detector_reset.py",
+                      "sha256":  "2C9D38CCB1753041477BBAF69410830414749C1EB8393C08C8F924CF752FC07F",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_dtw.py",
+                      "sha256":  "28ADA97437187DF8904E4EC471B82DAD88D83068937653B485EB6417DD2C168D",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_enkf.py",
+                      "sha256":  "2D70B1CA9F26E2026EFE9243166A16707E5EF2D09A81BA91B0058C2B70CF1FEF",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_kalman.py",
+                      "sha256":  "293DC7275C0CB46CC28A713ACCC797BEDB41EFCFD5B11C652C8E98EC51AA593E",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_losses.py",
+                      "sha256":  "583E882D1812CEB0BD3369465FFB7631EBCE52ABC5565B94142E27FC9543055F",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_numerical_edges.py",
+                      "sha256":  "67D97C9E8DE4F8F6EE1811276CEEFE85BF45853F80AD212CCE16E0EACD6184A6",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_peaks.py",
+                      "sha256":  "FA4EB1FB2134BB529B822B1248D6EDF6AF3E4A64AB98D0B69D64D63F86042AD3",
+                      "verification":  "PASS"
+                  },
+                  {
+                      "relative_path":  "tests\\v3\\test_v3_robustness.py",
+                      "sha256":  "0528B2677F42EF79400600D50EC135A35EC1E0E7A47D203E23C3F6C87352F0F3",
+                      "verification":  "PASS"
+                  }
+              ]
+}

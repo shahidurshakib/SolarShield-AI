@@ -1,0 +1,120 @@
+{
+  "experiment_id": "V2-007",
+  "execution_timestamp_utc": "2026-11-02T19:46:28.418202+00:00",
+  "execution_status": "COMPLETED",
+  "protocol_status": "FROZEN",
+  "execution_authorization": "YES",
+  "required_heldout_cycles": [
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24
+  ],
+  "candidate_ids": [
+    "A1-S1",
+    "A2-S1",
+    "A3-S1",
+    "A4-S1",
+    "A1-S2",
+    "A1-S3",
+    "A1-S4"
+  ],
+  "expected_candidate_fold_records": 133,
+  "observed_candidate_fold_records": 133,
+  "candidate_fold_completeness_passed": true,
+  "missing_candidate_fold_records": [],
+  "unexpected_candidate_fold_records": [],
+  "duplicate_record_count": 0,
+  "baseline": {
+    "experiment_id": "V2-004",
+    "candidate": "phase_median_template",
+    "MAE": 32.28618221690591,
+    "RMSE": 43.007945798589034,
+    "MAE_acceptance_limit": 30.671873106060612,
+    "RMSE_acceptance_limit": 47.30874037847794
+  },
+  "candidate_results": {
+    "A1-S1": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 40.0610810801672,
+      "aggregate_RMSE": 51.2555158992782,
+      "failure_categories": {}
+    },
+    "A2-S1": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 39.605291671654,
+      "aggregate_RMSE": 50.914045789674155,
+      "failure_categories": {}
+    },
+    "A3-S1": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 40.92802123453624,
+      "aggregate_RMSE": 52.102782180758,
+      "failure_categories": {}
+    },
+    "A4-S1": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 37.88597980154351,
+      "aggregate_RMSE": 48.74044393047204,
+      "failure_categories": {}
+    },
+    "A1-S2": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 45.256044118398016,
+      "aggregate_RMSE": 55.976586717244764,
+      "failure_categories": {}
+    },
+    "A1-S3": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 43.292634342727155,
+      "aggregate_RMSE": 54.02065302084048,
+      "failure_categories": {}
+    },
+    "A1-S4": {
+      "required_folds": 19,
+      "successful_folds": 19,
+      "failed_folds": 0,
+      "all_required_folds_succeeded": true,
+      "aggregate_MAE": 41.25681399531002,
+      "aggregate_RMSE": 52.154874083987146,
+      "failure_categories": {}
+    }
+  },
+  "primary_candidate": "A1-S1",
+  "primary_acceptance": false,
+  "primary_acceptance_status": "NOT_MET",
+  "interpretation": "A1-S1 is the only threshold-gated primary candidate. Challengers are comparative and cannot replace the primary."
+}
