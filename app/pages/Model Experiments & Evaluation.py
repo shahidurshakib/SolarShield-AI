@@ -50,37 +50,40 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* TABS CUSTOMIZATION (BULLETPROOF FIX) */
+/* TABS CUSTOMIZATION (ABSOLUTE OVERRIDE) */
 .stTabs [data-baseweb="tab-list"] {
     gap: 24px;
-    background-color: transparent;
-    border-bottom: 1px solid var(--border);
+    background-color: transparent !important;
+    border-bottom: 1px solid var(--border) !important;
     padding-bottom: 10px;
 }
 .stTabs button[data-baseweb="tab"] {
     background-color: transparent !important;
     border: none !important;
     padding: 10px 0 !important;
+    box-shadow: none !important;
 }
-.stTabs button[data-baseweb="tab"] p {
+.stTabs button[data-baseweb="tab"] * {
     color: #FFFFFF !important;
     -webkit-text-fill-color: #FFFFFF !important;
     font-weight: 600 !important;
     font-family: var(--font-mono) !important;
     font-size: 0.95rem !important;
     opacity: 1 !important;
+    text-shadow: none !important;
 }
 .stTabs button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom: 3px solid var(--cyan) !important;
 }
-.stTabs button[data-baseweb="tab"][aria-selected="true"] p {
+.stTabs button[data-baseweb="tab"][aria-selected="true"] * {
     color: var(--cyan) !important;
     -webkit-text-fill-color: var(--cyan) !important;
 }
 .stTabs [data-baseweb="tab-highlight"] {
     background-color: var(--cyan) !important;
+    display: none !important;
 }
-.stTabs button[data-baseweb="tab"]:hover p {
+.stTabs button[data-baseweb="tab"]:hover * {
     color: var(--cyan) !important;
     -webkit-text-fill-color: var(--cyan) !important;
 }
