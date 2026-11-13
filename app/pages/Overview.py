@@ -62,7 +62,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 }
 .stTabs button[data-baseweb="tab"] p, 
 .stTabs button[data-baseweb="tab"] span {
-    color: #F1F5F9 !important;
+    color: #FFFFFF !important;
     font-weight: 600 !important;
     font-family: var(--font-mono) !important;
     font-size: 0.95rem !important;
