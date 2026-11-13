@@ -1,19 +1,10 @@
-"""Operations board — demo risk status, alerts, playbooks, acknowledgement."""
-from __future__ import annotations
-
-from datetime import datetime, timezone
-
 import streamlit as st
-
-from lib import data
-from lib.demo_ops import SCENARIOS, RISK_META, build_state
-from lib.ui import demo_banner, risk_badge
 
 # ============================================================
 # PAGE CONFIGURATION
 # ============================================================
 
-st.set_page_config(page_title="Operations · SolarShield-AI", layout="wide", page_icon="☀")
+st.set_page_config(page_title="Project Overview · SolarShield-AI", layout="wide", page_icon="📖")
 
 # ============================================================
 # DESIGN SYSTEM (Deep Space / Steel Blue)
@@ -30,13 +21,12 @@ st.markdown("""
     --card-bg-2: #334155;
     --border: #475569;
     --heading: #FFFFFF;
-    --body: #F1F5F9;
+    --body: #FFFFFF;
     --subheading: #CBD5E1;
     --muted: #94A3B8;
     --cyan: #00E5FF;
     --amber: #FFB703;
     --success: #10B981;
-    --danger: #EF4444;
     --font-main: 'Inter', sans-serif;
     --font-mono: 'JetBrains Mono', monospace;
 }
@@ -48,109 +38,105 @@ html, body, .stApp { font-family: var(--font-main) !important; }
     color: var(--body) !important;
 }
 [data-testid="stHeader"] { background: transparent !important; }
-.main .block-container { max-width: 1500px; padding-top: 2rem; padding-bottom: 120px; }
+.main .block-container { max-width: 1200px; padding-top: 2rem; padding-bottom: 120px; }
 
 h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !important; }
-.stMarkdown p, .stMarkdown li { color: var(--body) !important; font-size: 1.05rem; }
-.stMarkdown strong { color: var(--cyan) !important; }
+.stMarkdown p, .stMarkdown li { color: var(--body) !important; font-size: 1.1rem; line-height: 1.6; }
+.stMarkdown strong { color: var(--cyan) !important; font-weight: 700 !important; }
 
 /* SIDEBAR */
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* CUSTOM ALERT BOX */
-.custom-alert {
-    background: rgba(255, 183, 3, 0.1);
-    border: 1px solid rgba(255, 183, 3, 0.4);
-    border-radius: 12px;
-    padding: 1.2rem;
+/* ==========================================================
+   CUSTOM HORIZONTAL RADIO BUTTONS (Acts as our Tabs)
+   ========================================================== */
+div[role="radiogroup"] {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
     margin-bottom: 24px;
-    width: 100%;
-    box-sizing: border-box;
 }
-.custom-alert p { color: #FFFFFF !important; font-size: 0.95rem; margin: 0; }
-.custom-alert strong { color: var(--amber) !important; font-weight: 800 !important; }
 
-/* SECTOR GRID */
-.sector-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    margin-bottom: 30px;
-    width: 100%;
+div[role="radiogroup"] label {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 8px 0 !important;
+    cursor: pointer;
 }
-.sector-card {
-    background: linear-gradient(135deg, var(--card-bg-2) 0%, var(--card-bg-1) 100%);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.25rem;
-    box-shadow: 0 8px 24px rgba(0,0,0,0.3);
-    display: flex;
-    flex-direction: column;
-    box-sizing: border-box;
-}
-.sector-name { color: var(--heading); font-size: 1rem; font-weight: 700; margin-bottom: 8px; }
-.sector-prob { color: var(--cyan); font-size: 2rem; font-weight: 800; margin-top: 10px; line-height: 1; }
-.sector-summary { color: var(--subheading); font-size: 0.85rem; margin-top: 8px; line-height: 1.4; flex-grow: 1; }
-.sector-footer { color: var(--muted); font-size: 0.75rem; font-family: var(--font-mono); margin-top: 12px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); }
 
-/* TOP STATUS BAND */
-.status-band {
-    background: linear-gradient(135deg, #1E3A8A 0%, #0F172A 100%);
-    border: 1px solid #3B82F6;
-    border-radius: 16px;
-    padding: 1.25rem 1.5rem;
-    margin: 1rem 0 2rem 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-    box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+/* Hide the actual radio circle */
+div[role="radiogroup"] label > div:first-child {
+    display: none !important;
 }
-.status-band-title { color: var(--muted); font-size: 0.8rem; font-family: var(--font-mono); letter-spacing: 1px; }
-.status-band-level { color: #FFFFFF; font-size: 1.6rem; font-weight: 800; margin-top: 4px; }
-.status-band-sub { color: #93C5FD; font-size: 0.9rem; margin-top: 4px; }
-.status-band-meta { text-align: right; color: #BFDBFE; font-size: 0.85rem; font-family: var(--font-mono); line-height: 1.6; }
 
-/* EXPANDER FIX */
-[data-testid="stExpander"] {
-    background-color: var(--card-bg-1) !important;
-    border: 1px solid var(--border) !important;
-    border-radius: 12px !important;
-    overflow: hidden;
-}
-[data-testid="stExpander"] summary {
-    background-color: var(--card-bg-2) !important;
-    color: var(--heading) !important;
-    border-bottom: 1px solid var(--border) !important;
-}
-[data-testid="stExpander"] summary * {
-    color: var(--heading) !important;
+/* Force all text to be White initially */
+div[role="radiogroup"] label p {
+    color: #FFFFFF !important;
+    font-family: var(--font-mono) !important;
+    font-size: 1rem !important;
     font-weight: 600 !important;
 }
-[data-testid="stExpander"] details[open] {
-    background-color: var(--card-bg-1) !important;
-    color: var(--body) !important;
+
+/* Style the SELECTED tab */
+div[role="radiogroup"] label[data-checked="true"] {
+    border-bottom: 3px solid var(--cyan) !important;
 }
-[data-testid="stExpander"] details[open] * {
-    color: var(--body) !important;
+div[role="radiogroup"] label[data-checked="true"] p {
+    color: var(--cyan) !important;
 }
 
-/* CUSTOM TRACEABILITY BLOCK */
-.trace-block {
-    background-color: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 1rem;
-    font-family: var(--font-mono);
-    font-size: 0.85rem;
-    color: var(--cyan);
-    white-space: pre-wrap;
-    line-height: 1.5;
+/* Hover effect */
+div[role="radiogroup"] label:hover p {
+    color: var(--cyan) !important;
 }
 
-/* FOOTER (Synced with Home) */
+/* HEADINGS WITHIN CONTENT */
+h3 {
+    color: var(--cyan) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 1.4rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
+/* TABLES */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+th, td {
+    border: 1px solid var(--border) !important;
+    padding: 12px !important;
+    text-align: left;
+    color: var(--body) !important;
+    font-size: 1rem;
+}
+th {
+    background-color: var(--card-bg-2) !important;
+    color: var(--cyan) !important;
+    font-weight: 700;
+}
+tr:nth-child(even) { background-color: var(--card-bg-1) !important; }
+tr:nth-child(odd) { background-color: var(--bg) !important; }
+
+/* BLOCKQUOTE */
+blockquote {
+    border-left: 4px solid var(--cyan);
+    background: rgba(0, 229, 255, 0.05);
+    padding: 15px 20px;
+    margin: 20px 0;
+    border-radius: 0 8px 8px 0;
+    color: var(--heading) !important;
+    font-size: 1.1rem;
+}
+
+/* FOOTER */
 .custom-footer {
     position: fixed; bottom: 0; left: 0; width: 100%;
     background: rgba(10, 17, 32, 0.95); border-top: 1px solid var(--border);
@@ -158,16 +144,6 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 }
 .footer-link { color: var(--cyan) !important; text-decoration: none !important; }
 .footer-copyright { color: var(--muted) !important; font-size: 0.75rem; }
-
-/* RESPONSIVE */
-@media (max-width: 1100px) {
-    .sector-grid { grid-template-columns: repeat(2, 1fr); }
-}
-@media (max-width: 600px) {
-    .sector-grid { grid-template-columns: 1fr; }
-    .status-band { flex-direction: column; align-items: flex-start; }
-    .status-band-meta { text-align: left; }
-}
 </style>
 """, unsafe_allow_html=True)
 
@@ -175,165 +151,193 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 # PAGE CONTENT
 # ============================================================
 
-st.title("Operations board")
-st.caption("Live-style status for LEO drag, GNSS, power grid, and aviation — presentation demo.")
-demo_banner()
+st.title("Project Documentation")
+st.caption("Complete Project Overview & Technical Documentation")
+st.markdown("""
+<p style="font-family: var(--font-mono); color: var(--cyan); font-size: 1.1rem; margin-bottom: 2rem;">
+Predict the Sun. Understand the Risk. Prepare Earth.
+</p>
+""", unsafe_allow_html=True)
 
-# --- scenario controls ---
-if "ops_scenario" not in st.session_state:
-    st.session_state.ops_scenario = "Elevated LEO drag"
-if "ops_ack" not in st.session_state:
-    st.session_state.ops_ack = {}  # alert_id -> {note, at}
+# ============================================================
+# CUSTOM TABS (Using Radio Buttons to guarantee visibility)
+# ============================================================
 
-col_sc, col_info = st.columns([2, 3])
-with col_sc:
-    scenario = st.selectbox(
-        "Demo scenario",
-        list(SCENARIOS.keys()),
-        index=list(SCENARIOS.keys()).index(st.session_state.ops_scenario)
-        if st.session_state.ops_scenario in SCENARIOS
-        else 1,
-    )
-    st.session_state.ops_scenario = scenario
+tab_selection = st.radio(
+    "Navigation",
+    [
+        "📌 Overview & Vision", 
+        "🔬 Data & Methodology", 
+        "🤖 Model Experiments", 
+        "🏗️ Architecture & Future"
+    ],
+    horizontal=True,
+    label_visibility="collapsed" # Hides the "Navigation" label
+)
 
-state = build_state(scenario)
+# --- TAB 1: OVERVIEW & VISION ---
+if tab_selection == "📌 Overview & Vision":
+    st.markdown("""
+    ### 1. Project Overview
+    **SolarShield-AI** is a research-oriented artificial intelligence and space weather risk assessment project developed by Team MU Solar Pulse for the NASA Space Apps Challenge 2026.
 
-# merge acknowledgements from session
-for alert in state.alerts:
-    if alert.id in st.session_state.ops_ack:
-        alert.acknowledged = True
-        alert.ack_note = st.session_state.ops_ack[alert.id].get("note", "")
-        alert.ack_at = st.session_state.ops_ack[alert.id].get("at")
+    The project investigates how historical and ongoing solar activity can be analyzed, modeled, and translated into meaningful information about potential space weather conditions and their possible consequences for Earth-based technological infrastructure.
 
-with col_info:
-    try:
-        accept, freeze = data.model_status()
-        st.markdown(
-            f"**Research model status:** scientific acceptance **{accept}** · "
-            f"accepted freeze **{freeze}** · demo board is independent of model freeze."
-        )
-    except Exception:
-        st.markdown("**Research model status:** unavailable in this checkout.")
+    Changes in solar magnetic activity, sunspots, solar flares, coronal mass ejections (CMEs), and solar wind conditions can contribute to disturbances in Earth's magnetosphere and ionosphere. These may affect satellites, GNSS, communications, aviation, power grids, and scientific instruments.
 
-# --- top status band ---
-meta = RISK_META[state.overall]
-open_alerts = sum(1 for a in state.alerts if not a.acknowledged)
-total_alerts = len(state.alerts)
+    > **Core Concept Pipeline:** Solar Activity → Space Weather → Earth Response → Risk Assessment → Early Warning → Mitigation
 
-st.html(f"""
-<div class="status-band">
-    <div>
-        <div class="status-band-title">OVERALL DEMO STATUS</div>
-        <div class="status-band-level">{meta['icon']} {state.overall}</div>
-        <div class="status-band-sub">Scenario: {state.scenario_name}</div>
-    </div>
-    <div class="status-band-meta">
-        <div>Board clock (UTC): {state.generated_at.strftime('%Y-%m-%d %H:%M')}</div>
-        <div>Active demo alerts: {open_alerts} open / {total_alerts} total</div>
-    </div>
-</div>
-""")
+    ### 2. Problem Statement
+    The central problem is the difficulty of translating complex solar observations and space weather information into understandable, sector-specific risk information.
 
-# --- sector cards ---
-st.subheader("Sector risk (demo)")
+    Several challenges motivate this research:
+    1. Solar activity changes over multiple timescales.
+    2. Long-term solar cycles are not perfectly periodic.
+    3. Solar observations contain noise, uncertainty, and provisional measurements.
+    4. Solar activity alone cannot establish the severity of an Earth-directed event.
+    5. Forecasting models require rigorous historical evaluation.
+    6. Warning systems must communicate uncertainty instead of presenting false certainty.
 
-sector_html = '<div class="sector-grid">'
-for sector in state.sectors:
-    m = RISK_META[sector.level]
-    badge_html = risk_badge(sector.level)
+    ### 3. NASA Space Apps Challenge Alignment
+    SolarShield-AI is aligned with the 2026 theme: **Be An Earth System Trend Detective!**
+
+    | Challenge Concept | SolarShield-AI Implementation |
+    |---|---|
+    | Historical scientific observations | SILSO monthly sunspot records |
+    | Long-term trend analysis | Historical solar activity analysis |
+    | Temporal pattern identification | Solar-cycle decomposition and phase normalization |
+    | Statistical investigation | Autocorrelation and forecasting diagnostics |
+    | Predictive analysis | Baseline, spline and cycle-conditioned models |
+
+    ### 4. Project Objectives
+    **Primary Objectives:**
+    1. Build a reproducible historical solar activity dataset.
+    2. Investigate the characteristics of solar cycles.
+    3. Develop and evaluate solar-cycle forecasting models.
+    4. Compare statistical and machine learning approaches.
+    5. Investigate amplitude and shape differences between solar cycles.
     
-    sector_html += f"""
-    <div class="sector-card">
-        <div class="sector-name">{sector.name}</div>
-        <div>{badge_html}</div>
-        <div class="sector-prob">{sector.probability:.0f}%</div>
-        <div class="sector-summary">{sector.summary}</div>
-        <div class="sector-footer">
-            illustrative · {sector.window_hours}h window<br>
-            Data age (demo): {sector.freshness_minutes} min
-        </div>
-    </div>
-    """
-sector_html += '</div>'
-st.html(sector_html)
+    **Long-Term Objectives:**
+    1. Integrate multiple solar and space weather datasets.
+    2. Introduce calibrated probabilistic risk assessments.
+    3. Validate outputs with relevant scientific and operational partners.
+    """)
 
+# --- TAB 2: DATA & METHODOLOGY ---
+elif tab_selection == "🔬 Data & Methodology":
+    st.markdown("""
+    ### 5. Data Sources & Datasets
+    The project distinguishes between datasets directly used, inspected experimentally, and identified for future integration.
 
-# --- alerts ---
-st.subheader("Active alerts")
-if not state.alerts:
-    st.success("No active demo alerts in this scenario.")
-else:
-    for alert in state.alerts:
-        open_label = "Acknowledged" if alert.acknowledged else "Open"
-        with st.expander(
-            f"{alert.level} · {alert.title} · {open_label}",
-            expanded=not alert.acknowledged,
-        ):
-            left, right = st.columns([2, 1])
-            with left:
-                st.html(risk_badge(alert.level))
-                st.write(
-                    f"**Sector:** {alert.sector} · **Probability (demo):** {alert.probability:.0f}%  \n"
-                    f"**Window:** {alert.window_start.strftime('%Y-%m-%d %H:%M')} → "
-                    f"{alert.window_end.strftime('%Y-%m-%d %H:%M')} UTC"
-                )
-                st.markdown("**Top drivers (illustrative)**")
-                for d in alert.drivers:
-                    st.progress(min(max(d.contribution, 0.0), 1.0), text=f"{d.name} — {d.direction} ({d.contribution:.0%})")
-                st.markdown("**Playbook**")
-                st.markdown(alert.playbook)
-            with right:
-                st.markdown("**Traceability**")
-                
-                # Replaced st.code with pure HTML
-                trace_text = (
-                    f"Alert ID: {alert.id}\n"
-                    f"Model: {alert.model_version}\n"
-                    f"Snapshot: {alert.data_snapshot}\n"
-                    f"Created: {alert.created_at.isoformat()}"
-                )
-                st.html(f'<div class="trace-block">{trace_text}</div>')
-                
-                if alert.acknowledged:
-                    st.success(
-                        f"Acknowledged at {alert.ack_at.strftime('%Y-%m-%d %H:%M UTC') if alert.ack_at else '—'}"
-                    )
-                    if alert.ack_note:
-                        st.caption(f"Note: {alert.ack_note}")
-                else:
-                    note = st.text_input(
-                        "Optional shift note",
-                        key=f"note_{alert.id}",
-                        placeholder="e.g. reviewed by on-call",
-                    )
-                    if st.button("Acknowledge alert", key=f"ack_{alert.id}", type="primary"):
-                        st.session_state.ops_ack[alert.id] = {
-                            "note": note.strip(),
-                            "at": datetime.now(timezone.utc).replace(microsecond=0),
-                        }
-                        st.rerun()
+    **Primary Dataset: SILSO**
+    - **Source:** World Data Center SILSO, Royal Observatory of Belgium.
+    - **Usage:** Historical solar activity reconstruction, cycle segmentation, phase normalization, and forecasting experiments.
+    - **Policy:** CC BY-NC license.
 
-# --- audit trail ---
-st.subheader("Acknowledgement log (this session)")
-if not st.session_state.ops_ack:
-    st.caption("No acknowledgements yet. Open an alert and confirm to record shift awareness.")
-else:
-    rows = []
-    for aid, payload in st.session_state.ops_ack.items():
-        at = payload.get("at")
-        rows.append(
-            {
-                "alert_id": aid,
-                "acknowledged_at_utc": at.isoformat() if at else "",
-                "note": payload.get("note", ""),
-            }
-        )
-    st.dataframe(rows, use_container_width=True, hide_index=True)
+    **Secondary Datasets (Exploratory/Future):**
+    1. **NASA OMNI:** Near-Earth solar wind, magnetic field, and geomagnetic information.
+    2. **NASA SDO/HMI:** Solar magnetic field information and active-region properties.
+    3. **Historical Sunspot Group Archive:** Audited for schema changes and historical coverage.
 
-# --- BOTTOM DISCLAIMER (Matches custom styling) ---
-st.html(f'<div class="custom-alert"><p>{state.disclaimer}</p></div>')
+    ### 6. Data Processing Workflow
+    1. **Acquisition:** Retrieve raw SILSO data.
+    2. **Validation:** Check for duplicates, dates, and provisional markers.
+    3. **Cycle Segmentation:** Isolate completed cycles (1–24) from the ongoing Cycle 25.
+    4. **Phase Normalization:** Transform completed cycles into normalized phase representations (121 points per cycle).
+    5. **Integrity:** Generate SHA-256 hashes for frozen input records.
 
-# --- FOOTER (Synced with Home) ---
+    ### 7. Statistical Analysis
+    - **Autocorrelation:** Reported lag-1 autocorrelation of ~0.887 indicates strong temporal dependence.
+    - **Metrics:** MAE, RMSE, MAPE, and R².
+    - **Trend Analysis:** Mann-Kendall trend testing and Sen's slope.
+    """)
+
+# --- TAB 3: MODEL EXPERIMENTS ---
+elif tab_selection == "🤖 Model Experiments":
+    st.markdown("""
+    ### 8. Machine Learning Models
+    **Implemented & Evaluated:**
+    1. Persistence (Baseline)
+    2. Seasonal-naive (Baseline)
+    3. ARIMA/SARIMA (Statistical time series)
+    4. Phase-median (Solar-cycle baseline)
+    5. Constrained cubic B-spline (Curve modeling)
+    6. Amplitude-aware models
+    7. T0/T1/T2 (V3 cycle-conditioned methods)
+
+    **Candidate Models (Future):** Random Forest, XGBoost, LightGBM, SVR, LSTM, GRU, Temporal CNN, Transformers.
+
+    ### 9. SolarShield-AI V2 Research (Controlled historical forecasting)
+    The V2 research used outer evaluation folds covering solar cycles 6–24.
+
+    **V2-004: Phase-Median Baseline**
+    - MAE: 32.286
+    - RMSE: 43.007
+    - Result: Became the C2/reference model for subsequent comparisons.
+
+    **V2-006: Constrained Cubic B-Spline**
+    - MAE: 32.897
+    - RMSE: 43.207
+    - Final Decision: **Not accepted** (MAE threshold not met).
+
+    **V2-007: Amplitude-Aware Forecasting**
+    Evaluated seven candidates. The best challenger (A4-S1) achieved an MAE of 37.885 and RMSE of 48.740. However, it exceeded the acceptance limits.
+    - Final Decision: **NOT MET — Frozen and preserved unchanged.**
+
+    ### 10. SolarShield-AI V3 Research (Adaptive Forecasting)
+    V3 introduces a more adaptive and cycle-conditioned forecasting strategy.
+    
+    **Key Principles:**
+    1. Adaptive correction using early observed portions of a solar cycle.
+    2. Physical solar dynamo/Babcock–Leighton modeling.
+    3. Machine learning residual modeling.
+    4. Dynamic Time Warping (DTW)-based shape-aware investigation.
+
+    **V3 Exploratory Run Results (T2 anchored-template at k=48):**
+    - MAE: 22.994
+    - RMSE: 29.321
+    - Skill vs T0: 0.216
+    
+    *(Note: These are exploratory V3 results and should not be treated as V2 acceptance results or production forecasting accuracy.)*
+    """)
+
+# --- TAB 4: ARCHITECTURE & FUTURE ---
+elif tab_selection == "🏗️ Architecture & Future":
+    st.markdown("""
+    ### 11. System Architecture
+    SolarShield-AI is designed as a layered research and application system:
+
+    1. **Layer 1: Data Sources** (SILSO, NASA OMNI, SDO/HMI)
+    2. **Layer 2: Data Engineering** (Acquisition, Validation, Feature Engineering)
+    3. **Layer 3: Research & Modeling** (Statistical Analysis, V2/V3 Forecasting)
+    4. **Layer 4: Impact Assessment** (Space Weather Analysis, Sector Risk)
+    5. **Layer 5: Application** (Monitoring Dashboard, Alert Interface)
+
+    *Note: Automated operational impact assessment and end-to-end real-time alert delivery must be treated as future implementation.*
+
+    ### 12. Future Development & Automation Roadmap
+    1. **Phase 1: Research Completion** (Complete V3 verification and execution).
+    2. **Phase 2: Multi-Source Data Integration** (Integrate OMNI, HMI, flare catalogues).
+    3. **Phase 3: Automated Data Collection** (Scheduled pipelines).
+    4. **Phase 4: Automated Model Execution** (Controlled pipeline checks).
+    5. **Phase 5: Real-Time Monitoring** (Data freshness, activity visualization).
+    6. **Phase 6: Earth-Level Risk Assessment** (Validated impact models).
+    7. **Phase 7: Early Warning and Mitigation** (Risk levels, forecast windows).
+    8. **Phase 8: Shadow-Mode Pilot** (Operational validation with partners).
+
+    ### 13. Disclaimer
+    SolarShield-AI is a research and prototype development project. Its current forecasting experiments primarily investigate historical solar activity and solar-cycle behavior. A forecast of solar activity does not independently establish the occurrence, Earth-directed trajectory, or severity of a solar eruption or geomagnetic storm. The project does not claim to replace established operational space weather forecasting services.
+
+    ### 14. Project Vision
+    > SolarShield-AI aims to bridge the gap between understanding the Sun and preparing Earth for space weather risks.
+    
+    By combining historical scientific observations, statistical research, adaptive machine learning, explainability, and future operational validation, Team MU Solar Pulse seeks to develop an accessible framework for understanding solar activity and its potential effects on the technological systems modern society depends on.
+    """)
+
+# ============================================================
+# FOOTER
+# ============================================================
+
 st.html("""
 <div class="custom-footer">
     <div>
