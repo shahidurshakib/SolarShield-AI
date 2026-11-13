@@ -376,12 +376,6 @@ metrics_html = f"""
     </div>
 </div>
 
-<div class="custom-alert">
-    <p>
-        <strong>⚠️ MODEL STATUS:</strong> Scientific acceptance is <strong>{accept}</strong> | Model Freeze: <strong>{freeze}</strong><br><br>
-        This app shows historical research evidence and a <strong>presentation-only</strong> operations demo. It does not issue real storm probabilities or operational risk alerts.
-    </p>
-</div>
 """
 st.html(metrics_html)
 
