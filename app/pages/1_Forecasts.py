@@ -328,7 +328,6 @@ try:
 except FileNotFoundError as e:
     st.warning(str(e))
 
-st.caption("Interval coverage is descriptive, not a validated accuracy claim.")
 
 # ============================================================
 # FOOTER
