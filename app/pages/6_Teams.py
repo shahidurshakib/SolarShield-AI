@@ -163,7 +163,7 @@ team_members = [
     {
         "name": "Shahidur Rahman Shakib",
         "role": "AI Model Architect & Lead Researcher",
-        "bio": "Shahidur is a CSE student at Metropolitan University, a researcher, designer, web developer, and competitive programmer. He single-handedly developed and architected the entire AI model pipeline for SolarShield-AI, handling the full lifecycle from data ingestion to predictive modeling. He has published research on Mixed Proportional Representation in Bangladesh and is currently working on AI-powered deforestation tracking via satellite.",
+        "bio": "Shahidur is a CSE student at Metropolitan University, researcher, designer, web developer, and ML Engineer. As *AI Model Architect & Lead Researcher* of SolarShield-AI, he independently architected and developed the entire AI model pipeline, leading its research and development from data ingestion to predictive modeling for NASA Space Apps Challenge 2026. He is passionate about AI innovation, scientific exploration, and building technology-driven solutions through interdisciplinary research and creative problem-solving.",
         "email": "shahidurrahmanshakib15@gmail.com",
         "image": "assets/shahidur.jpg"  
     },
