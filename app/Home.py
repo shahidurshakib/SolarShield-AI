@@ -149,7 +149,39 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 .custom-alert p { color: #FFFFFF !important; font-size: 0.95rem; margin: 0; }
 .custom-alert strong { color: var(--amber) !important; font-weight: 800 !important; }
 
-/* NATIVE COLUMN STYLING (To perfectly mimic custom HTML cards) */
+/* MISSION OVERVIEW CARD (New) */
+.mission-overview {
+    background: var(--card-bg-1);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--cyan);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+.mission-overview p {
+    color: var(--subheading) !important;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+.mission-overview p:last-child {
+    margin-bottom: 0;
+}
+.mission-pipeline {
+    color: var(--cyan);
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-align: center;
+    margin: 20px 0;
+    padding: 12px;
+    background: rgba(0, 229, 255, 0.05);
+    border-radius: 8px;
+    border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+/* NATIVE COLUMN STYLING */
 [data-testid="column"] > div {
     background: var(--card-bg-1) !important;
     border: 1px solid var(--border) !important;
@@ -166,12 +198,8 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 }
 
 /* Streamlit Chart Overrides */
-[data-testid="stVegaLiteChart"] {
-    background-color: transparent !important;
-}
-[data-testid="stVegaLiteChart"] canvas {
-    background-color: transparent !important;
-}
+[data-testid="stVegaLiteChart"] { background-color: transparent !important; }
+[data-testid="stVegaLiteChart"] canvas { background-color: transparent !important; }
 
 /* FOOTER */
 .custom-footer {
@@ -299,6 +327,30 @@ metrics_html = f"""
 </div>
 """
 st.html(metrics_html)
+
+
+# ============================================================
+# 5.5 MISSION OVERVIEW (NEW SECTION)
+# ============================================================
+
+st.html("""
+<div class="mission-overview">
+    <p>
+        <strong>SolarShield-AI</strong> is a research-driven initiative focused on understanding solar activity, investigating its potential space-weather implications, and developing a pathway toward Earth-impact risk assessment and early warning.
+    </p>
+    <p>
+        The project aims to connect long-term solar observations with data-driven forecasting, uncertainty-aware analysis, and interpretable risk communication.
+    </p>
+    
+    <div class="mission-pipeline">
+        Solar Activity &rarr; Space Weather &rarr; Earth Response &rarr; Risk Assessment &rarr; Early Warning &rarr; Mitigation
+    </div>
+    
+    <p style="font-size: 0.95rem; color: var(--muted);">
+        The project is being developed incrementally. Its current research primarily focuses on solar-cycle characterization and forecasting. A fully validated, operational solar-to-Earth impact prediction and alerting system has not yet been established.
+    </p>
+</div>
+""")
 
 
 # ============================================================
