@@ -203,19 +203,7 @@ st.title("Model Experiments & Evaluation")
 st.caption("Consolidated record of forecasting methods, configurations, results, and acceptance decisions.")
 st.markdown("<br>", unsafe_allow_html=True)
 
-st.html("""
-<div class="explainer-card" style="border-left-color: var(--danger);">
-    <h3 style="color: var(--danger) !important;">⚠️ Master Executive Conclusion</h3>
-    <p>
-        SolarShield-AI has reproducible data-preparation, descriptive-analysis evidence, and frozen V2/V3 protocols. However, the evidence <b>does not</b> support declaring any model scientifically accepted or freezing a production winner. 
-    </p>
-    <p>
-        <b>Assessment cutoff:</b> 2026-11-12 UTC<br>
-        <b>Repository HEAD:</b> 43157e02c90c425a1226fdf4c6332e770cbf81fb<br>
-        <b>Overall disposition:</b> Historical evidence consolidated; <b>no scientifically accepted production model</b>.
-    </p>
-</div>
-""")
+
 
 # ============================================================
 # CUSTOM TABS (Using Radio Buttons)
