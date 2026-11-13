@@ -21,7 +21,7 @@ st.markdown("""
     --card-bg-2: #334155;
     --border: #475569;
     --heading: #FFFFFF;
-    --body: #FFFFFF; /* Brighter text */
+    --body: #FFFFFF;
     --subheading: #CBD5E1;
     --muted: #94A3B8;
     --cyan: #00E5FF;
@@ -48,28 +48,34 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* TABS CUSTOMIZATION */
+/* TABS CUSTOMIZATION (FIXED) */
 .stTabs [data-baseweb="tab-list"] {
     gap: 24px;
     background-color: transparent;
     border-bottom: 2px solid var(--border);
     padding-bottom: 10px;
 }
-.stTabs [data-baseweb="tab"] {
-    color: var(--muted) !important;
-    font-weight: 600;
-    font-family: var(--font-mono);
-    font-size: 0.95rem;
-    background-color: transparent;
-    border: none;
-    padding: 10px 0;
-}
-.stTabs [aria-selected="true"] {
-    color: var(--cyan) !important;
-    border-bottom: 3px solid var(--cyan) !important;
+.stTabs button[data-baseweb="tab"] {
     background-color: transparent !important;
+    border: none !important;
+    padding: 10px 0 !important;
 }
-.stTabs [data-baseweb="tab"]:hover {
+.stTabs button[data-baseweb="tab"] p, 
+.stTabs button[data-baseweb="tab"] span {
+    color: #F1F5F9 !important;
+    font-weight: 600 !important;
+    font-family: var(--font-mono) !important;
+    font-size: 0.95rem !important;
+    opacity: 1 !important;
+}
+.stTabs button[data-baseweb="tab"][aria-selected="true"] {
+    border-bottom: 3px solid var(--cyan) !important;
+}
+.stTabs button[data-baseweb="tab"][aria-selected="true"] p, 
+.stTabs button[data-baseweb="tab"][aria-selected="true"] span {
+    color: var(--cyan) !important;
+}
+.stTabs button[data-baseweb="tab"]:hover p {
     color: var(--heading) !important;
 }
 
