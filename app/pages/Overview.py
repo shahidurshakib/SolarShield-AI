@@ -48,57 +48,52 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* TABS CUSTOMIZATION (EXTREME OVERRIDE) */
-.stTabs [data-baseweb="tab-list"] {
+/* ==========================================================
+   CUSTOM HORIZONTAL RADIO BUTTONS (Acts as our Tabs)
+   ========================================================== */
+div[role="radiogroup"] {
+    display: flex;
+    flex-direction: row;
     gap: 24px;
-    background-color: transparent;
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 24px;
 }
 
-/* Remove Streamlit's default red border and background */
-.stTabs button[data-baseweb="tab"] {
-    background-color: transparent !important;
-    border: none !important;
-    padding: 10px 0 !important;
-    box-shadow: none !important;
+div[role="radiogroup"] label {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 8px 0 !important;
+    cursor: pointer;
 }
 
-/* FORCE unselected text to be pure white */
-.stTabs button[data-baseweb="tab"] p,
-.stTabs button[data-baseweb="tab"] span,
-.stTabs button[data-baseweb="tab"] div,
-.stTabs button[data-baseweb="tab"] {
-    color: #FFFFFF !important; 
-    -webkit-text-fill-color: #FFFFFF !important; /* Forces color even if Streamlit uses text-fill */
-    opacity: 1 !important; /* Removes the dimming effect on inactive tabs */
-    font-weight: 600 !important;
+/* Hide the actual radio circle */
+div[role="radiogroup"] label > div:first-child {
+    display: none !important;
+}
+
+/* Force all text to be White initially */
+div[role="radiogroup"] label p {
+    color: #FFFFFF !important;
     font-family: var(--font-mono) !important;
-    font-size: 0.95rem !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
 }
 
-/* Active/Selected Tab: Force Cyan */
-.stTabs button[data-baseweb="tab"][aria-selected="true"] {
+/* Style the SELECTED tab */
+div[role="radiogroup"] label[data-checked="true"] {
     border-bottom: 3px solid var(--cyan) !important;
 }
-
-.stTabs button[data-baseweb="tab"][aria-selected="true"] p,
-.stTabs button[data-baseweb="tab"][aria-selected="true"] span,
-.stTabs button[data-baseweb="tab"][aria-selected="true"] div,
-.stTabs button[data-baseweb="tab"][aria-selected="true"] {
+div[role="radiogroup"] label[data-checked="true"] p {
     color: var(--cyan) !important;
-    -webkit-text-fill-color: var(--cyan) !important; 
 }
 
 /* Hover effect */
-.stTabs button[data-baseweb="tab"]:hover p,
-.stTabs button[data-baseweb="tab"]:hover span,
-.stTabs button[data-baseweb="tab"]:hover div {
+div[role="radiogroup"] label:hover p {
     color: var(--cyan) !important;
-    -webkit-text-fill-color: var(--cyan) !important;
 }
 
-/* HEADINGS WITHIN TABS */
+/* HEADINGS WITHIN CONTENT */
 h3 {
     color: var(--cyan) !important;
     font-family: var(--font-mono) !important;
@@ -164,16 +159,24 @@ Predict the Sun. Understand the Risk. Prepare Earth.
 </p>
 """, unsafe_allow_html=True)
 
-# Create Tabs for the massive amount of content
-tab1, tab2, tab3, tab4 = st.tabs([
-    "📌 Overview & Vision", 
-    "🔬 Data & Methodology", 
-    "🤖 Model Experiments", 
-    "🏗️ Architecture & Future"
-])
+# ============================================================
+# CUSTOM TABS (Using Radio Buttons to guarantee visibility)
+# ============================================================
+
+tab_selection = st.radio(
+    "Navigation",
+    [
+        "📌 Overview & Vision", 
+        "🔬 Data & Methodology", 
+        "🤖 Model Experiments", 
+        "🏗️ Architecture & Future"
+    ],
+    horizontal=True,
+    label_visibility="collapsed" # Hides the "Navigation" label
+)
 
 # --- TAB 1: OVERVIEW & VISION ---
-with tab1:
+if tab_selection == "📌 Overview & Vision":
     st.markdown("""
     ### 1. Project Overview
     **SolarShield-AI** is a research-oriented artificial intelligence and space weather risk assessment project developed by Team MU Solar Pulse for the NASA Space Apps Challenge 2026.
@@ -221,7 +224,7 @@ with tab1:
     """)
 
 # --- TAB 2: DATA & METHODOLOGY ---
-with tab2:
+elif tab_selection == "🔬 Data & Methodology":
     st.markdown("""
     ### 5. Data Sources & Datasets
     The project distinguishes between datasets directly used, inspected experimentally, and identified for future integration.
@@ -250,7 +253,7 @@ with tab2:
     """)
 
 # --- TAB 3: MODEL EXPERIMENTS ---
-with tab3:
+elif tab_selection == "🤖 Model Experiments":
     st.markdown("""
     ### 8. Machine Learning Models
     **Implemented & Evaluated:**
@@ -299,7 +302,7 @@ with tab3:
     """)
 
 # --- TAB 4: ARCHITECTURE & FUTURE ---
-with tab4:
+elif tab_selection == "🏗️ Architecture & Future":
     st.markdown("""
     ### 11. System Architecture
     SolarShield-AI is designed as a layered research and application system:
