@@ -4,7 +4,7 @@ import streamlit as st
 # PAGE CONFIGURATION
 # ============================================================
 
-st.set_page_config(page_title="Documentation · SolarShield-AI", layout="wide", page_icon="📖")
+st.set_page_config(page_title="Project Overview · SolarShield-AI", layout="wide", page_icon="📖")
 
 # ============================================================
 # DESIGN SYSTEM (Deep Space / Steel Blue)
@@ -48,7 +48,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* TABS CUSTOMIZATION (BULLETPROOF) */
+/* TABS CUSTOMIZATION (EXTREME OVERRIDE) */
 .stTabs [data-baseweb="tab-list"] {
     gap: 24px;
     background-color: transparent;
@@ -56,6 +56,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
     padding-bottom: 10px;
 }
 
+/* Remove Streamlit's default red border and background */
 .stTabs button[data-baseweb="tab"] {
     background-color: transparent !important;
     border: none !important;
@@ -63,25 +64,38 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
     box-shadow: none !important;
 }
 
-.stTabs button[data-baseweb="tab"] div {
-    color: #F1F5F9 !important;
+/* FORCE unselected text to be pure white */
+.stTabs button[data-baseweb="tab"] p,
+.stTabs button[data-baseweb="tab"] span,
+.stTabs button[data-baseweb="tab"] div,
+.stTabs button[data-baseweb="tab"] {
+    color: #FFFFFF !important; 
+    -webkit-text-fill-color: #FFFFFF !important; /* Forces color even if Streamlit uses text-fill */
+    opacity: 1 !important; /* Removes the dimming effect on inactive tabs */
     font-weight: 600 !important;
     font-family: var(--font-mono) !important;
     font-size: 0.95rem !important;
-    opacity: 1 !important;
-    transition: color 0.2s ease;
 }
 
+/* Active/Selected Tab: Force Cyan */
 .stTabs button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom: 3px solid var(--cyan) !important;
 }
 
-.stTabs button[data-baseweb="tab"][aria-selected="true"] div {
-    color: var(--cyan) !important; 
+.stTabs button[data-baseweb="tab"][aria-selected="true"] p,
+.stTabs button[data-baseweb="tab"][aria-selected="true"] span,
+.stTabs button[data-baseweb="tab"][aria-selected="true"] div,
+.stTabs button[data-baseweb="tab"][aria-selected="true"] {
+    color: var(--cyan) !important;
+    -webkit-text-fill-color: var(--cyan) !important; 
 }
 
+/* Hover effect */
+.stTabs button[data-baseweb="tab"]:hover p,
+.stTabs button[data-baseweb="tab"]:hover span,
 .stTabs button[data-baseweb="tab"]:hover div {
-    color: var(--heading) !important;
+    color: var(--cyan) !important;
+    -webkit-text-fill-color: var(--cyan) !important;
 }
 
 /* HEADINGS WITHIN TABS */
