@@ -179,12 +179,7 @@ div[data-baseweb="select"] div[aria-live="polite"] {
 st.title("Forecasts")
 
 st.html("""
-<div class="custom-alert">
-    <p>
-        <strong>⚠️ NOTE:</strong> Historical backtests of reference models. 
-        None is an accepted or frozen forecast model.
-    </p>
-</div>
+
 """)
 
 a, b = st.columns(2)
