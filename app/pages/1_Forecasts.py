@@ -178,10 +178,6 @@ div[data-baseweb="select"] div[aria-live="polite"] {
 
 st.title("Forecasts")
 
-st.html("""
-
-""")
-
 a, b = st.columns(2)
 model = a.selectbox("Model", ["persistence", "seasonal_naive", "ETS (exploratory)"])
 h = b.selectbox("Horizon (months)", [1, 3, 6, 12], index=2)
