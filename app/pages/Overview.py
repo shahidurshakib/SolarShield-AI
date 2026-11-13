@@ -4,7 +4,7 @@ import streamlit as st
 # PAGE CONFIGURATION
 # ============================================================
 
-st.set_page_config(page_title="Documentation · SolarShield-AI", layout="wide", page_icon="📖")
+st.set_page_config(page_title="Project Overview · SolarShield-AI", layout="wide", page_icon="📖")
 
 # ============================================================
 # DESIGN SYSTEM (Deep Space / Steel Blue)
@@ -21,7 +21,7 @@ st.markdown("""
     --card-bg-2: #334155;
     --border: #475569;
     --heading: #FFFFFF;
-    --body: #F1F5F9;
+    --body: #FFFFFF; /* Brighter text */
     --subheading: #CBD5E1;
     --muted: #94A3B8;
     --cyan: #00E5FF;
@@ -41,8 +41,8 @@ html, body, .stApp { font-family: var(--font-main) !important; }
 .main .block-container { max-width: 1200px; padding-top: 2rem; padding-bottom: 120px; }
 
 h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !important; }
-.stMarkdown p, .stMarkdown li { color: var(--body) !important; font-size: 1.05rem; line-height: 1.6; }
-.stMarkdown strong { color: var(--cyan) !important; }
+.stMarkdown p, .stMarkdown li { color: var(--body) !important; font-size: 1.1rem; line-height: 1.6; }
+.stMarkdown strong { color: var(--cyan) !important; font-weight: 700 !important; }
 
 /* SIDEBAR */
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
@@ -73,6 +73,17 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
     color: var(--heading) !important;
 }
 
+/* HEADINGS WITHIN TABS */
+h3 {
+    color: var(--cyan) !important;
+    font-family: var(--font-mono) !important;
+    font-size: 1.4rem !important;
+    margin-top: 2rem !important;
+    margin-bottom: 1rem !important;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 8px;
+}
+
 /* TABLES */
 table {
     width: 100%;
@@ -84,6 +95,7 @@ th, td {
     padding: 12px !important;
     text-align: left;
     color: var(--body) !important;
+    font-size: 1rem;
 }
 th {
     background-color: var(--card-bg-2) !important;
@@ -105,6 +117,7 @@ blockquote {
     margin: 20px 0;
     border-radius: 0 8px 8px 0;
     color: var(--heading) !important;
+    font-size: 1.1rem;
 }
 
 /* FOOTER */
@@ -154,12 +167,12 @@ with tab1:
     The central problem is the difficulty of translating complex solar observations and space weather information into understandable, sector-specific risk information.
 
     Several challenges motivate this research:
-    - Solar activity changes over multiple timescales.
-    - Long-term solar cycles are not perfectly periodic.
-    - Solar observations contain noise, uncertainty, and provisional measurements.
-    - Solar activity alone cannot establish the severity of an Earth-directed event.
-    - Forecasting models require rigorous historical evaluation.
-    - Warning systems must communicate uncertainty instead of presenting false certainty.
+    1. Solar activity changes over multiple timescales.
+    2. Long-term solar cycles are not perfectly periodic.
+    3. Solar observations contain noise, uncertainty, and provisional measurements.
+    4. Solar activity alone cannot establish the severity of an Earth-directed event.
+    5. Forecasting models require rigorous historical evaluation.
+    6. Warning systems must communicate uncertainty instead of presenting false certainty.
 
     ### 3. NASA Space Apps Challenge Alignment
     SolarShield-AI is aligned with the 2026 theme: **Be An Earth System Trend Detective!**
@@ -174,16 +187,16 @@ with tab1:
 
     ### 4. Project Objectives
     **Primary Objectives:**
-    - Build a reproducible historical solar activity dataset.
-    - Investigate the characteristics of solar cycles.
-    - Develop and evaluate solar-cycle forecasting models.
-    - Compare statistical and machine learning approaches.
-    - Investigate amplitude and shape differences between solar cycles.
+    1. Build a reproducible historical solar activity dataset.
+    2. Investigate the characteristics of solar cycles.
+    3. Develop and evaluate solar-cycle forecasting models.
+    4. Compare statistical and machine learning approaches.
+    5. Investigate amplitude and shape differences between solar cycles.
     
     **Long-Term Objectives:**
-    - Integrate multiple solar and space weather datasets.
-    - Introduce calibrated probabilistic risk assessments.
-    - Validate outputs with relevant scientific and operational partners.
+    1. Integrate multiple solar and space weather datasets.
+    2. Introduce calibrated probabilistic risk assessments.
+    3. Validate outputs with relevant scientific and operational partners.
     """)
 
 # --- TAB 2: DATA & METHODOLOGY ---
@@ -198,9 +211,9 @@ with tab2:
     - **Policy:** CC BY-NC license.
 
     **Secondary Datasets (Exploratory/Future):**
-    - **NASA OMNI:** Near-Earth solar wind, magnetic field, and geomagnetic information.
-    - **NASA SDO/HMI:** Solar magnetic field information and active-region properties.
-    - **Historical Sunspot Group Archive:** Audited for schema changes and historical coverage.
+    1. **NASA OMNI:** Near-Earth solar wind, magnetic field, and geomagnetic information.
+    2. **NASA SDO/HMI:** Solar magnetic field information and active-region properties.
+    3. **Historical Sunspot Group Archive:** Audited for schema changes and historical coverage.
 
     ### 7. Data Processing Workflow
     1. **Acquisition:** Retrieve raw SILSO data.
@@ -220,13 +233,13 @@ with tab3:
     st.markdown("""
     ### 10. Machine Learning Models
     **Implemented & Evaluated:**
-    - Persistence (Baseline)
-    - Seasonal-naive (Baseline)
-    - ARIMA/SARIMA (Statistical time series)
-    - Phase-median (Solar-cycle baseline)
-    - Constrained cubic B-spline (Curve modeling)
-    - Amplitude-aware models
-    - T0/T1/T2 (V3 cycle-conditioned methods)
+    1. Persistence (Baseline)
+    2. Seasonal-naive (Baseline)
+    3. ARIMA/SARIMA (Statistical time series)
+    4. Phase-median (Solar-cycle baseline)
+    5. Constrained cubic B-spline (Curve modeling)
+    6. Amplitude-aware models
+    7. T0/T1/T2 (V3 cycle-conditioned methods)
 
     **Candidate Models (Future):** Random Forest, XGBoost, LightGBM, SVR, LSTM, GRU, Temporal CNN, Transformers.
 
@@ -270,11 +283,11 @@ with tab4:
     ### 15. System Architecture
     SolarShield-AI is designed as a layered research and application system:
 
-    - **Layer 1: Data Sources** (SILSO, NASA OMNI, SDO/HMI)
-    - **Layer 2: Data Engineering** (Acquisition, Validation, Feature Engineering)
-    - **Layer 3: Research & Modeling** (Statistical Analysis, V2/V3 Forecasting)
-    - **Layer 4: Impact Assessment** (Space Weather Analysis, Sector Risk)
-    - **Layer 5: Application** (Monitoring Dashboard, Alert Interface)
+    1. **Layer 1: Data Sources** (SILSO, NASA OMNI, SDO/HMI)
+    2. **Layer 2: Data Engineering** (Acquisition, Validation, Feature Engineering)
+    3. **Layer 3: Research & Modeling** (Statistical Analysis, V2/V3 Forecasting)
+    4. **Layer 4: Impact Assessment** (Space Weather Analysis, Sector Risk)
+    5. **Layer 5: Application** (Monitoring Dashboard, Alert Interface)
 
     *Note: Automated operational impact assessment and end-to-end real-time alert delivery must be treated as future implementation.*
 
