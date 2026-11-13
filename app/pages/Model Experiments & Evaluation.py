@@ -50,42 +50,49 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* TABS CUSTOMIZATION (ABSOLUTE OVERRIDE) */
-.stTabs [data-baseweb="tab-list"] {
+/* ==========================================================
+   CUSTOM HORIZONTAL RADIO BUTTONS (Acts as our Tabs)
+   ========================================================== */
+div[role="radiogroup"] {
+    display: flex;
+    flex-direction: row;
     gap: 24px;
-    background-color: transparent !important;
-    border-bottom: 1px solid var(--border) !important;
-    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 12px;
+    margin-bottom: 24px;
 }
-.stTabs button[data-baseweb="tab"] {
-    background-color: transparent !important;
-    border: none !important;
-    padding: 10px 0 !important;
-    box-shadow: none !important;
+
+div[role="radiogroup"] label {
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 8px 0 !important;
+    cursor: pointer;
 }
-.stTabs button[data-baseweb="tab"] * {
-    color: #FFFFFF !important;
-    -webkit-text-fill-color: #FFFFFF !important;
-    font-weight: 600 !important;
-    font-family: var(--font-mono) !important;
-    font-size: 0.95rem !important;
-    opacity: 1 !important;
-    text-shadow: none !important;
-}
-.stTabs button[data-baseweb="tab"][aria-selected="true"] {
-    border-bottom: 3px solid var(--cyan) !important;
-}
-.stTabs button[data-baseweb="tab"][aria-selected="true"] * {
-    color: var(--cyan) !important;
-    -webkit-text-fill-color: var(--cyan) !important;
-}
-.stTabs [data-baseweb="tab-highlight"] {
-    background-color: var(--cyan) !important;
+
+/* Hide the actual radio circle */
+div[role="radiogroup"] label > div:first-child {
     display: none !important;
 }
-.stTabs button[data-baseweb="tab"]:hover * {
+
+/* Force all text to be White initially */
+div[role="radiogroup"] label p {
+    color: #FFFFFF !important;
+    font-family: var(--font-mono) !important;
+    font-size: 1.05rem !important;
+    font-weight: 600 !important;
+}
+
+/* Style the SELECTED tab */
+div[role="radiogroup"] label[data-checked="true"] {
+    border-bottom: 3px solid var(--cyan) !important;
+}
+div[role="radiogroup"] label[data-checked="true"] p {
     color: var(--cyan) !important;
-    -webkit-text-fill-color: var(--cyan) !important;
+}
+
+/* Hover effect */
+div[role="radiogroup"] label:hover p {
+    color: var(--cyan) !important;
 }
 
 /* CARDS & EXPLANATIONS */
@@ -210,17 +217,25 @@ st.html("""
 </div>
 """)
 
-# Create Tabs
-tab1, tab2, tab3, tab4, tab5 = st.tabs([
-    "📊 Baselines & V1", 
-    "🔬 V2 Cycle-Shape", 
-    "🚀 V3 Adaptive", 
-    "🧪 Current V3 Draft", 
-    "📋 Registry & Blockers"
-])
+# ============================================================
+# CUSTOM TABS (Using Radio Buttons)
+# ============================================================
+
+tab_selection = st.radio(
+    "Navigation",
+    [
+        "📊 Baselines & V1", 
+        "🔬 V2 Cycle-Shape", 
+        "🚀 V3 Adaptive", 
+        "🧪 Current V3 Draft", 
+        "📋 Registry & Blockers"
+    ],
+    horizontal=True,
+    label_visibility="collapsed" # Hides the "Navigation" label so it looks exactly like a tab bar
+)
 
 # --- TAB 1: BASELINES & V1 ---
-with tab1:
+if tab_selection == "📊 Baselines & V1":
     st.markdown("### Baseline & V1 Forecasting")
     
     st.html("""
@@ -281,7 +296,7 @@ with tab1:
 
 
 # --- TAB 2: V2 EXPERIMENTS ---
-with tab2:
+elif tab_selection == "🔬 V2 Cycle-Shape":
     st.markdown("### V2 Cycle-Shape Experiments")
     
     st.html("""
@@ -345,7 +360,7 @@ with tab2:
     """)
 
 # --- TAB 3: V3 EXPLORATORY ---
-with tab3:
+elif tab_selection == "🚀 V3 Adaptive":
     st.markdown("### V3 Exploratory Forecasting (REV1)")
     
     st.html("""
@@ -398,7 +413,7 @@ with tab3:
     """)
 
 # --- TAB 4: CURRENT V3 DRAFT ---
-with tab4:
+elif tab_selection == "🧪 Current V3 Draft":
     st.markdown("### Current V3 Draft 1.7 Workflow")
     
     st.html("""
@@ -445,7 +460,7 @@ with tab4:
     """)
 
 # --- TAB 5: REGISTRY & BLOCKERS ---
-with tab5:
+elif tab_selection == "📋 Registry & Blockers":
     st.markdown("### Master Registry & Remaining Blockers")
     
     st.html("""
