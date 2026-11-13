@@ -50,11 +50,11 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 [data-testid="stSidebar"] { background: var(--sidebar) !important; border-right: 1px solid var(--border) !important; }
 [data-testid="stSidebar"] * { color: #F1F5F9 !important; }
 
-/* TABS CUSTOMIZATION */
+/* TABS CUSTOMIZATION (BULLETPROOF FIX) */
 .stTabs [data-baseweb="tab-list"] {
     gap: 24px;
     background-color: transparent;
-    border-bottom: 2px solid var(--border);
+    border-bottom: 1px solid var(--border);
     padding-bottom: 10px;
 }
 .stTabs button[data-baseweb="tab"] {
@@ -62,11 +62,9 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
     border: none !important;
     padding: 10px 0 !important;
 }
-.stTabs button[data-baseweb="tab"] p, 
-.stTabs button[data-baseweb="tab"] span,
-.stTabs button[data-baseweb="tab"] div {
-    color: #F1F5F9 !important;
-    -webkit-text-fill-color: #F1F5F9 !important;
+.stTabs button[data-baseweb="tab"] p {
+    color: #FFFFFF !important;
+    -webkit-text-fill-color: #FFFFFF !important;
     font-weight: 600 !important;
     font-family: var(--font-mono) !important;
     font-size: 0.95rem !important;
@@ -75,9 +73,14 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 .stTabs button[data-baseweb="tab"][aria-selected="true"] {
     border-bottom: 3px solid var(--cyan) !important;
 }
-.stTabs button[data-baseweb="tab"][aria-selected="true"] p,
-.stTabs button[data-baseweb="tab"][aria-selected="true"] span,
-.stTabs button[data-baseweb="tab"][aria-selected="true"] div {
+.stTabs button[data-baseweb="tab"][aria-selected="true"] p {
+    color: var(--cyan) !important;
+    -webkit-text-fill-color: var(--cyan) !important;
+}
+.stTabs [data-baseweb="tab-highlight"] {
+    background-color: var(--cyan) !important;
+}
+.stTabs button[data-baseweb="tab"]:hover p {
     color: var(--cyan) !important;
     -webkit-text-fill-color: var(--cyan) !important;
 }
@@ -286,7 +289,6 @@ with tab2:
     </div>
     """)
 
-    # V2-004
     st.html("""
     <div class="explainer-card">
         <h3>V2-004: Phase Median Baseline <span class="badge badge-cyan">Reference Baseline</span></h3>
@@ -296,7 +298,6 @@ with tab2:
     </div>
     """)
 
-    # V2-005
     st.html("""
     <div class="explainer-card" style="border-left-color: var(--danger);">
         <h3 style="color: var(--danger) !important;">V2-005: C3 Constrained Cubic B-Spline <span class="badge badge-danger">Failed</span></h3>
@@ -306,7 +307,6 @@ with tab2:
     </div>
     """)
 
-    # V2-006
     st.html("""
     <div class="explainer-card" style="border-left-color: var(--danger);">
         <h3 style="color: var(--danger) !important;">V2-006: Derivative-Constrained Cubic B-Spline <span class="badge badge-danger">Not Accepted</span></h3>
@@ -317,7 +317,6 @@ with tab2:
     </div>
     """)
 
-    # V2-007
     st.markdown("#### V2-007: Amplitude-Aware Forecasting")
     st.html("""
     <div class="explainer-card" style="border-left-color: var(--amber);">
@@ -326,7 +325,6 @@ with tab2:
     </div>
     """)
     
-    # V2-007 Table
     v2_data = pd.DataFrame({
         "Candidate": ["A1-S1", "A2-S1", "A3-S1", "A4-S1", "A1-S2", "A1-S3", "A1-S4"],
         "Role": ["Frozen Primary", "Challenger", "Challenger", "Challenger", "Challenger", "Challenger", "Challenger"],
