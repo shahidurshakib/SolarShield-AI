@@ -149,7 +149,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
 .custom-alert p { color: #FFFFFF !important; font-size: 0.95rem; margin: 0; }
 .custom-alert strong { color: var(--amber) !important; font-weight: 800 !important; }
 
-/* MISSION OVERVIEW CARD (New) */
+/* MISSION OVERVIEW CARD */
 .mission-overview {
     background: var(--card-bg-1);
     border: 1px solid var(--border);
@@ -165,9 +165,7 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
     line-height: 1.7;
     margin-bottom: 12px;
 }
-.mission-overview p:last-child {
-    margin-bottom: 0;
-}
+.mission-overview p:last-child { margin-bottom: 0; }
 .mission-pipeline {
     color: var(--cyan);
     font-family: var(--font-mono);
@@ -179,6 +177,65 @@ h1, h2, h3, h4, h5, h6 { color: var(--heading) !important; font-weight: 700 !imp
     background: rgba(0, 229, 255, 0.05);
     border-radius: 8px;
     border: 1px solid rgba(0, 229, 255, 0.2);
+}
+
+/* CHART EXPLAINER & LEGEND */
+.legend-row {
+    display: flex;
+    gap: 20px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+    color: var(--subheading);
+    flex-wrap: wrap;
+}
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.sw {
+    width: 16px;
+    height: 3px;
+    display: inline-block;
+    border-radius: 2px;
+    border-style: solid;
+    border-width: 2px;
+}
+.sw-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #FFFFFF;
+    display: inline-block;
+}
+.sw-dot.fill {
+    background-color: #FFFFFF;
+}
+.chart-explainer {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-top: 15px;
+}
+.chart-explainer p {
+    color: var(--body) !important;
+    font-size: 0.95rem;
+    margin-bottom: 10px;
+}
+.chart-explainer b {
+    color: var(--cyan) !important;
+}
+.chart-explainer ul {
+    margin-top: 5px;
+    margin-bottom: 0;
+    padding-left: 20px;
+}
+.chart-explainer li {
+    color: var(--subheading) !important;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
 }
 
 /* NATIVE COLUMN STYLING */
@@ -330,7 +387,7 @@ st.html(metrics_html)
 
 
 # ============================================================
-# 5.5 MISSION OVERVIEW (NEW SECTION)
+# 5.5 MISSION OVERVIEW
 # ============================================================
 
 st.html("""
@@ -357,29 +414,84 @@ st.html("""
 # 6. DASHBOARD CONTENT (Chart & Navigation)
 # ============================================================
 
-# Using Native Columns to guarantee charts and text stay inside their boxes
+CYAN, AMBER = "#00E5FF", "#FFB703"
+
+def pct_phrase(now, then):
+    d = (now - then) / then * 100
+    return f"{abs(d):.0f}% {'above' if d >= 0 else 'below'}"
+
 col_chart, col_nav = st.columns([2, 1], gap="large")
 
 with col_chart:
     st.markdown('<div class="card-title">📈 Solar Activity Trend</div>', unsafe_allow_html=True)
-    st.markdown('<div class="technical-label" style="margin-bottom: 15px;">LAST 5 YEARS OF SILSO SUNSPOT DATA</div>', unsafe_allow_html=True)
+    st.markdown('<div class="technical-label" style="margin-bottom: 15px;">Monthly sunspot number · last 5 years (SILSO)</div>', unsafe_allow_html=True)
 
-    cutoff = m["month_start"].max() - pd.DateOffset(years=5)
-    recent = m[m["month_start"] >= cutoff].dropna(subset=["ssn"])
+    series = m.dropna(subset=["ssn"]).sort_values("month_start").copy()
+    series["avg12"] = series["ssn"].rolling(12, min_periods=12).mean()
+    recent = series[series["month_start"] >= series["month_start"].max() - pd.DateOffset(years=5)].copy()
 
-    if not recent.empty:
-        # Create the Altair chart
-        chart = alt.Chart(recent).mark_line(strokeWidth=3, color="#00E5FF").encode(
-            x=alt.X("month_start:T", title=None, axis=alt.Axis(labelColor="#CBD5E1", titleColor="#CBD5E1", gridColor="#334155")),
-            y=alt.Y("ssn:Q", title="Sunspot Number", axis=alt.Axis(labelColor="#CBD5E1", titleColor="#CBD5E1", gridColor="#334155")),
-        ).properties(height=280, background="transparent").interactive()
-        
-        st.altair_chart(chart, use_container_width=True)
-    else:
+    if recent.empty:
         st.warning("No recent solar activity data available.")
+    else:
+        recent["month_label"] = recent["month_start"].dt.strftime("%b %Y")
+        recent["kind"] = recent["is_provisional"].map({True: "Provisional", False: "Final"})
+        y_scale = alt.Scale(domain=[0, float(recent["ssn"].max()) * 1.15])
+        base = alt.Chart(recent).encode(x=alt.X("month_start:T", title=None))
+        latest, peak = recent.iloc[-1], recent.loc[recent["ssn"].idxmax()]
+        prov = recent[recent["is_provisional"]]
 
-    provisional_count = int(m["is_provisional"].sum())
-    st.markdown(f'<div class="technical-label" style="margin-top: 15px;">Provisional months in dataset: <span style="color: white;">{provisional_count}</span></div>', unsafe_allow_html=True)
+        layers = [
+            base.mark_area(opacity=0.12, color=CYAN).encode(y=alt.Y("ssn:Q", scale=y_scale)),
+            base.mark_line(strokeWidth=1.8, color=CYAN).encode(y=alt.Y("ssn:Q", title="Sunspot number", scale=y_scale)),
+            base.mark_line(strokeWidth=3.5, color=AMBER).encode(y=alt.Y("avg12:Q", scale=y_scale)),
+            base.mark_circle(opacity=0, size=250).encode(
+                y=alt.Y("ssn:Q", scale=y_scale),
+                tooltip=[alt.Tooltip("month_label:N", title="Month"),
+                         alt.Tooltip("ssn:Q", title="Sunspot number", format=".1f"),
+                         alt.Tooltip("avg12:Q", title="12-month average", format=".1f"),
+                         alt.Tooltip("kind:N", title="Status")]),
+            alt.Chart(recent.tail(1)).mark_point(shape="circle", filled=True, size=160, color="#FFFFFF")
+                .encode(x="month_start:T", y=alt.Y("ssn:Q", scale=y_scale)),
+            alt.Chart(pd.DataFrame([{"month_start": peak["month_start"], "ssn": peak["ssn"], "label": f"Peak {peak['ssn']:.0f}"}]))
+                .mark_text(dy=-14, color=AMBER, fontWeight="bold", fontSize=12)
+                .encode(x="month_start:T", y=alt.Y("ssn:Q", scale=y_scale), text="label:N"),
+        ]
+        if not prov.empty:
+            layers.append(alt.Chart(prov).mark_point(shape="circle", filled=False, size=90, strokeWidth=2, color="#FFFFFF")
+                          .encode(x="month_start:T", y=alt.Y("ssn:Q", scale=y_scale)))
+
+        chart = (alt.layer(*layers).properties(height=300, background="transparent")
+                 .configure_axis(labelColor="#CBD5E1", titleColor="#CBD5E1", gridColor="#334155",
+                                 domainColor="#475569", tickColor="#475569")
+                 .configure_view(strokeWidth=0))
+        st.altair_chart(chart, use_container_width=True)
+
+        # Custom Legend
+        st.html(f"""
+        <div class="legend-row">
+          <span class="legend-item"><span class="sw" style="border-color:{CYAN}"></span>Monthly value</span>
+          <span class="legend-item"><span class="sw" style="border-color:{AMBER}"></span>12-month average</span>
+          <span class="legend-item"><span class="sw-dot"></span>Provisional month</span>
+          <span class="legend-item"><span class="sw-dot fill"></span>Latest month</span>
+        </div>""")
+
+        # Dynamic Explanation Text
+        yr = recent.iloc[-13] if len(recent) >= 13 else recent.iloc[0]
+        prov_note = ", provisional" if bool(latest["is_provisional"]) else ""
+        st.html(f"""
+        <div class="chart-explainer">
+          <p><b>Right now:</b> the latest value is <b>{latest['ssn']:.1f}</b> ({latest['month_label']}{prov_note}).
+          That is {pct_phrase(latest['ssn'], yr['ssn'])} the value a year earlier ({yr['ssn']:.1f}, {yr['month_label']})
+          and {pct_phrase(latest['ssn'], peak['ssn'])} the highest month in this window ({peak['ssn']:.1f}, {peak['month_label']}).
+          The 12-month average is {latest['avg12']:.1f}.</p>
+          <p><b>How to read this chart</b></p>
+          <ul>
+            <li>Each point is one month's average sunspot number. More sunspots means a more active Sun.</li>
+            <li>The cyan line is noisy month to month. The thick amber line averages 12 months to show the underlying direction.</li>
+            <li>Hollow circles are provisional months that may be revised.</li>
+            <li>Activity rises and falls in cycles of about 11 years. This chart describes past data and is not a forecast.</li>
+          </ul>
+        </div>""")
 
 with col_nav:
     st.markdown('<div class="card-title">🧭 Mission Navigation</div>', unsafe_allow_html=True)
