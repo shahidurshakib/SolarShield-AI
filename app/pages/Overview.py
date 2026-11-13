@@ -4,7 +4,7 @@ import streamlit as st
 # PAGE CONFIGURATION
 # ============================================================
 
-st.set_page_config(page_title="Project Overview · SolarShield-AI", layout="wide", page_icon="📖")
+st.set_page_config(page_title="Documentation · SolarShield-AI", layout="wide", page_icon="📖")
 
 # ============================================================
 # DESIGN SYSTEM (Deep Space / Steel Blue)
@@ -202,7 +202,7 @@ with tab1:
 # --- TAB 2: DATA & METHODOLOGY ---
 with tab2:
     st.markdown("""
-    ### 6. Data Sources & Datasets
+    ### 5. Data Sources & Datasets
     The project distinguishes between datasets directly used, inspected experimentally, and identified for future integration.
 
     **Primary Dataset: SILSO**
@@ -215,14 +215,14 @@ with tab2:
     2. **NASA SDO/HMI:** Solar magnetic field information and active-region properties.
     3. **Historical Sunspot Group Archive:** Audited for schema changes and historical coverage.
 
-    ### 7. Data Processing Workflow
+    ### 6. Data Processing Workflow
     1. **Acquisition:** Retrieve raw SILSO data.
     2. **Validation:** Check for duplicates, dates, and provisional markers.
     3. **Cycle Segmentation:** Isolate completed cycles (1–24) from the ongoing Cycle 25.
     4. **Phase Normalization:** Transform completed cycles into normalized phase representations (121 points per cycle).
     5. **Integrity:** Generate SHA-256 hashes for frozen input records.
 
-    ### 9. Statistical Analysis
+    ### 7. Statistical Analysis
     - **Autocorrelation:** Reported lag-1 autocorrelation of ~0.887 indicates strong temporal dependence.
     - **Metrics:** MAE, RMSE, MAPE, and R².
     - **Trend Analysis:** Mann-Kendall trend testing and Sen's slope.
@@ -231,7 +231,7 @@ with tab2:
 # --- TAB 3: MODEL EXPERIMENTS ---
 with tab3:
     st.markdown("""
-    ### 10. Machine Learning Models
+    ### 8. Machine Learning Models
     **Implemented & Evaluated:**
     1. Persistence (Baseline)
     2. Seasonal-naive (Baseline)
@@ -243,7 +243,7 @@ with tab3:
 
     **Candidate Models (Future):** Random Forest, XGBoost, LightGBM, SVR, LSTM, GRU, Temporal CNN, Transformers.
 
-    ### 12. SolarShield-AI V2 Research (Controlled historical forecasting)
+    ### 9. SolarShield-AI V2 Research (Controlled historical forecasting)
     The V2 research used outer evaluation folds covering solar cycles 6–24.
 
     **V2-004: Phase-Median Baseline**
@@ -260,7 +260,7 @@ with tab3:
     Evaluated seven candidates. The best challenger (A4-S1) achieved an MAE of 37.885 and RMSE of 48.740. However, it exceeded the acceptance limits.
     - Final Decision: **NOT MET — Frozen and preserved unchanged.**
 
-    ### 13. SolarShield-AI V3 Research (Adaptive Forecasting)
+    ### 10. SolarShield-AI V3 Research (Adaptive Forecasting)
     V3 introduces a more adaptive and cycle-conditioned forecasting strategy.
     
     **Key Principles:**
@@ -280,7 +280,7 @@ with tab3:
 # --- TAB 4: ARCHITECTURE & FUTURE ---
 with tab4:
     st.markdown("""
-    ### 15. System Architecture
+    ### 11. System Architecture
     SolarShield-AI is designed as a layered research and application system:
 
     1. **Layer 1: Data Sources** (SILSO, NASA OMNI, SDO/HMI)
@@ -291,7 +291,7 @@ with tab4:
 
     *Note: Automated operational impact assessment and end-to-end real-time alert delivery must be treated as future implementation.*
 
-    ### 19. Future Development & Automation Roadmap
+    ### 12. Future Development & Automation Roadmap
     1. **Phase 1: Research Completion** (Complete V3 verification and execution).
     2. **Phase 2: Multi-Source Data Integration** (Integrate OMNI, HMI, flare catalogues).
     3. **Phase 3: Automated Data Collection** (Scheduled pipelines).
@@ -301,10 +301,13 @@ with tab4:
     7. **Phase 7: Early Warning and Mitigation** (Risk levels, forecast windows).
     8. **Phase 8: Shadow-Mode Pilot** (Operational validation with partners).
 
-    ### 25. Disclaimer
+    ### 13. Disclaimer
     SolarShield-AI is a research and prototype development project. Its current forecasting experiments primarily investigate historical solar activity and solar-cycle behavior. A forecast of solar activity does not independently establish the occurrence, Earth-directed trajectory, or severity of a solar eruption or geomagnetic storm. The project does not claim to replace established operational space weather forecasting services.
 
-    > **Project Vision:** SolarShield-AI aims to bridge the gap between understanding the Sun and preparing Earth for space weather risks.
+    ### 14. Project Vision
+    > SolarShield-AI aims to bridge the gap between understanding the Sun and preparing Earth for space weather risks.
+    
+    By combining historical scientific observations, statistical research, adaptive machine learning, explainability, and future operational validation, Team MU Solar Pulse seeks to develop an accessible framework for understanding solar activity and its potential effects on the technological systems modern society depends on.
     """)
 
 # ============================================================
