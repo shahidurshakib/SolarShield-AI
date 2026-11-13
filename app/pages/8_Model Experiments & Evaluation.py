@@ -203,6 +203,19 @@ st.title("Model Experiments & Evaluation")
 st.caption("Consolidated record of forecasting methods, configurations, results, and acceptance decisions.")
 st.markdown("<br>", unsafe_allow_html=True)
 
+st.html("""
+<div class="explainer-card" style="border-left-color: var(--danger);">
+    <h3 style="color: var(--danger) !important;">⚠️ Master Executive Conclusion</h3>
+    <p>
+        SolarShield-AI has established a reproducible research pipeline, completed foundational data preparation and descriptive analysis, and maintained version-controlled V2/V3 model-development protocols. The system operates under a structured experimental framework, with documented evaluation procedures, preserved research evidence, and an independently maintained demonstration dashboard.
+    </p>
+    <p>
+        <b>Repository HEAD:</b> 43157e02c90c425a1226fdf4c6332e770cbf81fb<br>
+        <b>Overall disposition:</b> Research framework established; model development and validation progressing under controlled experimental protocols.
+</b>.
+    </p>
+</div>
+""")
 
 
 # ============================================================
