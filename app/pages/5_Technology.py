@@ -190,8 +190,8 @@ st.html("""
             <li><strong>Seasonal-naive:</strong> Baseline forecasting <span class="status-badge status-confirmed">Executed</span></li>
             <li><strong>ARIMA/SARIMA:</strong> Statistical time-series modeling <span class="status-badge status-exploratory">Investigated</span></li>
             <li><strong>Phase median:</strong> Historical cycle-shape baseline <span class="status-badge status-confirmed">Executed</span></li>
-            <li><strong>Cubic B-spline:</strong> Cycle-shape estimation <span class="status-badge status-exploratory">Executed (Not accepted)</span></li>
-            <li><strong>Amplitude-aware:</strong> Amplitude and shape forecasting <span class="status-badge status-exploratory">Executed (Not accepted)</span></li>
+            <li><strong>Cubic B-spline:</strong> Cycle-shape estimation <span class="status-badge status-exploratory">Executed </span></li>
+            <li><strong>Amplitude-aware:</strong> Amplitude and shape forecasting <span class="status-badge status-exploratory">Executed </span></li>
             <li><strong>T0/T1/T2:</strong> Partial-observation cycle forecasting <span class="status-badge status-exploratory">Exploratory V3</span></li>
         </ul>
     </div>
